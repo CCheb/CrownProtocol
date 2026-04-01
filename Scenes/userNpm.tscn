@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bw5x746nvs54k"]
+
+[ext_resource type="Script" uid="uid://bbqbrwrkn0gpq" path="res://Network/UserNpm.cs" id="1_402pr"]
+[ext_resource type="Script" uid="uid://b50ifcyoi47w5" path="res://Network/Cores/NetID.cs" id="2_fu0en"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_youx3"]
+properties/0/path = NodePath("Background/ReadyStatus:color")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="Control" type="Control" unique_id=1982250877 node_paths=PackedStringArray("myNetID", "userNameLabel", "readyStatus", "readyUpButton")]
+custom_minimum_size = Vector2(380, 48)
+layout_mode = 3
+anchor_right = 0.33
+anchor_bottom = 0.065000005
+offset_right = -380.16
+offset_bottom = -42.120003
+script = ExtResource("1_402pr")
+myNetID = NodePath("MultiplayerSynchronizer")
+userNameLabel = NodePath("Background/UserName")
+readyStatus = NodePath("Background/ReadyStatus")
+readyUpButton = NodePath("Background/Ready")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=161999308]
+replication_config = SubResource("SceneReplicationConfig_youx3")
+script = ExtResource("2_fu0en")
+
+[node name="Background" type="ColorRect" parent="." unique_id=110430580]
+layout_mode = 0
+offset_right = 288.0
+offset_bottom = 40.0
+color = Color(0.20332181, 0.20332184, 0.20332178, 1)
+
+[node name="UserName" type="Label" parent="Background" unique_id=1801369762]
+layout_mode = 0
+offset_right = 288.0
+offset_bottom = 40.0
+text = "John Doe"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReadyStatus" type="ColorRect" parent="Background" unique_id=154326802]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 0, 0, 1)
+
+[node name="Ready" type="Button" parent="Background" unique_id=473845059]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.1110001
+anchor_right = 1.3060001
+anchor_bottom = 0.77500004
+offset_left = 0.031982422
+offset_right = -0.12802124
+toggle_mode = true
+text = "Ready"
+
+[connection signal="toggled" from="Background/Ready" to="." method="OnReadyUpButtonToggled"]

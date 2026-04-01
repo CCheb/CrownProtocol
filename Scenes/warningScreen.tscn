@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://q1nvrlvncwdr"]
+
+[ext_resource type="Script" uid="uid://rae0nirmar6p" path="res://Network/WarningScreen.cs" id="1_ep4bi"]
+
+[node name="WarningScreen" type="Control" unique_id=36651003]
+visible = false
+layout_mode = 3
+anchor_left = 0.0072777933
+anchor_top = 0.024925938
+anchor_right = 0.9927223
+anchor_bottom = 0.97541976
+offset_left = 7.615982
+offset_top = -0.15200806
+offset_right = -7.616089
+offset_bottom = -0.072021484
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ep4bi")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="ColorRect" parent="." unique_id=612335214]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Foreground" type="ColorRect" parent="." unique_id=1763896888]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04254286
+anchor_top = 0.051948052
+anchor_right = 0.9574572
+anchor_bottom = 0.9480519
+offset_left = 0.35199738
+offset_right = -0.35205078
+offset_bottom = -3.0517578e-05
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.22490484, 0.22490484, 0.22490484, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Message" type="Label" parent="." unique_id=1273109486]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -232.0
+offset_top = -144.0
+offset_right = 230.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Server is busy or not available
+Please refresh server list"
+horizontal_alignment = 1
+
+[node name="Ok" type="Button" parent="." unique_id=1165178274]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.41500002
+anchor_top = 0.56200004
+anchor_right = 0.58500004
+anchor_bottom = 0.67200005
+offset_left = -0.08001709
+offset_top = 0.25598145
+offset_right = 0.079956055
+offset_bottom = -0.06402588
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "OK"
+
+[connection signal="pressed" from="Ok" to="." method="OnOkButtonPressed"]

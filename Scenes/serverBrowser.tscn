@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://jcnhka4tj6uy"]
+
+[ext_resource type="PackedScene" uid="uid://bfxtyf6bjfce4" path="res://Scenes/serverJoinButton.tscn" id="1_dvbg0"]
+[ext_resource type="Script" uid="uid://vwwfepl0wp74" path="res://Network/ServerBrowser.cs" id="1_q28kv"]
+[ext_resource type="PackedScene" uid="uid://q1nvrlvncwdr" path="res://Scenes/warningScreen.tscn" id="3_jv4oc"]
+
+[node name="ServerBrowser" type="Control" unique_id=1493102563 node_paths=PackedStringArray("gameServerContainer", "userNameEntryBox", "warningScreen")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q28kv")
+gameServerContainer = NodePath("GridContainer")
+serverJoinButton = ExtResource("1_dvbg0")
+userNameEntryBox = NodePath("LineEdit")
+warningScreen = NodePath("WarningScreen")
+
+[node name="Background" type="ColorRect" parent="." unique_id=548980702]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.23934713, 0.23934713, 0.23934713, 1)
+
+[node name="Title" type="Label" parent="." unique_id=824067743]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -121.5
+offset_right = 121.5
+offset_bottom = 67.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "Server List"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1453381936]
+custom_minimum_size = Vector2(20, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = -150.0
+offset_right = 96.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RefreshButton" type="Button" parent="." unique_id=1370067125]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.44500002
+anchor_top = 0.84900004
+anchor_right = 0.555
+anchor_bottom = 0.93100005
+offset_left = -0.14001465
+offset_top = -0.15203857
+offset_right = 0.14001465
+offset_bottom = -0.2880249
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "Refresh"
+metadata/_edit_use_anchors_ = true
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=1668289669]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.055555556
+anchor_top = 0.407
+anchor_right = 0.23600002
+anchor_bottom = 0.531
+offset_top = 0.26400757
+offset_right = 0.12799072
+offset_bottom = -0.088012695
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Username"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="WarningScreen" parent="." unique_id=36651003 instance=ExtResource("3_jv4oc")]
+layout_mode = 1
+
+[connection signal="pressed" from="RefreshButton" to="." method="RequestForNewGameServers"]

@@ -1,0 +1,23 @@
+# Godot 4+
+.godot/
+.android/
+
+# Mono / C#
+.mono/
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/*.user
+**/*.csproj.user
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor environment
+godot.env
+
+# Logs / temp
+log.txt
+logs/

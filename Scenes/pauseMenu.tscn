@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://dfu6tgj6aqqoi"]
+
+[ext_resource type="Script" uid="uid://ctq5ecynmx51" path="res://Network/PauseMenu.cs" id="1_15pn7"]
+
+[node name="PauseMenu" type="Control" unique_id=217911543]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -156.0
+offset_right = 256.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_15pn7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=337351377]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.10561416, 0.10561418, 0.1056141, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=299992738]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -136.0
+offset_right = 240.0
+offset_bottom = 136.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.34781694, 0.34781697, 0.3478169, 1)
+
+[node name="Resume" type="Button" parent="." unique_id=723766615]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.49023438
+anchor_top = 0.2631579
+anchor_right = 0.5097656
+anchor_bottom = 0.2631579
+offset_left = -35.0
+offset_right = 35.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "Resume"
+metadata/_edit_use_anchors_ = true
+
+[node name="Quit" type="Button" parent="." unique_id=679319934]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.37500003
+anchor_top = 0.55300003
+anchor_right = 0.625
+anchor_bottom = 0.72700006
+offset_left = -1.5258789e-05
+offset_top = -0.11199951
+offset_bottom = -0.0079956055
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "Quit"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="Resume" to="." method="OnResumeButtonClicked"]
+[connection signal="pressed" from="Quit" to="." method="OnQuitButtonClicked"]

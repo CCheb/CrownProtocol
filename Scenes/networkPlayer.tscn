@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bjabjte8r8sau"]
+
+[ext_resource type="Script" uid="uid://bf628fxq375ia" path="res://Network/NetworkPlayer.cs" id="1_8isjg"]
+[ext_resource type="PackedScene" uid="uid://m2qog1d32hi4" path="res://Scenes/networkCamera.tscn" id="2_mannh"]
+[ext_resource type="Script" uid="uid://b50ifcyoi47w5" path="res://Network/Cores/NetID.cs" id="2_yk7fa"]
+[ext_resource type="PackedScene" uid="uid://dfu6tgj6aqqoi" path="res://Scenes/pauseMenu.tscn" id="4_q6ql1"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yk7fa"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CameraController:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mannh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8isjg"]
+albedo_color = Color(0.5969033, 0.0011561007, 0.7354814, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yk7fa"]
+material = SubResource("StandardMaterial3D_8isjg")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mannh"]
+albedo_color = Color(0.65628535, 0.6562854, 0.6562854, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_q6ql1"]
+material = SubResource("StandardMaterial3D_mannh")
+size = Vector3(0.8, 0.2, 0.8)
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=820896333 node_paths=PackedStringArray("myNetId", "cameraController", "visor", "playerNameTag", "pauseMenu")]
+script = ExtResource("1_8isjg")
+myNetId = NodePath("MultiplayerSynchronizer")
+cameraController = NodePath("CameraController")
+visor = NodePath("CameraController/Visor")
+playerNameTag = NodePath("Label3D")
+pauseMenu = NodePath("PauseMenu")
+cameraScene = ExtResource("2_mannh")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=461774097]
+replication_config = SubResource("SceneReplicationConfig_yk7fa")
+script = ExtResource("2_yk7fa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1622890921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_mannh")
+
+[node name="Body" type="MeshInstance3D" parent="CollisionShape3D" unique_id=432105248]
+mesh = SubResource("CapsuleMesh_yk7fa")
+
+[node name="CameraController" type="Node3D" parent="." unique_id=517595928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Visor" type="MeshInstance3D" parent="CameraController" unique_id=110798701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.29661584)
+visible = false
+mesh = SubResource("BoxMesh_q6ql1")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1005466835]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2158253, 0)
+billboard = 1
+text = "John Doe"
+
+[node name="PauseMenu" parent="." unique_id=217911543 instance=ExtResource("4_q6ql1")]

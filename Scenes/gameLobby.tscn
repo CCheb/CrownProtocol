@@ -7,11 +7,11 @@
 properties/0/path = NodePath("CountDown:visible")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath("CountDown/Label:text")
+properties/1/path = NodePath("CountDown:text")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 
-[node name="GameLobby" type="Control" unique_id=220696743 node_paths=PackedStringArray("lobby", "countDownLabel")]
+[node name="GameLobby" type="Control" unique_id=220696743 node_paths=PackedStringArray("lobby", "countDownLabel", "netCore")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,6 +21,7 @@ grow_vertical = 2
 script = ExtResource("1_d3m63")
 lobby = NodePath("GridContainer")
 countDownLabel = NodePath("CountDown")
+netCore = NodePath("MultiplayerSpawner")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=818527083]
 _spawnable_scenes = PackedStringArray("uid://bw5x746nvs54k")
@@ -36,6 +37,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 8.0
+offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.23934713, 0.23934713, 0.23934713, 1)
@@ -72,27 +75,28 @@ grow_vertical = 2
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.375
-anchor_top = 0.8271605
-anchor_right = 0.5833333
-anchor_bottom = 0.8611111
-offset_right = 40.0
-offset_bottom = 23.0
+anchor_left = 0.63927776
+anchor_top = 0.81500006
+anchor_right = 0.6542778
+anchor_bottom = 0.87700003
+offset_left = -0.44802856
+offset_top = -0.12005615
+offset_right = 0.27197266
+offset_bottom = 4.7039795
 theme_override_font_sizes/font_size = 32
-text = "Game Starting in:"
+text = "5"
 metadata/_edit_use_anchors_ = true
-metadata/_edit_group_ = true
 
 [node name="Label" type="Label" parent="CountDown" unique_id=300283018]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 0.4888889
-offset_right = 40.0
-offset_bottom = 23.0
+anchor_left = -16.444445
+anchor_right = -1.5560001
+anchor_bottom = 1.000111
+offset_right = 0.0080013275
+offset_bottom = -0.0049934387
 theme_override_font_sizes/font_size = 32
-text = "5"
+text = "Game Starting in:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Button" type="Button" parent="." unique_id=669074425]
@@ -108,5 +112,4 @@ theme_override_font_sizes/font_size = 32
 text = "Quit"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="PlayerJoined" from="MultiplayerSpawner" to="." method="OnPlayerJoined"]
 [connection signal="pressed" from="Button" to="." method="OnQuitButtonPressed"]

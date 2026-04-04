@@ -9,6 +9,7 @@ public partial class GameLobby : Control
 	[Export] private GridContainer lobby; 
 	[Export] private Label countDownLabel;
 
+	[Export] private NetworkCore netCore;
 	private short clientsConnected = 0;
 	private short countDown = 5;
 	private bool gameStarted = false;
@@ -25,6 +26,14 @@ public partial class GameLobby : Control
 		}
     }
 
+    public override void _Ready()
+    {
+        base._Ready();
+
+		netCore.PlayerJoined += OnPlayerJoined;
+    }
+
+
 	private void OnQuitButtonPressed()
 	{
 		GenericCore.Instance.DisconnectFromGame();
@@ -32,16 +41,21 @@ public partial class GameLobby : Control
 	
 	private void OnPlayerJoined(Node node)
 	{
+		GD.Print("Its Working");
 		if(GenericCore.Instance.IsServer)
 		{
 			clientsConnected++;
 			if(node is UserNpm playerCard)
+			{
+				GD.Print("Signal connected!!!");
 				playerCard.ReadyUpToggled += OnPlayerPressedReady;
+			}
 		}
 	}	
 
 	private void OnPlayerLeft()
-	{
+	{	
+		// Watch this
 		if(GenericCore.Instance.IsServer)
 			clientsConnected--;
 	}

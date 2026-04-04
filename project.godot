@@ -13,6 +13,7 @@ config_version=5
 config/name="TestNetworkTemplate2"
 run/main_scene="uid://jcnhka4tj6uy"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [autoload]
@@ -64,5 +65,4 @@ pause={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true

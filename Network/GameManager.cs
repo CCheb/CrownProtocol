@@ -3,10 +3,10 @@ using System;
 
 public partial class GameManager : Node3D
 {
-	[Export] private Godot.Collections.Array<Marker3D> playerSpawns;
 	[Export] private Marker3D spectatorSpawn;
 	[Export] private NetworkCore netCore;
 	[Export] private PackedScene cameraScene;
+	private Godot.Collections.Array<Marker3D> playerSpawns;
 	private int connectedPlayers = 0;
 	private const int MASTER = 1;
 
@@ -20,18 +20,24 @@ public partial class GameManager : Node3D
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
    		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		//TODO: There is still a race condition when everyone loads into the level. Clients should wait for the server before moving on
+		// Windows doesnt like node exports for some reason
+		playerSpawns = new Godot.Collections.Array<Marker3D>();
+    	foreach (var node in GetTree().GetNodesInGroup("PlayerSpawn"))
+    	{
+    	    if (node is Marker3D marker)
+    	        playerSpawns.Add(marker);
+    	}
+
 		if(GenericCore.Instance.IsServer)
 			GenericCore.Instance.ClientDisconnectedNotifier += OnPlayerDisconnected;
 
 		GD.Print($"Peer {Multiplayer.GetUniqueId()} GameManager READY");
 
-
 		GenericCore.Instance.RpcId(1, "SceneReady");
 	}
 
 	public void ServerSpawnPlayers()
-	{
+	{			
 		int count = 0;
 		foreach(var peer in GenericCore.Instance.connectedPeers)
 		{

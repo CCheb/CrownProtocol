@@ -41,8 +41,11 @@ public partial class NetworkCore : MultiplayerSpawner
         FindRootNodeType(ref rootNode, initialPosition, rotation);
         Spawn(rootNode);
         FindRootNodeNetID(rootNode, owner);
-        
-        EmitSignalPlayerJoined(rootNode);
+
+
+        GD.Print("About to emit PlayerJoined signal");
+        //EmitSignalPlayerJoined(rootNode); 
+        EmitSignal(SignalName.PlayerJoined, rootNode);
     }
 
     private Node GetNodeFromAutoList(int index)

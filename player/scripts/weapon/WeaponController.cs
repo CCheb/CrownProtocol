@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class WeaponController : Node3D
 {
@@ -21,8 +22,10 @@ public partial class WeaponController : Node3D
         GD.Load<WeaponResource>("res://player/assets/weapons/DrewPistol/drewPistol.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/rifle/Rigged_WeaponResource.tres"),
     }; 
+
+    // This variable would be the most important to synchronize
     private int CurrentWeaponIndex = 0;
-    private const int MAX_WEAPON_AMMOUNT = 4;
+    private const int MAX_WEAPON_AMMOUNT = 2;
     private WeaponBase CurrentWeapon;
     private Procedural procedural = new();
     private IWeaponAction CurrentPrimaryWeaponAction;
@@ -83,13 +86,16 @@ public partial class WeaponController : Node3D
     private void TryWeaponSwap(int ProposedWeapon)
     {
         // If the proposed weapon is already the same as the CurrentWeaponIndex then dont do anything
-        if(ProposedWeapon == CurrentWeaponIndex)
+        if(ProposedWeapon == CurrentWeaponIndex || ProposedWeapon > Arsenal.Length)
             return;
     
         CurrentWeaponIndex = ProposedWeapon;
+
+        // Send RPC here?
         SwapWeapon();
     }
-
+    
+    // This will most likely be an rpc done on the server
     private void SwapWeapon()
     {
         CurrentWeapon?.QueueFree();

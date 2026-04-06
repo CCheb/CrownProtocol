@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://crp28eo8i70od"]
+
+[ext_resource type="PackedScene" uid="uid://d4jl6d21m0ope" path="res://player/assets/weapons/rifle/rigged_rifle.tscn" id="1_5qr2q"]
+[ext_resource type="Script" uid="uid://c8of8infi526n" path="res://player/scripts/etc/AnimationProfile.cs" id="1_hvacs"]
+[ext_resource type="Script" uid="uid://cmymrn4gpv3y3" path="res://player/scripts/weapon/WeaponResource.cs" id="2_d07vf"]
+[ext_resource type="Script" uid="uid://dfe0snu41fopf" path="res://player/scripts/etc/WeaponBurstProfile.cs" id="3_f7ngb"]
+
+[sub_resource type="Resource" id="Resource_hvacs"]
+script = ExtResource("1_hvacs")
+AnimationName = "Rig|AK_Draw"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_f7ngb"]
+script = ExtResource("1_hvacs")
+AnimationName = "Rig|AK_Shot"
+BlendAmount = 0.03
+AnimationSpeed = 5.0
+
+[sub_resource type="Resource" id="Resource_1su4r"]
+script = ExtResource("1_hvacs")
+AnimationName = "Rig|AK_Reload"
+BlendAmount = 0.03
+
+[sub_resource type="Resource" id="Resource_aswih"]
+script = ExtResource("3_f7ngb")
+metadata/_custom_type_script = "uid://dfe0snu41fopf"
+
+[resource]
+script = ExtResource("2_d07vf")
+WeaponName = "RIFLE"
+PrimaryWeaponAction = 2
+SecondaryWeaponAction = 3
+ViewportPosition = Vector3(0.09, -0.4, 0.08)
+ViewportRotation = Vector3(0, -10, 0)
+ViewportScale = Vector3(0.8, 0.8, 0.8)
+WeaponScene = ExtResource("1_5qr2q")
+desiredZoom = 70.0
+AmmoCount = 250
+AmmoCapacity = 250
+burstProfile = SubResource("Resource_aswih")
+Fire = SubResource("Resource_f7ngb")
+Reload = SubResource("Resource_1su4r")
+Draw = SubResource("Resource_hvacs")

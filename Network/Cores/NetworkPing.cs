@@ -21,7 +21,7 @@ public partial class NetworkPing : Node
         byte[] buffer = ASCIIEncoding.ASCII.GetBytes(data);
         int timeout = 500;
 
-        return ping.Send(IpAddress, timeout, buffer, pingOptions);
+        return ping.Send(IpAddress, timeout);
     }
 
     public System.Net.NetworkInformation.IPStatus Check(string ipAddress)

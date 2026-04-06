@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhg1mx2rqeg2m"]
+
+[ext_resource type="Script" uid="uid://dyx6j6hnr2dc3" path="res://player/scripts/weapon/ShellEjection.cs" id="1_rn018"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ge72s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hqnop"]
+albedo_color = Color(0.7796285, 0.44046283, 0, 1)
+metallic = 0.75
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_5gltl"]
+material = SubResource("StandardMaterial3D_hqnop")
+bottom_radius = 0.4
+radial_segments = 8
+rings = 2
+
+[node name="ShellCasing" type="RigidBody3D"]
+collision_layer = 2
+mass = 0.1
+script = ExtResource("1_rn018")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.015, 0, 0, 0, -6.556708e-10, -0.015, 0, 0.015, -6.556708e-10, 0, 0, 0)
+shape = SubResource("CylinderShape3D_ge72s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CylinderMesh_5gltl")

@@ -30,6 +30,12 @@ public partial class GameLobby : Control
     {
         base._Ready();
 
+		lobby = GetNodeOrNull<GridContainer>("./GridContainer");
+		netCore = GetNodeOrNull<NetworkCore>("./MultiplayerSpawner");
+
+		if(netCore == null)
+			GD.Print("netCore is null");
+
 		netCore.PlayerJoined += OnPlayerJoined;
     }
 

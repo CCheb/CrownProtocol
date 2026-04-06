@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bbp2rpmrmee1f"]
+
+[ext_resource type="Script" uid="uid://t052fvtqpfq8" path="res://player/scripts/weapon/WeaponController.cs" id="1_tvt2m"]
+[ext_resource type="Script" uid="uid://dva67hh5hgkbm" path="res://player/scripts/weapon/WeaponRecoil.cs" id="2_nxsbh"]
+[ext_resource type="Script" uid="uid://dj0tr8lynagdj" path="res://player/scripts/weapon/JumpRecoil.cs" id="3_nxsbh"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nxsbh"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qohyr"]
+noise = SubResource("FastNoiseLite_nxsbh")
+
+[node name="WeaponController" type="Node3D" unique_id=2050527747 node_paths=PackedStringArray("WeaponRecoilRef", "JumpRecoilRef")]
+script = ExtResource("1_tvt2m")
+WeaponRecoilRef = NodePath("WeaponRecoil")
+JumpRecoilRef = NodePath("WeaponRecoil/JumpRecoil")
+RandSwayNoise = SubResource("NoiseTexture2D_qohyr")
+
+[node name="WeaponRecoil" type="Node3D" parent="." unique_id=888164613]
+script = ExtResource("2_nxsbh")
+
+[node name="JumpRecoil" type="Node3D" parent="WeaponRecoil" unique_id=406535749]
+script = ExtResource("3_nxsbh")

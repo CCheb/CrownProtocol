@@ -133,7 +133,7 @@ public partial class NetworkPlayer : CharacterBody3D
 	private void GenerateAndSendMovementInput()
 	{
 		// Simply grab the input and pass it forward for calculation
-		Vector2 move = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+		Vector2 move = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
     	bool jump = Input.IsActionPressed("jump");
 		RpcId(SERVER, MethodName.SendInput, move, jump, input.yawDelta, input.pitchDelta);
 	}

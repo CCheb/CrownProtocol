@@ -24,7 +24,7 @@ public partial class GenericCore : Node
     private int portMinimum = 9000;
     private int portMaximum = 9100;
 
-    private string serverAddress = "127.0.0.1"; 
+    private string serverAddress = "10.200.208.184"; // 23.128.112.65 10.200.208.184
     private int maxClientConnections = 4;
 
     public Dictionary<long, Dictionary<string, string>> connectedPeers = new();

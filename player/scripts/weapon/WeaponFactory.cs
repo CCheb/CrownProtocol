@@ -16,6 +16,10 @@ public static class WeaponFactory
 				// We need to Intiallize since we need to initiallize the WeaponData and the weapon Controller before hitting ready
 				NewWeapon.Initiallize(WeaponData, Controller);
 				return NewWeapon;
+			case Globals.WeaponTypes.Projectile :
+				NewWeapon = WeaponData.WeaponScene.Instantiate<Projectile>();
+				NewWeapon.Initiallize(WeaponData, Controller);
+				return NewWeapon;
 			case Globals.WeaponTypes.Shotgun :
 				NewWeapon = WeaponData.WeaponScene.Instantiate<Shotgun>();
 				NewWeapon.Initiallize(WeaponData, Controller);

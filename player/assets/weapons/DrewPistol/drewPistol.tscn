@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bfjnhx3rnpc5k"]
 
-[ext_resource type="Script" uid="uid://bgd35mmig5al6" path="res://player/scripts/weapon/weapon_types/Hitscan.cs" id="1_4p75e"]
 [ext_resource type="Texture2D" uid="uid://dy70oeyssvmaw" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Frame.png" id="1_7kbgt"]
+[ext_resource type="Script" uid="uid://calmebmmja1tt" path="res://player/scripts/weapon/weapon_types/Projectile.cs" id="1_42rsu"]
 [ext_resource type="Texture2D" uid="uid://csmkgbc4dfeqd" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Handle.png" id="2_kpksr"]
 [ext_resource type="PackedScene" uid="uid://6ugaon0u6a2q" path="res://player/assets/weapons/rifle/RifleShellCasing.tscn" id="2_l35yr"]
 [ext_resource type="Texture2D" uid="uid://cljk1468q5228" path="res://player/assets/weapons/DrewPistol/Hg_v1_HG_Panel.png" id="3_ck7u8"]
@@ -360,7 +360,7 @@ material = SubResource("StandardMaterial3D_8echa")
 size = Vector2(0.5, 0.5)
 
 [node name="Node3D" type="Node3D" unique_id=720787963 node_paths=PackedStringArray("ShellEjectionMarker")]
-script = ExtResource("1_4p75e")
+script = ExtResource("1_42rsu")
 ShellCasingScene = ExtResource("2_l35yr")
 ShellEjectionMarker = NodePath("ShellEjectionTest")
 

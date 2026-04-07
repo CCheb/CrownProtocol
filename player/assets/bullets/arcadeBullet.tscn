@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://e5kh6jpm8qar"]
+
+[ext_resource type="Script" uid="uid://bqste58x0dr5l" path="res://player/scripts/weapon/ArcadeBullet.cs" id="1_bf8t7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xc2s7"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_al2pa"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rvhy2"]
+albedo_color = Color(0.4376985, 0.0022525191, 0.9398231, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w0vif"]
+material = SubResource("StandardMaterial3D_rvhy2")
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1383605961 node_paths=PackedStringArray("area")]
+collision_layer = 2
+script = ExtResource("1_bf8t7")
+area = NodePath("Area3D")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1557106084]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1123063685]
+shape = SubResource("BoxShape3D_xc2s7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1445113331]
+shape = SubResource("BoxShape3D_al2pa")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=734247673]
+mesh = SubResource("BoxMesh_w0vif")

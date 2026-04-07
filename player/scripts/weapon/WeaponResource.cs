@@ -55,6 +55,7 @@ public partial class WeaponResource : Resource
 
     [ExportGroup("Special Weapon Stats")]
     [Export] public WeaponBurstProfile burstProfile = new();
+    [Export] public PackedScene projectileScene;
 
     [ExportGroup("Animations")]
     [Export] public AnimationProfile Fire;

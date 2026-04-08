@@ -1,0 +1,45 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://divwof5yjl2cb"
+path.s3tc="res://.godot/imported/wooden_boxes_7.png-5012a5c1322e9e9819606e7bd6f53d26.s3tc.ctex"
+path.etc2="res://.godot/imported/wooden_boxes_7.png-5012a5c1322e9e9819606e7bd6f53d26.etc2.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "41a3ae06a8b042f5d4e9dc1febcf68dd"
+}
+
+[deps]
+
+source_file="res://Maps/Assets/wooden_boxes_7.png"
+dest_files=["res://.godot/imported/wooden_boxes_7.png-5012a5c1322e9e9819606e7bd6f53d26.s3tc.ctex", "res://.godot/imported/wooden_boxes_7.png-5012a5c1322e9e9819606e7bd6f53d26.etc2.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

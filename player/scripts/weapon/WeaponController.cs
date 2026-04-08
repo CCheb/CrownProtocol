@@ -35,10 +35,36 @@ public partial class WeaponController : Node3D
     [Export] public JumpRecoil JumpRecoilRef;
 	[Export] private NoiseTexture2D RandSwayNoise;
 
+    private PlayerContext context;
+
+    // Runs before _Ready()
+    public void SetContext(PlayerContext ctx)
+    {
+        context = ctx;
+    }
 
     public override void _Ready()
     {
         base._Ready();
+
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        SetProcessInput(false);
+
+        context.player.PlayerReady += OnPlayerReady;        
+    }
+
+    private void OnPlayerReady()
+    {
+        GD.Print("WeaponController ready!");
+        
+        SetPhysicsProcess(true);
+        SetProcess(true);
+        SetProcessInput(true);
+
+        if(context.player.myNetId.IsLocal)
+            return;
+
         MovementChanged += OnMovementStateChange;
         LoadWeapon();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
@@ -47,6 +73,9 @@ public partial class WeaponController : Node3D
 
     public override void _Input(InputEvent @event)
     {
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         base._Input(@event);
         if (@event is InputEventMouseMotion)
 		{
@@ -169,6 +198,9 @@ public partial class WeaponController : Node3D
     {
         base._PhysicsProcess(delta);
 
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         Vector3 WeaponPos = Position;
 		Vector3 WeaponRotDeg = RotationDegrees;
 
@@ -181,6 +213,10 @@ public partial class WeaponController : Node3D
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         CurrentPrimaryWeaponAction?.Update(delta);
         CurrentSecondaryWeaponAction?.Update(delta);
     }
@@ -188,6 +224,9 @@ public partial class WeaponController : Node3D
     // Triggered every movement state change
     private void OnMovementStateChange(State NextMovementState)
     {
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         CurrentMovementState = NextMovementState.GetStateName();
         CurrentWeaponMovementProfile = NextMovementState.GetWeaponProfile();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);

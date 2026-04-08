@@ -17,7 +17,7 @@ netCore = NodePath("MultiplayerSpawner")
 cameraScene = ExtResource("2_81xng")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
-_spawnable_scenes = PackedStringArray("uid://bjabjte8r8sau", "uid://m2qog1d32hi4")
+_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
 

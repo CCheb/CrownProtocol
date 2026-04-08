@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Security.AccessControl;
 
 public partial class WalkingPlayerState : PlayerMovementState
 {
@@ -34,19 +35,30 @@ public partial class WalkingPlayerState : PlayerMovementState
     public override async void Enter(State prevState)
     {
         base.Enter(prevState);
-        // If the current animation is the JumpEnd animation then wait for it to finish
-        // before playing the states animation
-        if (ANIMATION.IsPlaying() && ANIMATION.CurrentAnimation == "JumpEnd")
-            await ToSignal(ANIMATION, "animation_finished");
-        ANIMATION.Play("Walk", -1.0, 1.0f);
-        speed = PLAYER.speed;
+
+        if (PLAYER.myNetId.IsLocal)
+        {
+            // If the current animation is the JumpEnd animation then wait for it to finish
+            // before playing the states animation
+            if (ANIMATION.IsPlaying() && ANIMATION.CurrentAnimation == "JumpEnd")
+                await ToSignal(ANIMATION, "animation_finished");
+            ANIMATION.Play("Walk", -1.0, 1.0f);
+            
+        }
+
+        PLAYER.speed = speed;
+        PLAYER.acceleration = acceleration;
+        PLAYER.deceleration = decelaration;
+
     }
 
     public override void Exit()
     {
         base.Exit();
-        // Make sure to reset the speed scale
-        ANIMATION.SpeedScale = 1.0f;
+
+        if (PLAYER.myNetId.IsLocal)
+            // Make sure to reset the speed scale
+            ANIMATION.SpeedScale = 1.0f;
     }
 
     // Called in state machine's _Process()
@@ -56,10 +68,12 @@ public partial class WalkingPlayerState : PlayerMovementState
         // if so then we send a signal to change to idle state
         base.Update(delta);
 
+        /*
         // In each update call, we update the player movement
         PLAYER.UpdateGravity(delta);
         PLAYER.UpdateInput(speed, acceleration, decelaration);
-        PLAYER.UpdateVelocity();
+        PLAYER.UpdateVelocity(); 
+        /*
 
         // Want to sway weapon but not random idle sway
         //WEAPON.SwayWeapon(delta, false);
@@ -70,6 +84,7 @@ public partial class WalkingPlayerState : PlayerMovementState
         // Pass in dynamic velocity! If we run or crouch the bobbing will also adjust
         SetAnimationSpeed(PLAYER.Velocity.Length());
 
+        /*
         // We check inside of update to make sure we are the only state triggering state switches Sprint state 
         if (Input.IsActionPressed("sprint") && PLAYER.IsOnFloor())
             EmitSignal(SignalName.Transition, "SprintingPlayerState");
@@ -77,10 +92,6 @@ public partial class WalkingPlayerState : PlayerMovementState
         // Crouch state
         if(Input.IsActionPressed("crouch") && PLAYER.IsOnFloor())
             EmitSignal(SignalName.Transition, "CrouchingPlayerState");
-
-        // The state machine its whats subscribed to these signals
-        if (PLAYER.Velocity.Length() <= 0.0f)
-            EmitSignal(SignalName.Transition, "IdlePlayerState");
 
         // Transition over to Jumping Player State
         if (Input.IsActionJustPressed("jump") && PLAYER.IsOnFloor())
@@ -90,11 +101,19 @@ public partial class WalkingPlayerState : PlayerMovementState
         // pull this down to -3
         if(PLAYER.Velocity.Y < -3.0f && !PLAYER.IsOnFloor())
             EmitSignal(SignalName.Transition, "FallingPlayerState");
+        */
+
+        // The state machine its whats subscribed to these signals
+        if (PLAYER.GetDerivedVelocity().Length() < 0.1f)
+            EmitSignal(SignalName.Transition, "IdlePlayerState");
         
     }
 
     private void SetAnimationSpeed(float currSpeed)
     {
+        if (!PLAYER.myNetId.IsLocal)
+            return;
+        
         // As player velocity increase, the playback speed increases
         // If speed is in between the mins, then its shifted between the 0.0f, 1.0f range
         var alpha = Mathf.Remap(currSpeed, 0.0f, speed, 0.0f, 1.0f);

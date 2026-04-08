@@ -14,6 +14,14 @@ public partial class MovementStateMachine : PlayerMovementState
     public override async void _Ready()
     {
         base._Ready();
+
+        var player = GetParent<FPSController>();
+        player.PlayerReady += OnPlayerReady;
+
+        SetProcess(false);
+        SetPhysicsProcess(false);
+
+
         // Grab any state children and determine if they are of state type (extend State class)
         // They are technically of type PlayerMovementState but it inherits from State
         foreach (Node child in GetChildren())
@@ -35,8 +43,19 @@ public partial class MovementStateMachine : PlayerMovementState
         // Wait for the owner (Player) to get ready before proceeding
         await ToSignal(Owner, "ready");
         // After initial setup, Enter the default state
+        // CURRENT_STATE.Enter(null);
+    }
+
+    private void OnPlayerReady()
+    {
+        SetProcess(true);
+        SetPhysicsProcess(true);
+
+        GD.Print("MovementStateMachine Ready!");
+
         CURRENT_STATE.Enter(null);
     }
+
 
     // Call the state's process function
     public override void _Process(double delta)

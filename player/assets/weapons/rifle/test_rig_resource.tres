@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://teiogn4asuqi"]
+
+[ext_resource type="Script" uid="uid://cmymrn4gpv3y3" path="res://player/scripts/weapon/WeaponResource.cs" id="1_1cji1"]
+[ext_resource type="Script" uid="uid://dfe0snu41fopf" path="res://player/scripts/etc/WeaponBurstProfile.cs" id="1_43gr2"]
+
+[sub_resource type="Resource" id="Resource_qlgqw"]
+script = ExtResource("1_43gr2")
+
+[resource]
+script = ExtResource("1_1cji1")

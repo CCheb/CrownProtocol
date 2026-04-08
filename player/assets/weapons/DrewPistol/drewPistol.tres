@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://duhnj6yiu68e8"]
+
+[ext_resource type="Script" uid="uid://dfe0snu41fopf" path="res://player/scripts/etc/WeaponBurstProfile.cs" id="1_5x5cf"]
+[ext_resource type="Script" uid="uid://c8of8infi526n" path="res://player/scripts/etc/AnimationProfile.cs" id="1_rrfom"]
+[ext_resource type="Script" uid="uid://cmymrn4gpv3y3" path="res://player/scripts/weapon/WeaponResource.cs" id="2_ity4n"]
+[ext_resource type="PackedScene" uid="uid://bfjnhx3rnpc5k" path="res://player/assets/weapons/DrewPistol/drewPistol.tscn" id="2_jxtl0"]
+[ext_resource type="PackedScene" uid="uid://e5kh6jpm8qar" path="res://player/assets/bullets/arcadeBullet.tscn" id="4_jxtl0"]
+
+[sub_resource type="Resource" id="Resource_1svjh"]
+script = ExtResource("1_rrfom")
+AnimationName = "Fire"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_rrfom"]
+script = ExtResource("1_rrfom")
+AnimationName = "Reload"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_jxtl0"]
+script = ExtResource("1_5x5cf")
+
+[resource]
+script = ExtResource("2_ity4n")
+WeaponName = "DREW_PISTOL"
+WeaponType = 1
+SecondaryWeaponAction = 5
+ViewportPosition = Vector3(0.2, -0.1, -0.4)
+WeaponScene = ExtResource("2_jxtl0")
+WeaponRecoilAmount = Vector3(0.01, 0.01, 0.2)
+FireRate = 380.0
+AmmoCount = 300
+AmmoCapacity = 250
+projectileScene = ExtResource("4_jxtl0")
+Fire = SubResource("Resource_1svjh")
+Reload = SubResource("Resource_rrfom")
+metadata/_custom_type_script = "uid://cmymrn4gpv3y3"

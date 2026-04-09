@@ -9,14 +9,23 @@ public partial class MovementStateMachine : PlayerMovementState
     // Keys are strings, values are Nodes that we need to cast over to State
     private Dictionary states = new Dictionary();
     private bool notFired = true;
+    private PlayerContext context;
+
+    public void SetContext(PlayerContext ctx)
+    {
+        context = ctx;
+    }
 
     // Setup available states in _Ready()
     public override async void _Ready()
     {
         base._Ready();
 
+        
         var player = GetParent<FPSController>();
         player.PlayerReady += OnPlayerReady;
+        //WEAPON_CONTROLLER = player.WEAPON;
+        
 
         SetProcess(false);
         SetPhysicsProcess(false);
@@ -89,7 +98,9 @@ public partial class MovementStateMachine : PlayerMovementState
                 // So as to execute its update funcition in process
                 CURRENT_STATE = newState;
                 // Notify the Weapon Controller that the Current Movement State has changed
-                WEAPON_CONTROLLER.EmitSignal(WeaponController.SignalName.MovementChanged, CURRENT_STATE);
+                //WEAPON_CONTROLLER.EmitSignal(WeaponController.SignalName.MovementChanged, CURRENT_STATE);
+                //WEAPON_CONTROLLER.TestMovementStateMachine();
+                context.weapon.TestMovementStateMachine();
             }
         }
         else

@@ -47,9 +47,10 @@ public partial class FPSController : CharacterBody3D
 
 	[ExportGroup("Misc")]
 	[Export] private Label3D playerNameTag; 
+	[Export] private MovementStateMachine stateMachine;
 	private const int SERVER = 1;
 
-	private PlayerContext context;
+	public PlayerContext context;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -71,6 +72,7 @@ public partial class FPSController : CharacterBody3D
 
 		WEAPON.SetContext(context);
 		WorldCameraController.SetContext(context);
+		stateMachine.SetContext(context);
 
 	
     }
@@ -160,7 +162,6 @@ public partial class FPSController : CharacterBody3D
 
 		if(myNetId.IsLocal)
 		{	
-			GD.Print("LOCAL PLAYER ONLY!!!");
 			GenerateAndSendMovementInput();
 			ResetRotationDeltas();
 		}
@@ -175,7 +176,6 @@ public partial class FPSController : CharacterBody3D
 	{
 		// Simply grab the input and pass it forward for calculation
 		Vector2 move = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
-		GD.Print(move);
     	bool jump = Input.IsActionJustPressed("jump");
 		RpcId(SERVER, MethodName.SendInput, move, jump, input.yawDelta, input.pitchDelta);
 	}
@@ -183,8 +183,8 @@ public partial class FPSController : CharacterBody3D
 	private void ResetRotationDeltas()
 	{
 		// Dont want previous frame rotation inputs to affect the current frame
-		yawDelta = 0.0f;
-		pitchDelta = 0.0f;
+		input.yawDelta = 0.0f;
+		input.pitchDelta = 0.0f;
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -299,7 +299,7 @@ public partial class FPSController : CharacterBody3D
 		// Camera rotation, want vertical rotation
 		totalMouseRotation.X += input.pitchDelta * (float)delta; // Parse total mouse rotation
 		totalMouseRotation.X = Mathf.Clamp(totalMouseRotation.X, Mathf.DegToRad(-90.0f), Mathf.DegToRad(90.0f));
-		verticalRotation = new Vector3(totalMouseRotation.X, 0.0f, 0.0f);
+		verticalRotation = new Vector3(totalMouseRotation.X, 0.0f, 0.0f);	// In Radians
 
 		cameraPivot.Rotation = verticalRotation;
 	}

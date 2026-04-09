@@ -49,11 +49,13 @@ public partial class IdlePlayerState : PlayerMovementState
         if (PLAYER.myNetId.IsLocal)
             // Make sure to reset the speed scale
             ANIMATION.SpeedScale = 1.0f;
+
+        GD.Print("Exited idle state");
     }
-    public override void Update(double delta)
+    public override void PhysicsUpdate(double delta)
     {
         // Emmit transition signal to walking state if the player's velocity is > 0.0f
-        base.Update(delta);
+        base.PhysicsUpdate(delta);
 
         /*
         // Update player movment accordingly. As if you had them together
@@ -83,6 +85,10 @@ public partial class IdlePlayerState : PlayerMovementState
         // Notice how this only passes when the player is on the floor. Its important
         // that we check the length of the velocity and not the raw form since it might
         // be negative if we say move forward for example
+
+        if (PLAYER.myNetId.IsLocal)
+            GD.Print("Vel: ", PLAYER.GetDerivedVelocity().Length(), " Floor: ", PLAYER.IsOnFloor());
+
 
         if (PLAYER.GetDerivedVelocity().Length() > 0.1f && PLAYER.IsOnFloor())
             EmitSignal(SignalName.Transition, "WalkingPlayerState");

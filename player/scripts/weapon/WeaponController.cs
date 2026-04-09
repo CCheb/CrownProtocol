@@ -49,7 +49,7 @@ public partial class WeaponController : Node3D
 
         SetPhysicsProcess(false);
         SetProcess(false);
-        SetProcessInput(false);
+        //SetProcessInput(false);
 
         context.player.PlayerReady += OnPlayerReady;        
     }
@@ -60,12 +60,13 @@ public partial class WeaponController : Node3D
         
         SetPhysicsProcess(true);
         SetProcess(true);
-        SetProcessInput(true);
-
-        if(context.player.myNetId.IsLocal)
-            return;
+        //SetProcessInput(true);
 
         MovementChanged += OnMovementStateChange;
+
+        if(!context.player.myNetId.IsLocal)
+            return;
+
         LoadWeapon();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
         procedural.SetRandSwayNoise(RandSwayNoise);
@@ -88,7 +89,10 @@ public partial class WeaponController : Node3D
 
         // In _Input, the event actions are not polled and are only triggered once everytime the key is pressed 
         if(@event.IsActionPressed("primary_action"))
+        {
+            GD.Print("PrimaryAction!");
             CurrentPrimaryWeaponAction?.OnActionPressed();
+        }
 
         if(@event.IsActionReleased("primary_action"))
             CurrentPrimaryWeaponAction?.OnActionReleased();
@@ -155,7 +159,10 @@ public partial class WeaponController : Node3D
     {
         // Ask FireModeFactory to Create the appropriate firemode object based on what the WeaponResource specified
         if(Arsenal[CurrentWeaponIndex].PrimaryWeaponAction == Globals.WeaponActions.NoAction)
+        {
+            GD.Print("Returning early!!!");
             return;
+        }
     
         CurrentPrimaryWeaponAction = FireModeFactory.CreateNewWeaponAction(this, Arsenal[CurrentWeaponIndex], CurrentWeapon, Arsenal[CurrentWeaponIndex].PrimaryWeaponAction);
         if(CurrentPrimaryWeaponAction == null)
@@ -227,8 +234,16 @@ public partial class WeaponController : Node3D
         if (!context.player.myNetId.IsLocal)
             return;
 
+        GD.Print("Recieved Movement State!");
         CurrentMovementState = NextMovementState.GetStateName();
         CurrentWeaponMovementProfile = NextMovementState.GetWeaponProfile();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
+    }
+
+    public void TestMovementStateMachine()
+    {
+        if (!context.player.myNetId.IsLocal)
+            return;
+        GD.Print("Local player recieved \"signal\" from movementstate machine");
     }
 }

@@ -24,7 +24,7 @@ public partial class CameraController : Node3D
     [Export] public  CameraLayer CameraJumpingLayer;
     [Export] public  CameraZoomLayer cameraZoomLayer;
     // BaseOffset helps in giving us an origin/base to apply all of the camera translations
-    [Export] private Vector3 BaseOffset = new Vector3(0.0f, 1.428f, 0.0f);
+    [Export] private Vector3 BaseOffset = new Vector3(0.0f, 0.0f, 0.0f);
     
     private PlayerContext context;
 
@@ -61,7 +61,7 @@ public partial class CameraController : Node3D
 
         // Notice how finalPosition if initially assigned the BaseOffset which helps specify the CameraController to the right position every frame
         Vector3 finalPosition = BaseOffset;
-        Vector3 finalRotation = Rotation;
+        Vector3 finalRotation = Vector3.Zero;
         float finalFov = 0.0f;
 
         /*

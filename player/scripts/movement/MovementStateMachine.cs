@@ -3,7 +3,7 @@ using Godot.Collections;
 using System;
 
 public partial class MovementStateMachine : PlayerMovementState
-{// Specify the default state to be current. Its an export
+{
     [Export] private State CURRENT_STATE;
     // Dictionary to hold any states that are children of the state machine
     // Keys are strings, values are Nodes that we need to cast over to State
@@ -24,7 +24,6 @@ public partial class MovementStateMachine : PlayerMovementState
         
         var player = GetParent<FPSController>();
         player.PlayerReady += OnPlayerReady;
-        //WEAPON_CONTROLLER = player.WEAPON;
         
 
         SetProcess(false);
@@ -42,17 +41,14 @@ public partial class MovementStateMachine : PlayerMovementState
                 // Make sure to subscribe the call back to each of the states transition signal
                 // For each identified state and call their Init functions
                 State transitionSignal = (State)child;
-                transitionSignal.Transition += OnChildTransition;
+                transitionSignal.Transition += BroadcastStateTransition; // server only
                 transitionSignal.Init();
             }
             else
                 GD.PushWarning("State machine contains incompatible child node");
         }
 
-        // Wait for the owner (Player) to get ready before proceeding
-        await ToSignal(Owner, "ready");
-        // After initial setup, Enter the default state
-        // CURRENT_STATE.Enter(null);
+        await ToSignal(Owner, "ready"); // Wait for player
     }
 
     private void OnPlayerReady()
@@ -62,6 +58,7 @@ public partial class MovementStateMachine : PlayerMovementState
 
         GD.Print("MovementStateMachine Ready!");
 
+        // Enter the default state
         CURRENT_STATE.Enter(null);
     }
 
@@ -71,7 +68,6 @@ public partial class MovementStateMachine : PlayerMovementState
     {
         base._Process(delta);
         CURRENT_STATE.Update(delta);    // The Update also contains the player update
-        //Globals.debug.AddDebugProperty("Current State", CURRENT_STATE.Name, 1); 
     }
 
     // Call the states physics process function. This is whats constantly running along with _Process
@@ -82,6 +78,7 @@ public partial class MovementStateMachine : PlayerMovementState
     }
     
     // Call back when transition signal is emitted by any state
+    [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
     private void OnChildTransition(string newStateName)
     {
         // Try to find if passed state name is in the states dictionary
@@ -98,14 +95,19 @@ public partial class MovementStateMachine : PlayerMovementState
                 // So as to execute its update funcition in process
                 CURRENT_STATE = newState;
                 // Notify the Weapon Controller that the Current Movement State has changed
-                //WEAPON_CONTROLLER.EmitSignal(WeaponController.SignalName.MovementChanged, CURRENT_STATE);
-                //WEAPON_CONTROLLER.TestMovementStateMachine();
-                context.weapon.TestMovementStateMachine();
+                context.weapon.OnMovementStateChange(CURRENT_STATE);
             }
         }
         else
         {
             GD.PushWarning("State does not exist");
         }
+    }
+
+    
+    private void BroadcastStateTransition(string newStateName)
+    {
+        // Server is only one to call this
+        Rpc(MethodName.OnChildTransition, newStateName);
     }
 }

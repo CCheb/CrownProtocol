@@ -54,43 +54,14 @@ public partial class IdlePlayerState : PlayerMovementState
     }
     public override void PhysicsUpdate(double delta)
     {
-        // Emmit transition signal to walking state if the player's velocity is > 0.0f
         base.PhysicsUpdate(delta);
-
-        /*
-        // Update player movment accordingly. As if you had them together
-        PLAYER.UpdateGravity(delta);
-        PLAYER.UpdateInput(speed, acceleration, decelaration);
-        PLAYER.UpdateVelocity();
         
+        // Server would determine when the player can switch states and broadcast that to all
+        // other clients
+        if (!GenericCore.Instance.IsServer)
+            return;
 
-        // WEAPON.SwayWeapon(delta, true);
-
-        
-        if(Input.IsActionPressed("crouch") && PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "CrouchingPlayerState");
-
-
-
-        // Transition over to Jumping Player State
-        if (Input.IsActionJustPressed("jump") && PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "JumpingPlayerState");
-
-        // Transition over to Fallling Player State
-        if (PLAYER.Velocity.Y < -3.0f && !PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "FallingPlayerState");
-
-        */
-
-        // Notice how this only passes when the player is on the floor. Its important
-        // that we check the length of the velocity and not the raw form since it might
-        // be negative if we say move forward for example
-
-        if (PLAYER.myNetId.IsLocal)
-            GD.Print("Vel: ", PLAYER.GetDerivedVelocity().Length(), " Floor: ", PLAYER.IsOnFloor());
-
-
-        if (PLAYER.GetDerivedVelocity().Length() > 0.1f && PLAYER.IsOnFloor())
+        if (PLAYER.Velocity.Length() > 0.1f && PLAYER.IsOnFloor())
             EmitSignal(SignalName.Transition, "WalkingPlayerState");
     }
 }

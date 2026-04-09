@@ -6,10 +6,8 @@ public partial class WalkingPlayerState : PlayerMovementState
 {
 	// Walking specific movement variables
     [Export] public float topAnimationSpeed = 1.8f;
-    // Variables used for players UpdateInput()
     [Export] public float acceleration = 0.1f;
     [Export] public float decelaration = 0.25f;
-    
     private float speed = 6.0f;
 
     [ExportGroup("Weapon Movement Profile")]
@@ -64,49 +62,17 @@ public partial class WalkingPlayerState : PlayerMovementState
     }
 
     // Called in state machine's _Process()
-    public override void Update(double delta)
+    public override void PhysicsUpdate(double delta)
     {
-        // While in this state we constantly check if the players velocity has reached 0.0
-        // if so then we send a signal to change to idle state
-        base.Update(delta);
-
-        /*
-        // In each update call, we update the player movement
-        PLAYER.UpdateGravity(delta);
-        PLAYER.UpdateInput(speed, acceleration, decelaration);
-        PLAYER.UpdateVelocity(); 
-        /*
-
-        // Want to sway weapon but not random idle sway
-        //WEAPON.SwayWeapon(delta, false);
-        // Weapon bobbing while in this state
-        //WEAPON.WeaponBob(delta, bobSpeedWeapon, bobWeaponH, bobWeaponV);
-
         
-        // Pass in dynamic velocity! If we run or crouch the bobbing will also adjust
-        SetAnimationSpeed(PLAYER.Velocity.Length());
+        base.PhysicsUpdate(delta);
 
-        /*
-        // We check inside of update to make sure we are the only state triggering state switches Sprint state 
-        if (Input.IsActionPressed("sprint") && PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "SprintingPlayerState");
-
-        // Crouch state
-        if(Input.IsActionPressed("crouch") && PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "CrouchingPlayerState");
-
-        // Transition over to Jumping Player State
-        if (Input.IsActionJustPressed("jump") && PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "JumpingPlayerState");
-            
-        // Transition over to Fallling Player State. Gravity will eventually
-        // pull this down to -3
-        if(PLAYER.Velocity.Y < -3.0f && !PLAYER.IsOnFloor())
-            EmitSignal(SignalName.Transition, "FallingPlayerState");
-        */
+        // Server determines when to switch states and broadcast
+        if (!GenericCore.Instance.IsServer)
+            return;
 
         // The state machine its whats subscribed to these signals
-        if (PLAYER.GetDerivedVelocity().Length() < 0.1f)
+        if (PLAYER.Velocity.Length() < 0.1f)
             EmitSignal(SignalName.Transition, "IdlePlayerState");
         
     }

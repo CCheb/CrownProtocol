@@ -36,7 +36,7 @@ public partial class FPSController : CharacterBody3D
 	[ExportGroup("Player API")]
 	[Export] public AnimationPlayer ANIMATION;
 	[Export] public  ShapeCast3D crouchShapeCast;
-	[Export] public WeaponController WEAPON; // Reference to WeaponController for movement states. Player is middleman
+	[Export] public WeaponController WEAPON;
 
 	[ExportGroup("Network")]
 	[Export] public NetID myNetId;
@@ -49,7 +49,6 @@ public partial class FPSController : CharacterBody3D
 	[Export] private Label3D playerNameTag; 
 	[Export] private MovementStateMachine stateMachine;
 	private const int SERVER = 1;
-
 	public PlayerContext context;
 
 	public override void _Input(InputEvent @event)
@@ -73,8 +72,6 @@ public partial class FPSController : CharacterBody3D
 		WEAPON.SetContext(context);
 		WorldCameraController.SetContext(context);
 		stateMachine.SetContext(context);
-
-	
     }
 
 	public override void _Ready()
@@ -117,7 +114,6 @@ public partial class FPSController : CharacterBody3D
 		worldCamera = GetNode<Camera3D>("CameraPivot/WorldCameraController/Camera3D");
 		weaponCamera = GetNode<Camera3D>("SubViewportContainer/SubViewport/Camera3D");
 		
-		// Disabling cameras
 		worldCamera.Current = false;
 		weaponCamera.Current = false;
 
@@ -169,7 +165,6 @@ public partial class FPSController : CharacterBody3D
 		if(GenericCore.Instance.IsServer)
 			ApplyInput(delta);
 
-		CalculateDerivedVelocity(delta);
 	}
 
 	private void GenerateAndSendMovementInput()
@@ -208,7 +203,6 @@ public partial class FPSController : CharacterBody3D
 
 	private void CalculateDerivedVelocity(double delta)
 	{
-		// Calculate derivedVelocity here
 		DerivedVelocity = (GlobalPosition - lastPosition) / (float)delta;
 		lastPosition = GlobalPosition;
 	}
@@ -223,6 +217,7 @@ public partial class FPSController : CharacterBody3D
 		{
 			velocity += GetGravity() * (float)delta;
 		}
+
 		// Handle Jump. This is more of a one time thing
 		if (input.jump && IsOnFloor())
 		{
@@ -231,7 +226,7 @@ public partial class FPSController : CharacterBody3D
 
 		Vector3 direction = (Transform.Basis * new Vector3(input.move.X, 0, input.move.Y)).Normalized();
 
-		/*
+		
 		if (direction != Vector3.Zero)
 		{
 			// You will reach the maximum speed over time (linearly) and not instantly
@@ -249,10 +244,10 @@ public partial class FPSController : CharacterBody3D
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, deceleration);
 			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, deceleration);
 		}
-		*/
+		
 
-		velocity.X = direction.X * speed;
-		velocity.Z = direction.Z * speed;
+		//velocity.X = direction.X * speed;
+		//velocity.Z = direction.Z * speed;
 
 
 		Velocity = velocity;
@@ -292,10 +287,6 @@ public partial class FPSController : CharacterBody3D
 
 	private void RotateCamera(double delta)
 	{
-		// Send the pitch values over to the InputCameraLayer. In this case the player owns side ways rotation while
-		// the camera controller handles pitch which is the only rotation applied to the camera
-		//InputCameraLayer.AddPitch(pitchDelta * (float)delta);
-
 		// Camera rotation, want vertical rotation
 		totalMouseRotation.X += input.pitchDelta * (float)delta; // Parse total mouse rotation
 		totalMouseRotation.X = Mathf.Clamp(totalMouseRotation.X, Mathf.DegToRad(-90.0f), Mathf.DegToRad(90.0f));
@@ -304,72 +295,20 @@ public partial class FPSController : CharacterBody3D
 		cameraPivot.Rotation = verticalRotation;
 	}
 
-	public Vector3 GetDerivedVelocity()
-	{
-		if (GenericCore.Instance.IsServer)
-			return Velocity;
-		else
-			return DerivedVelocity;
-	}
 
-
-	//---CALLED BY OUR STATE SCRIPTS--//
+	//---Single Player stuff--//
 	//--------------------------------//
 	public void UpdateGravity(double delta)
 	{
-		/*
-		// Only add gravity when in the air
-		if (!IsOnFloor())
-		{	
-			// Its essential to only update the players Velocity and keep vel local 
-			Vector3 velocity = Velocity;
-			velocity += GetGravity() * (float)delta * 2.0f;
-			Velocity = velocity;
-		}
-		*/
 	}
 
 	public void UpdateInput(float speed, float acceleration, float deceleration)
 	{
-		/*
-		Vector3 velocity = Velocity;
-		// Get the input direction and handle the movement/deceleration.
-		Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
-		// want the direction to always be in terms of the local characters coordinate/basis. If we rotate
-		// and move forward the input will rotate the same amount and move forward
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		if (direction != Vector3.Zero)
-		{
-			// You will reach the maximum speed over time (linearly) and not instantly
-			// Its important for the first argument to be changing or else it will
-			// never move to its intended target speed. The current velocity will always be changing
-			velocity.X = Mathf.Lerp(velocity.X, direction.X * speed, acceleration);
-			velocity.Z = Mathf.Lerp(velocity.Z, direction.Z * speed, deceleration);
-		}
-		else
-		{
-			// MoveToward is like Lerp in that it provides movement smoothing. In this case
-			// when the player stops moving it will smoothing approach 0. We provide 
-			// a decelaration weight so in the case we want the player to decelerate at a different
-			// speed when compared to acceleration 
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, deceleration);
-			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, deceleration);
-		}
-
-		Velocity = velocity;
-		*/
+		
 	}
 
 	public void UpdateVelocity()
 	{
-		/*
-		// Before we updated velocity here by doing Velocity = velocity for the sake of keeping
-		// a global private velocity. That then caused the jump velocity to be cancelled since this
-		// velocity did not know of any jumps (Y = 0) and overwrote the jump velocity
-
-		// Called by each of the movement states
-		MoveAndSlide();
-		*/
 		
 	}
 }

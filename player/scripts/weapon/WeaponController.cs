@@ -62,7 +62,7 @@ public partial class WeaponController : Node3D
         SetProcess(true);
         //SetProcessInput(true);
 
-        MovementChanged += OnMovementStateChange;
+        //MovementChanged += OnMovementStateChange;
 
         if(!context.player.myNetId.IsLocal)
             return;
@@ -229,7 +229,7 @@ public partial class WeaponController : Node3D
     }
 
     // Triggered every movement state change
-    private void OnMovementStateChange(State NextMovementState)
+    public void OnMovementStateChange(State NextMovementState)
     {
         if (!context.player.myNetId.IsLocal)
             return;

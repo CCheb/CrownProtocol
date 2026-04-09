@@ -11,7 +11,7 @@ public partial class WeaponCamera : Camera3D
         // this is not as expensive as you think. Having a second
         // camera is whats preventing weapon clipping
         //base._Process(delta);
-        GlobalTransform = WorldCamera.GlobalTransform;
+        GlobalTransform = WorldCamera.Transform;
         Fov = WorldCamera.Fov;
     }
 }

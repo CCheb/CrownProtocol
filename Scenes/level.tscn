@@ -4,6 +4,19 @@
 [ext_resource type="Script" uid="uid://dhp14ud86aqe7" path="res://Network/Cores/NetworkCore.cs" id="1_tumq0"]
 [ext_resource type="PackedScene" uid="uid://m2qog1d32hi4" path="res://Scenes/networkCamera.tscn" id="2_81xng"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6phgx"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_81xng"]
+sky_material = SubResource("ProceduralSkyMaterial_6phgx")
+
+[sub_resource type="Environment" id="Environment_wqkje"]
+background_mode = 2
+sky = SubResource("Sky_81xng")
+tonemap_mode = 2
+glow_enabled = true
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_51e2h"]
 size = Vector3(30, 1, 30)
 
@@ -16,8 +29,11 @@ spectatorSpawn = NodePath("SpectatorSpawn")
 netCore = NodePath("MultiplayerSpawner")
 cameraScene = ExtResource("2_81xng")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1075431530]
+environment = SubResource("Environment_wqkje")
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
-_spawnable_scenes = PackedStringArray("uid://bjabjte8r8sau", "uid://m2qog1d32hi4")
+_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
 

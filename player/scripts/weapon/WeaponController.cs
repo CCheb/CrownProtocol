@@ -35,11 +35,38 @@ public partial class WeaponController : Node3D
     [Export] public JumpRecoil JumpRecoilRef;
 	[Export] private NoiseTexture2D RandSwayNoise;
 
+    private PlayerContext context;
+
+    // Runs before _Ready()
+    public void SetContext(PlayerContext ctx)
+    {
+        context = ctx;
+    }
 
     public override void _Ready()
     {
         base._Ready();
+
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        //SetProcessInput(false);
+
+        context.player.PlayerReady += OnPlayerReady;        
+    }
+
+    private void OnPlayerReady()
+    {
+        GD.Print("WeaponController ready!");
+        
+        SetPhysicsProcess(true);
+        SetProcess(true);
+        //SetProcessInput(true);
+
         MovementChanged += OnMovementStateChange;
+
+        if(!context.player.myNetId.IsLocal)
+            return;
+
         LoadWeapon();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
         procedural.SetRandSwayNoise(RandSwayNoise);
@@ -47,6 +74,9 @@ public partial class WeaponController : Node3D
 
     public override void _Input(InputEvent @event)
     {
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         base._Input(@event);
         if (@event is InputEventMouseMotion)
 		{
@@ -59,7 +89,10 @@ public partial class WeaponController : Node3D
 
         // In _Input, the event actions are not polled and are only triggered once everytime the key is pressed 
         if(@event.IsActionPressed("primary_action"))
+        {
+            GD.Print("PrimaryAction!");
             CurrentPrimaryWeaponAction?.OnActionPressed();
+        }
 
         if(@event.IsActionReleased("primary_action"))
             CurrentPrimaryWeaponAction?.OnActionReleased();
@@ -126,7 +159,10 @@ public partial class WeaponController : Node3D
     {
         // Ask FireModeFactory to Create the appropriate firemode object based on what the WeaponResource specified
         if(Arsenal[CurrentWeaponIndex].PrimaryWeaponAction == Globals.WeaponActions.NoAction)
+        {
+            GD.Print("Returning early!!!");
             return;
+        }
     
         CurrentPrimaryWeaponAction = FireModeFactory.CreateNewWeaponAction(this, Arsenal[CurrentWeaponIndex], CurrentWeapon, Arsenal[CurrentWeaponIndex].PrimaryWeaponAction);
         if(CurrentPrimaryWeaponAction == null)
@@ -169,6 +205,9 @@ public partial class WeaponController : Node3D
     {
         base._PhysicsProcess(delta);
 
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         Vector3 WeaponPos = Position;
 		Vector3 WeaponRotDeg = RotationDegrees;
 
@@ -181,6 +220,10 @@ public partial class WeaponController : Node3D
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         CurrentPrimaryWeaponAction?.Update(delta);
         CurrentSecondaryWeaponAction?.Update(delta);
     }
@@ -188,8 +231,19 @@ public partial class WeaponController : Node3D
     // Triggered every movement state change
     private void OnMovementStateChange(State NextMovementState)
     {
+        if (!context.player.myNetId.IsLocal)
+            return;
+
+        GD.Print("Recieved Movement State!");
         CurrentMovementState = NextMovementState.GetStateName();
         CurrentWeaponMovementProfile = NextMovementState.GetWeaponProfile();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
+    }
+
+    public void TestMovementStateMachine()
+    {
+        if (!context.player.myNetId.IsLocal)
+            return;
+        GD.Print("Local player recieved \"signal\" from movementstate machine");
     }
 }

@@ -9,11 +9,28 @@ public partial class MovementStateMachine : PlayerMovementState
     // Keys are strings, values are Nodes that we need to cast over to State
     private Dictionary states = new Dictionary();
     private bool notFired = true;
+    private PlayerContext context;
+
+    public void SetContext(PlayerContext ctx)
+    {
+        context = ctx;
+    }
 
     // Setup available states in _Ready()
     public override async void _Ready()
     {
         base._Ready();
+
+        
+        var player = GetParent<FPSController>();
+        player.PlayerReady += OnPlayerReady;
+        //WEAPON_CONTROLLER = player.WEAPON;
+        
+
+        SetProcess(false);
+        SetPhysicsProcess(false);
+
+
         // Grab any state children and determine if they are of state type (extend State class)
         // They are technically of type PlayerMovementState but it inherits from State
         foreach (Node child in GetChildren())
@@ -35,8 +52,19 @@ public partial class MovementStateMachine : PlayerMovementState
         // Wait for the owner (Player) to get ready before proceeding
         await ToSignal(Owner, "ready");
         // After initial setup, Enter the default state
+        // CURRENT_STATE.Enter(null);
+    }
+
+    private void OnPlayerReady()
+    {
+        SetProcess(true);
+        SetPhysicsProcess(true);
+
+        GD.Print("MovementStateMachine Ready!");
+
         CURRENT_STATE.Enter(null);
     }
+
 
     // Call the state's process function
     public override void _Process(double delta)
@@ -70,7 +98,9 @@ public partial class MovementStateMachine : PlayerMovementState
                 // So as to execute its update funcition in process
                 CURRENT_STATE = newState;
                 // Notify the Weapon Controller that the Current Movement State has changed
-                WEAPON_CONTROLLER.EmitSignal(WeaponController.SignalName.MovementChanged, CURRENT_STATE);
+                //WEAPON_CONTROLLER.EmitSignal(WeaponController.SignalName.MovementChanged, CURRENT_STATE);
+                //WEAPON_CONTROLLER.TestMovementStateMachine();
+                context.weapon.TestMovementStateMachine();
             }
         }
         else

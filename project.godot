@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 MasterNetworkManager="*uid://dooa4vkteogmb"
 GenericCore="*uid://dmrp6uf2wfoqn"
+Globals="*uid://bb7ou5h83riai"
 
 [display]
 

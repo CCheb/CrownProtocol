@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://byeeci34g66mo"]
+
+[ext_resource type="FontFile" uid="uid://q7wuegtdbmvr" path="res://UI/Assets/fonts/OrionPaxItalic-2PX8.ttf" id="1_e2yro"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m7ads"]
+bg_color = Color(0.6748146, 0.67481464, 0.6748144, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.88837826, 0.4047377, 3.85046e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e2yro"]
+bg_color = Color(0.99215686, 0.8862745, 0.28235295, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_bottom = 5
+border_color = Color(0.8901961, 0.40392157, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rqsas"]
+bg_color = Color(0.8901961, 0.40392157, 0, 1)
+skew = Vector2(-0.5, 0)
+
+[node name="XpBar" type="Control" unique_id=1189157301]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = 237.0
+offset_right = -400.333
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=2085612153]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 39.0
+offset_top = 765.0
+offset_right = -748.667
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.89411765, 0.35686275, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("1_e2yro")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/background = SubResource("StyleBoxFlat_m7ads")
+theme_override_styles/fill = SubResource("StyleBoxFlat_e2yro")
+value = 50.0
+
+[node name="LifeLabel" type="Label" parent="." unique_id=927196033]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 33.0
+offset_top = 726.0
+offset_right = -1377.667
+offset_bottom = -57.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0.8901961, 0.40392157, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("1_e2yro")
+theme_override_font_sizes/font_size = 48
+text = "XP"
+
+[node name="Panel" type="Panel" parent="." unique_id=484047094]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 748.0
+offset_top = 772.0
+offset_right = -735.667
+offset_bottom = -28.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rqsas")

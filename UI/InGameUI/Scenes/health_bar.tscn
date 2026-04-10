@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://cytcy7s3ilsve"]
+
+[ext_resource type="FontFile" uid="uid://q7wuegtdbmvr" path="res://UI/Assets/fonts/OrionPaxItalic-2PX8.ttf" id="1_t4k6f"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rinnu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rinnu"]
+bg_color = Color(0, 1, 0, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4k6f"]
+bg_color = Color(0, 1, 0, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ce2xy"]
+bg_color = Color(0, 1, 0, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isv3i"]
+bg_color = Color(0, 1, 0, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0h5on"]
+bg_color = Color(0, 1, 0, 1)
+skew = Vector2(-0.5, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h3y05"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(-0.5, 0)
+
+[node name="HealthBar" type="Control" unique_id=798742586]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = 274.0
+offset_right = -426.33325
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sec1" type="ProgressBar" parent="." unique_id=673018176]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.013
+anchor_top = 0.78200006
+anchor_right = 0.078
+anchor_bottom = 0.84400004
+offset_left = 10.154001
+offset_top = 0.013946533
+offset_right = 0.27400208
+offset_bottom = -0.16204834
+theme_override_styles/background = SubResource("StyleBoxEmpty_rinnu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_rinnu")
+max_value = 20.0
+value = 20.0
+show_percentage = false
+
+[node name="Sec2" type="ProgressBar" parent="." unique_id=2070116335]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.074
+anchor_top = 0.78200006
+anchor_right = 0.13100001
+anchor_bottom = 0.84400004
+offset_left = 0.352005
+offset_top = 0.013946533
+offset_right = -0.31201172
+offset_bottom = -0.16204834
+theme_override_styles/background = SubResource("StyleBoxEmpty_rinnu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_t4k6f")
+max_value = 20.0
+value = 20.0
+show_percentage = false
+
+[node name="Sec3" type="ProgressBar" parent="." unique_id=619506346]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.128
+anchor_top = 0.78200006
+anchor_right = 0.18400002
+anchor_bottom = 0.84400004
+offset_left = -0.306015
+offset_top = 0.013946533
+offset_right = 0.18197632
+offset_bottom = -0.16204834
+theme_override_styles/background = SubResource("StyleBoxEmpty_rinnu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ce2xy")
+max_value = 20.0
+value = 20.0
+show_percentage = false
+
+[node name="Sec4" type="ProgressBar" parent="." unique_id=2144291720]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18
+anchor_top = 0.78200006
+anchor_right = 0.23700002
+anchor_bottom = 0.84400004
+offset_left = 0.33999634
+offset_top = 0.013946533
+offset_right = -0.32400513
+offset_bottom = -0.16204834
+theme_override_styles/background = SubResource("StyleBoxEmpty_rinnu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_isv3i")
+max_value = 20.0
+value = 20.0
+show_percentage = false
+
+[node name="Sec5" type="ProgressBar" parent="." unique_id=1794148948]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23400001
+anchor_top = 0.78200006
+anchor_right = 0.29000002
+anchor_bottom = 0.84400004
+offset_left = -0.31802368
+offset_top = 0.013946533
+offset_right = 0.16998291
+offset_bottom = -0.16204834
+theme_override_styles/background = SubResource("StyleBoxEmpty_rinnu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_0h5on")
+max_value = 20.0
+value = 20.0
+show_percentage = false
+
+[node name="Panel" type="Panel" parent="." unique_id=571500191]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 432.0
+offset_top = 663.0
+offset_right = -1054.6667
+offset_bottom = -138.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h3y05")
+
+[node name="LifeLabel" type="Label" parent="." unique_id=316978625]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.28100002
+anchor_right = 1.2770001
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 867.883
+offset_right = -1818.7975
+offset_bottom = -171.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(1.4439226e-07, 0.64053506, 5.7756904e-07, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("1_t4k6f")
+theme_override_font_sizes/font_size = 32
+text = "LIFE"

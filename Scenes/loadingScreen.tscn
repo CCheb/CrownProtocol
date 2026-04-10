@@ -1,6 +1,16 @@
 [gd_scene format=3 uid="uid://bq0by1tpkvpb2"]
 
 [ext_resource type="Script" uid="uid://cxa24paejporp" path="res://Network/LoadingScreen.cs" id="1_s4m6g"]
+[ext_resource type="FontFile" uid="uid://q7wuegtdbmvr" path="res://UI/Assets/fonts/OrionPaxItalic-2PX8.ttf" id="2_p6xbs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6xbs"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.627451, 0, 0, 1)
 
 [node name="Control" type="Control" unique_id=257768727]
 layout_mode = 3
@@ -18,7 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.21050721, 0.21050721, 0.21050721, 1)
+color = Color(0.25490198, 0, 0.011764706, 0.9411765)
 
 [node name="Label" type="Label" parent="." unique_id=89901824]
 layout_mode = 1
@@ -33,5 +43,21 @@ offset_right = 297.5
 offset_bottom = 87.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = ExtResource("2_p6xbs")
 theme_override_font_sizes/font_size = 128
-text = "Loading..."
+text = "LOADING..."
+
+[node name="Panel" type="Panel" parent="Label" unique_id=876565522]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.041
+anchor_top = 0.115
+anchor_right = 0.96400005
+anchor_bottom = 0.127
+offset_left = -34.78299
+offset_top = 138.375
+offset_right = 17.967957
+offset_bottom = 150.275
+theme_override_styles/panel = SubResource("StyleBoxFlat_p6xbs")

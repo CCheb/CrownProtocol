@@ -3,13 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://ddv7hfae56ymn" path="res://UI/Assets/title.png" id="1_5e717"]
 [ext_resource type="Script" uid="uid://dvle7gx203evc" path="res://UI/Scripts/GlowyMove.cs" id="1_i8r30"]
 [ext_resource type="PackedScene" uid="uid://c4wnafm711gjo" path="res://UI/Assets/TitleItem.blend" id="2_60ddj"]
-[ext_resource type="PackedScene" path="res://UI/Scenes/fade_screen.tscn" id="2_ainjc"]
+[ext_resource type="PackedScene" uid="uid://deh3fpe4fly50" path="res://UI/Scenes/fade_screen.tscn" id="2_ainjc"]
 [ext_resource type="Script" uid="uid://cgbm71nwel3vj" path="res://UI/Scripts/StartMenu.cs" id="4_q1bl8"]
 [ext_resource type="Script" uid="uid://b8u2inlt2uivx" path="res://UI/Scripts/StartSwitch.cs" id="7_rlc0i"]
 [ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="8_dabub"]
 [ext_resource type="PackedScene" uid="uid://w1xu01fl07vm" path="res://UI/Scenes/options_tab.tscn" id="8_wub3w"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="9_546pw"]
-[ext_resource type="PackedScene" path="res://UI/Scenes/tutorial_tab.tscn" id="9_qc4xf"]
+[ext_resource type="PackedScene" uid="uid://die5ktyshj6pi" path="res://UI/Scenes/tutorial_tab.tscn" id="9_qc4xf"]
 [ext_resource type="AudioStream" uid="uid://b5mm2tqwgx8qu" path="res://UI/Assets/audio/laser.mp3" id="11_dabub"]
 [ext_resource type="AudioStream" uid="uid://c6qr58kainqmh" path="res://UI/Assets/audio/startScreenMusic.mp3" id="12_546pw"]
 [ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="13_8kske"]
@@ -62,6 +62,15 @@ size = Vector2(1.2, 1.1)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4nlji"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lumgf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kske"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7pn03"]
 
@@ -444,6 +453,18 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_4nlji")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_lumgf")
 text = " create/join lobby "
 
+[node name="Panel" type="Panel" parent="Control/MenuBox/VBoxContainer/PlayButton" unique_id=183311469]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.068
+anchor_top = 0.86600006
+anchor_right = 0.92
+anchor_bottom = 1.0
+offset_left = 0.15599823
+offset_top = -0.012008667
+offset_right = -0.35998535
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
+
 [node name="TutorialButton" type="Button" parent="Control/MenuBox/VBoxContainer" unique_id=1029906841]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -457,6 +478,18 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_7pn03")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_mde0y")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_wy8gh")
 text = " how to play "
+
+[node name="Panel" type="Panel" parent="Control/MenuBox/VBoxContainer/TutorialButton" unique_id=188848165]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.07
+anchor_top = 0.86600006
+anchor_right = 0.896
+anchor_bottom = 1.0
+offset_left = -0.2199707
+offset_top = -0.012008667
+offset_right = -0.2159729
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
 
 [node name="OptionsButton" type="Button" parent="Control/MenuBox/VBoxContainer" unique_id=312173753]
 layout_mode = 2
@@ -472,6 +505,18 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_mgu03")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_6wo6u")
 text = " options "
 
+[node name="Panel" type="Panel" parent="Control/MenuBox/VBoxContainer/OptionsButton" unique_id=604191962]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135
+anchor_top = 0.86600006
+anchor_right = 0.86500007
+anchor_bottom = 1.0
+offset_left = 0.019981384
+offset_top = -0.012008667
+offset_right = -0.020019531
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
+
 [node name="QuitButton" type="Button" parent="Control/MenuBox/VBoxContainer" unique_id=1530519157]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -485,6 +530,18 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_lk1p1")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_qpcmn")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rjxad")
 text = " exit game "
+
+[node name="Panel" type="Panel" parent="Control/MenuBox/VBoxContainer/QuitButton" unique_id=409115404]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.101
+anchor_top = 0.86600006
+anchor_right = 0.892
+anchor_bottom = 1.0
+offset_left = -0.106987
+offset_top = -0.012008667
+offset_right = -0.044006348
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
 
 [node name="BackButton" type="Button" parent="Control/MenuBox" unique_id=1375549371]
 visible = false
@@ -511,6 +568,19 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_i31sy")
 text = "go to
 title"
 
+[node name="Panel" type="Panel" parent="Control/MenuBox/BackButton" unique_id=591361734]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.22600001
+anchor_top = 0.86600006
+anchor_right = 0.77800006
+anchor_bottom = 0.929
+offset_left = -0.014019012
+offset_top = -0.012008667
+offset_right = 0.05796814
+offset_bottom = -0.060028076
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
+
 [node name="CreditsButton" type="Button" parent="Control/MenuBox" unique_id=1451306941]
 visible = false
 layout_mode = 1
@@ -534,6 +604,19 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_k4h7k")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8ovuy")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_gnsye")
 text = "credits"
+
+[node name="Panel" type="Panel" parent="Control/MenuBox/CreditsButton" unique_id=939686843]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.142
+anchor_top = 0.72700006
+anchor_right = 0.86300004
+anchor_bottom = 0.81100005
+offset_left = -0.08604431
+offset_top = 0.026992798
+offset_right = -0.079055786
+offset_bottom = 0.71099854
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Control/MenuBox" unique_id=1596129772]
 libraries/ = SubResource("AnimationLibrary_dabub")
@@ -613,6 +696,18 @@ text = "[u]Developers[/u]"
 fit_content = true
 horizontal_alignment = 1
 
+[node name="Panel" type="Panel" parent="Control/CreditsTab/ColorRect/VBoxContainer/Label" unique_id=2034883296]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.36800003
+anchor_top = 0.86600006
+anchor_right = 0.63100004
+anchor_bottom = 1.0
+offset_left = 0.12097168
+offset_top = -0.012008667
+offset_right = 0.49206543
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
+
 [node name="Label2" type="Label" parent="Control/CreditsTab/ColorRect/VBoxContainer" unique_id=222886683]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
@@ -633,6 +728,18 @@ text = "[u]Artist[/u]"
 fit_content = true
 horizontal_alignment = 1
 
+[node name="Panel" type="Panel" parent="Control/CreditsTab/ColorRect/VBoxContainer/Label3" unique_id=912850179]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.43
+anchor_top = 0.86600006
+anchor_right = 0.568
+anchor_bottom = 1.0
+offset_left = 0.7750244
+offset_top = -0.012008667
+offset_right = -0.4790039
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
+
 [node name="Label4" type="Label" parent="Control/CreditsTab/ColorRect/VBoxContainer" unique_id=32173488]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
@@ -652,6 +759,18 @@ bbcode_enabled = true
 text = "[u]Outside Sources[/u]"
 fit_content = true
 horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="Control/CreditsTab/ColorRect/VBoxContainer/Label5" unique_id=1681402553]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.30200002
+anchor_top = 0.86600006
+anchor_right = 0.698
+anchor_bottom = 1.0
+offset_left = 0.19900513
+offset_top = -0.012008667
+offset_right = 0.7310791
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/CreditsTab/ColorRect/VBoxContainer" unique_id=290572159]
 layout_mode = 2

@@ -28,6 +28,7 @@ public partial class StartMenu : Control
     public override void _Ready()
     {
         base._Ready();
+        ServerUI = GetNode<ServerBrowser>("../ServerBrowser");
         optionsUI.Visible = false;
         tutorialUI.Visible = false;
         CreditsUI.Visible = false;

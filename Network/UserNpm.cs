@@ -12,8 +12,9 @@ public partial class UserNpm : Control
 	private bool hasPeerData = false;
 	public bool IsReady = false;
 	private const int SERVER = 1;
-    // Called when the node enters the scene tree for the first time.
-    public override void _ExitTree()
+	private AudioStreamPlayer beep;
+	// Called when the node enters the scene tree for the first time.
+	public override void _ExitTree()
     {
         base._ExitTree();
 		myNetID.NetIdIsReady -= OnNetIdReady;
@@ -21,6 +22,7 @@ public partial class UserNpm : Control
     }
 	public override void _Ready()
 	{
+		beep = GetNode<AudioStreamPlayer>("Beep");
 		myNetID.NetIdIsReady += OnNetIdReady;
 		GenericCore.Instance.ConnectedPeersDictionaryUpdated += OnPeerRegistered;
 	}
@@ -69,6 +71,7 @@ public partial class UserNpm : Control
 
 	private void OnReadyUpButtonToggled(bool toggledOn)
 	{
+		beep.Play();
 		// Goes to the matching NodePath of the card on the Server side
 		RpcId(SERVER, MethodName.RequestReadyUp, toggledOn);
 	}

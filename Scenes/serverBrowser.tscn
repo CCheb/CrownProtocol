@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="3_6dsuc"]
 [ext_resource type="PackedScene" uid="uid://q1nvrlvncwdr" path="res://Scenes/warningScreen.tscn" id="3_jv4oc"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="4_0jj3a"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="6_0jj3a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dsuc"]
 bg_color = Color(1, 1, 1, 1)
@@ -126,5 +127,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="WarningScreen" parent="." unique_id=36651003 instance=ExtResource("3_jv4oc")]
 layout_mode = 1
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=1661064178]
+stream = ExtResource("6_0jj3a")
+volume_db = -5.0
 
 [connection signal="pressed" from="RefreshButton" to="." method="RequestForNewGameServers"]

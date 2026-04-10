@@ -15,7 +15,8 @@ public partial class GameLobby : Control
 	private bool gameStarted = false;
 	private bool countdownRunning = false;
 	private const int MASTER = 1;
-    public override void _ExitTree()
+	private AudioStreamPlayer beep;
+	public override void _ExitTree()
     {
         base._ExitTree();
 		
@@ -33,7 +34,9 @@ public partial class GameLobby : Control
 		lobby = GetNodeOrNull<GridContainer>("./GridContainer");
 		netCore = GetNodeOrNull<NetworkCore>("./MultiplayerSpawner");
 
-		if(netCore == null)
+		beep = GetNode<AudioStreamPlayer>("Beep");
+
+		if (netCore == null)
 			GD.Print("netCore is null");
 
 		netCore.PlayerJoined += OnPlayerJoined;
@@ -42,6 +45,7 @@ public partial class GameLobby : Control
 
 	private void OnQuitButtonPressed()
 	{
+		beep.Play();
 		GenericCore.Instance.DisconnectFromGame();
 	}
 	

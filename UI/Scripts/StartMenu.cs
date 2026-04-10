@@ -10,6 +10,8 @@ public partial class StartMenu : Control
     private Control tutorialUI;
     [Export]
     private Control CreditsUI;
+    [Export]
+    private Control ServerUI;
     private bool closed = true;
     [Export]
     private ColorRect FadeScreen;
@@ -26,9 +28,11 @@ public partial class StartMenu : Control
     public override void _Ready()
     {
         base._Ready();
+        ServerUI = GetNode<ServerBrowser>("../ServerBrowser");
         optionsUI.Visible = false;
         tutorialUI.Visible = false;
         CreditsUI.Visible = false;
+        ServerUI.Visible = false;
         // constrain mouse
         Input.MouseMode = Input.MouseModeEnum.Captured;
         startButton.ButtonPressed = false;
@@ -98,15 +102,7 @@ public partial class StartMenu : Control
     public void OnPlayPressed()
     {
         Beep.Play();
-        animationPlayer.Play("fadeOut");
-        // onanimationfinished
-        animationPlayer.AnimationFinished += (StringName animName) =>
-        {
-            if (animName == "fadeOut")
-            {
-                GetTree().ChangeSceneToFile("res://Scenes/serverBrowser.tscn");
-            }
-        };
+        ServerUI.Visible = !ServerUI.Visible;
     }
     public void OnOptionsPressed()
     {

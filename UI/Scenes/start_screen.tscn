@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://b5mm2tqwgx8qu" path="res://UI/Assets/audio/laser.mp3" id="11_dabub"]
 [ext_resource type="AudioStream" uid="uid://c6qr58kainqmh" path="res://UI/Assets/audio/startScreenMusic.mp3" id="12_546pw"]
 [ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="13_8kske"]
+[ext_resource type="PackedScene" uid="uid://jcnhka4tj6uy" path="res://Scenes/serverBrowser.tscn" id="14_lumgf"]
 
 [sub_resource type="Environment" id="Environment_n3ubr"]
 background_mode = 1
@@ -381,7 +382,7 @@ transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 0, 0
 light_energy = 16.0
 light_specular = 0.0
 
-[node name="Control" type="Control" parent="." unique_id=56112884 node_paths=PackedStringArray("optionsUI", "tutorialUI", "CreditsUI", "FadeScreen", "animationPlayer", "startButton", "MenuAnim", "Beep")]
+[node name="Control" type="Control" parent="." unique_id=56112884 node_paths=PackedStringArray("optionsUI", "tutorialUI", "CreditsUI", "ServerUI", "FadeScreen", "animationPlayer", "startButton", "MenuAnim", "Beep")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -392,6 +393,7 @@ script = ExtResource("4_q1bl8")
 optionsUI = NodePath("../OptionsTab")
 tutorialUI = NodePath("../TutorialTab")
 CreditsUI = NodePath("CreditsTab")
+ServerUI = NodePath("../ServerBrowser")
 FadeScreen = NodePath("FadeScreen")
 animationPlayer = NodePath("FadeScreen/AnimationPlayer")
 startButton = NodePath("StartButton")
@@ -451,7 +453,7 @@ theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8kske")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_4nlji")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_lumgf")
-text = " create/join lobby "
+text = " join lobby "
 
 [node name="Panel" type="Panel" parent="Control/MenuBox/VBoxContainer/PlayButton" unique_id=183311469]
 layout_mode = 1
@@ -831,6 +833,9 @@ parameters/looping = true
 [node name="Beep" type="AudioStreamPlayer" parent="." unique_id=1145793843]
 stream = ExtResource("13_8kske")
 volume_db = -5.0
+
+[node name="ServerBrowser" parent="." unique_id=1493102563 instance=ExtResource("14_lumgf")]
+visible = false
 
 [connection signal="pressed" from="Control/MenuBox/VBoxContainer/PlayButton" to="Control" method="OnPlayPressed"]
 [connection signal="pressed" from="Control/MenuBox/VBoxContainer/TutorialButton" to="Control" method="OnTutorialPressed"]

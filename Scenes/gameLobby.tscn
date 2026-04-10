@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dhp14ud86aqe7" path="res://Network/Cores/NetworkCore.cs" id="2_xt36j"]
 [ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="3_fa2ey"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="4_8n78e"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="5_b83i7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fa2ey"]
 properties/0/path = NodePath("CountDown:visible")
@@ -149,5 +150,9 @@ theme_override_fonts/font = ExtResource("4_8n78e")
 theme_override_font_sizes/font_size = 44
 text = "quit"
 metadata/_edit_use_anchors_ = true
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=696971625]
+stream = ExtResource("5_b83i7")
+volume_db = -5.0
 
 [connection signal="pressed" from="Button" to="." method="OnQuitButtonPressed"]

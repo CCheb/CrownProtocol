@@ -9,6 +9,7 @@ public partial class ServerBrowser : Control
 	[Export] private PackedScene serverJoinButton;
 	[Export] private LineEdit userNameEntryBox;
 	[Export] private WarningScreen warningScreen;
+	private AudioStreamPlayer beep;
 	private const int MASTER = 1;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -17,6 +18,7 @@ public partial class ServerBrowser : Control
 
 		MasterNetworkManager.Instance.GameServerIsBusy += ShowWarningScreen;
 		MasterNetworkManager.Instance.GameServerIsAvailable += ClientWantsToJoin;
+		beep = GetNode<AudioStreamPlayer>("Beep");
 	}
 
     public override void _ExitTree()
@@ -31,6 +33,7 @@ public partial class ServerBrowser : Control
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	private void RequestForNewGameServers()
 	{	
+		beep.Play();
 		// Client sends over its copy of the available servers. Master server compares and updates new copy if needed
 		MasterNetworkManager.Instance.RpcId(MASTER, "QueryForNewGameServers", MasterNetworkManager.Instance.availableServers);
 	}

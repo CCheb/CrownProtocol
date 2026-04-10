@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://rae0nirmar6p" path="res://Network/WarningScreen.cs" id="1_ep4bi"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="2_h76i0"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="3_u5otg"]
 
 [node name="WarningScreen" type="Control" unique_id=36651003]
 visible = false
@@ -103,5 +104,9 @@ theme_override_fonts/font = ExtResource("2_h76i0")
 theme_override_font_sizes/font_size = 50
 text = "SORRY!"
 horizontal_alignment = 1
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=922134882]
+stream = ExtResource("3_u5otg")
+volume_db = -5.0
 
 [connection signal="pressed" from="Ok" to="." method="OnOkButtonPressed"]

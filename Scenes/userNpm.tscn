@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bbqbrwrkn0gpq" path="res://Network/UserNpm.cs" id="1_402pr"]
 [ext_resource type="Script" uid="uid://b50ifcyoi47w5" path="res://Network/Cores/NetID.cs" id="2_fu0en"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="3_fu0en"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="4_youx3"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_youx3"]
 properties/0/path = NodePath("Background/ReadyStatus:color")
@@ -68,5 +69,9 @@ theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_fu0en")
 toggle_mode = true
 text = "ready"
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=1516003455]
+stream = ExtResource("4_youx3")
+volume_db = -5.0
 
 [connection signal="toggled" from="Background/Ready" to="." method="OnReadyUpButtonToggled"]

@@ -24,7 +24,8 @@ public partial class WeaponController : Node3D
     }; 
 
     // This variable would be the most important to synchronize
-    private int CurrentWeaponIndex = 0;
+    private int LastWeaponIndex = 0;
+    [Export] public int CurrentWeaponIndex = 0;
     private const int MAX_WEAPON_AMMOUNT = 2;
     private WeaponBase CurrentWeapon;
     private Procedural procedural = new();
@@ -36,6 +37,7 @@ public partial class WeaponController : Node3D
 	[Export] private NoiseTexture2D RandSwayNoise;
 
     private PlayerContext context;
+    private const int SERVER = 1;
 
     // Runs before _Ready()
     public void SetContext(PlayerContext ctx)
@@ -49,7 +51,8 @@ public partial class WeaponController : Node3D
 
         SetPhysicsProcess(false);
         SetProcess(false);
-        //SetProcessInput(false);
+
+        LastWeaponIndex = CurrentWeaponIndex;
 
         context.player.PlayerReady += OnPlayerReady;        
     }
@@ -60,7 +63,6 @@ public partial class WeaponController : Node3D
         
         SetPhysicsProcess(true);
         SetProcess(true);
-        //SetProcessInput(true);
 
         //MovementChanged += OnMovementStateChange;
 
@@ -89,11 +91,8 @@ public partial class WeaponController : Node3D
 
         // In _Input, the event actions are not polled and are only triggered once everytime the key is pressed 
         if(@event.IsActionPressed("primary_action"))
-        {
-            GD.Print("PrimaryAction!");
             CurrentPrimaryWeaponAction?.OnActionPressed();
-        }
-
+        
         if(@event.IsActionReleased("primary_action"))
             CurrentPrimaryWeaponAction?.OnActionReleased();
     
@@ -112,10 +111,14 @@ public partial class WeaponController : Node3D
         for(int i = 1; i <= MAX_WEAPON_AMMOUNT; i++)
         {   
             if(@event.IsActionPressed($"weapon_{i}"))
-                TryWeaponSwap(i - 1);
+            {
+                //TryWeaponSwap(i - 1);
+                RpcId(SERVER, MethodName.TryWeaponSwap, i-1);
+            }
         }
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void TryWeaponSwap(int ProposedWeapon)
     {
         // If the proposed weapon is already the same as the CurrentWeaponIndex then dont do anything
@@ -125,19 +128,15 @@ public partial class WeaponController : Node3D
         CurrentWeaponIndex = ProposedWeapon;
 
         // Send RPC here?
-        SwapWeapon();
+        // Clients would construct the weapon when the server tells them
+        //SwapWeapon();
     }
     
-    // This will most likely be an rpc done on the server
-    private void SwapWeapon()
-    {
-        CurrentWeapon?.QueueFree();
-        // By this time the CurrentWeaponIndex has already moved to the next weapon
-        LoadWeapon();
-    }
+    
 
     private void LoadWeapon()
     {
+        // Local Player sequence
         UpdateCurrentWeapon();
         UpdateCurrentWeaponActions();
         ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
@@ -147,6 +146,7 @@ public partial class WeaponController : Node3D
 
     private void UpdateCurrentWeapon()
     {
+        // Local Player = build weapon; Non-local Player = swap weapon models
         CurrentWeapon = WeaponFactory.Create(Arsenal[CurrentWeaponIndex], this);
         if(CurrentWeapon == null)
         {
@@ -159,10 +159,7 @@ public partial class WeaponController : Node3D
     {
         // Ask FireModeFactory to Create the appropriate firemode object based on what the WeaponResource specified
         if(Arsenal[CurrentWeaponIndex].PrimaryWeaponAction == Globals.WeaponActions.NoAction)
-        {
-            GD.Print("Returning early!!!");
             return;
-        }
     
         CurrentPrimaryWeaponAction = FireModeFactory.CreateNewWeaponAction(this, Arsenal[CurrentWeaponIndex], CurrentWeapon, Arsenal[CurrentWeaponIndex].PrimaryWeaponAction);
         if(CurrentPrimaryWeaponAction == null)
@@ -208,6 +205,13 @@ public partial class WeaponController : Node3D
         if (!context.player.myNetId.IsLocal)
             return;
 
+        if(LastWeaponIndex != CurrentWeaponIndex)
+        {
+            GD.Print("Swaping Weapon!!!");
+            LastWeaponIndex = CurrentWeaponIndex;
+            SwapWeapon();
+        }
+
         Vector3 WeaponPos = Position;
 		Vector3 WeaponRotDeg = RotationDegrees;
 
@@ -226,6 +230,14 @@ public partial class WeaponController : Node3D
 
         CurrentPrimaryWeaponAction?.Update(delta);
         CurrentSecondaryWeaponAction?.Update(delta);
+    }
+
+    // This will most likely be an rpc done on the server
+    private void SwapWeapon()
+    {
+        CurrentWeapon?.QueueFree();
+        // By this time the CurrentWeaponIndex has already moved to the next weapon
+        LoadWeapon();
     }
 
     // Triggered every movement state change

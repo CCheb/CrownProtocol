@@ -1,0 +1,220 @@
+[gd_scene format=3 uid="uid://d2kmbwsa64003"]
+
+[ext_resource type="Script" path="res://UI/Scripts/PauseMenu.cs" id="1_myx47"]
+[ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="1_n87rw"]
+[ext_resource type="PackedScene" uid="uid://w1xu01fl07vm" path="res://UI/Scenes/options_tab.tscn" id="3_jnqna"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="4_7yu7q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_myx47"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jnqna"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7yu7q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o1lsb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rseou"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fcbiy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbq4g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6yvs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_srctp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nxluq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fvds5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8nfxn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uwbqb"]
+
+[node name="PauseMenu" type="Control" unique_id=401518576 node_paths=PackedStringArray("optionsUI", "confirmScreen", "Beep")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_myx47")
+optionsUI = NodePath("OptionsTab")
+confirmScreen = NodePath("ConfirmQuit")
+Beep = NodePath("Beep")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1036638578]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.16800001
+anchor_top = 0.11100001
+anchor_right = 0.832
+anchor_bottom = 0.87500006
+offset_left = -0.040008545
+offset_top = 0.0799942
+offset_right = 0.040039063
+offset_bottom = -6.1035156e-05
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_myx47")
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer" unique_id=1043834997]
+layout_mode = 2
+color = Color(0.30980393, 0, 0.019607844, 0.9411765)
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/ColorRect" unique_id=131906937]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.074
+anchor_top = -0.029000001
+anchor_right = 1.074
+anchor_bottom = 1.029
+offset_left = 56.610596
+offset_top = 14.354769
+offset_right = -56.610596
+offset_bottom = -14.354797
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/ColorRect/MarginContainer" unique_id=807040377]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="ContinueButton" type="Button" parent="PanelContainer/ColorRect/MarginContainer/VBoxContainer" unique_id=1116447531]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 88
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jnqna")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7yu7q")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_o1lsb")
+text = "continue"
+
+[node name="OptionsButton" type="Button" parent="PanelContainer/ColorRect/MarginContainer/VBoxContainer" unique_id=213157732]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 88
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rseou")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_fcbiy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nbq4g")
+text = "options"
+
+[node name="ControlsButton" type="Button" parent="PanelContainer/ColorRect/MarginContainer/VBoxContainer" unique_id=1066491194]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 88
+theme_override_styles/normal = SubResource("StyleBoxEmpty_a6yvs")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_srctp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nxluq")
+text = "controls"
+
+[node name="QuitButton" type="Button" parent="PanelContainer/ColorRect/MarginContainer/VBoxContainer" unique_id=716609546]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 88
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fvds5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8nfxn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_uwbqb")
+text = "leave match"
+
+[node name="OptionsTab" parent="." unique_id=2084655736 instance=ExtResource("3_jnqna")]
+visible = false
+layout_mode = 1
+
+[node name="ConfirmQuit" type="ColorRect" parent="." unique_id=1634253180]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.09411765, 0, 0, 0.8392157)
+
+[node name="MarginContainer" type="MarginContainer" parent="ConfirmQuit" unique_id=218565576]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 350
+theme_override_constants/margin_top = 140
+theme_override_constants/margin_right = 350
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConfirmQuit/MarginContainer" unique_id=939397585]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="WarningLabel" type="Label" parent="ConfirmQuit/MarginContainer/VBoxContainer" unique_id=1986815798]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 50
+text = "WARNING
+match not over
+still leave?"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConfirmQuit/MarginContainer/VBoxContainer" unique_id=1921240176]
+layout_mode = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="YesButton" type="Button" parent="ConfirmQuit/MarginContainer/VBoxContainer/HBoxContainer" unique_id=610663058]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 66
+theme_override_styles/normal = SubResource("StyleBoxEmpty_a6yvs")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_srctp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nxluq")
+text = "yes"
+
+[node name="NoButton" type="Button" parent="ConfirmQuit/MarginContainer/VBoxContainer/HBoxContainer" unique_id=570957673]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 66
+theme_override_styles/normal = SubResource("StyleBoxEmpty_a6yvs")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_srctp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nxluq")
+text = "no"
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=1775734933]
+stream = ExtResource("4_7yu7q")
+volume_db = -5.0
+
+[connection signal="pressed" from="PanelContainer/ColorRect/MarginContainer/VBoxContainer/ContinueButton" to="." method="OnContinuePressed"]
+[connection signal="pressed" from="PanelContainer/ColorRect/MarginContainer/VBoxContainer/OptionsButton" to="." method="OnOptionsPressed"]
+[connection signal="pressed" from="PanelContainer/ColorRect/MarginContainer/VBoxContainer/ControlsButton" to="." method="OnControlsPressed"]
+[connection signal="pressed" from="PanelContainer/ColorRect/MarginContainer/VBoxContainer/QuitButton" to="." method="OnQuitPressed"]
+[connection signal="pressed" from="ConfirmQuit/MarginContainer/VBoxContainer/HBoxContainer/YesButton" to="." method="OnConfirmPressed"]
+[connection signal="pressed" from="ConfirmQuit/MarginContainer/VBoxContainer/HBoxContainer/NoButton" to="." method="OnQuitPressed"]

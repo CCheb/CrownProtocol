@@ -279,7 +279,7 @@ public partial class GenericCore : Node
             IsServer = false;
 
             GD.Print("Returning back to server browser\n");
-            GetTree().ChangeSceneToFile("res://Scenes/serverBrowser.tscn"); // Could emit a signal here to have the game manager switch for me
+            GetTree().ChangeSceneToFile("res://UI/Scenes/start_screen.tscn"); // Could emit a signal here to have the game manager switch for me
         }
     }
 

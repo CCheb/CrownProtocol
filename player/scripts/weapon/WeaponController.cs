@@ -36,7 +36,7 @@ public partial class WeaponController : Node3D
     [Export] public JumpRecoil JumpRecoilRef;
 	[Export] private NoiseTexture2D RandSwayNoise;
 
-    private PlayerContext context;
+    public PlayerContext context;
     private const int SERVER = 1;
 
     // Runs before _Ready()
@@ -124,22 +124,19 @@ public partial class WeaponController : Node3D
         // If the proposed weapon is already the same as the CurrentWeaponIndex then dont do anything
         if(ProposedWeapon == CurrentWeaponIndex || ProposedWeapon > Arsenal.Length)
             return;
-    
-        CurrentWeaponIndex = ProposedWeapon;
 
-        // Send RPC here?
-        // Clients would construct the weapon when the server tells them
-        //SwapWeapon();
+        // Server changes this
+        CurrentWeaponIndex = ProposedWeapon;
     }
     
-    
-
     private void LoadWeapon()
     {
-        // Local Player sequence
+        // Could be for everyone
         UpdateCurrentWeapon();
         UpdateCurrentWeaponActions();
         ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
+
+        // Local Player as well
         JumpRecoilRef.AddChild(CurrentWeapon);
         CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);
     }
@@ -179,6 +176,7 @@ public partial class WeaponController : Node3D
 
     private void ParseWeaponResource(in WeaponResource weaponResource)
     {
+        // Local player only
         Position = weaponResource.ViewportPosition;
         RotationDegrees = weaponResource.ViewportRotation;
         Scale = weaponResource.ViewportScale;
@@ -209,7 +207,7 @@ public partial class WeaponController : Node3D
         {
             GD.Print("Swaping Weapon!!!");
             LastWeaponIndex = CurrentWeaponIndex;
-            SwapWeapon();
+            SwapWeapon();   // Clients and server would diverge from here
         }
 
         Vector3 WeaponPos = Position;
@@ -246,16 +244,8 @@ public partial class WeaponController : Node3D
         if (!context.player.myNetId.IsLocal)
             return;
 
-        GD.Print("Recieved Movement State!");
         CurrentMovementState = NextMovementState.GetStateName();
         CurrentWeaponMovementProfile = NextMovementState.GetWeaponProfile();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
-    }
-
-    public void TestMovementStateMachine()
-    {
-        if (!context.player.myNetId.IsLocal)
-            return;
-        GD.Print("Local player recieved \"signal\" from movementstate machine");
     }
 }

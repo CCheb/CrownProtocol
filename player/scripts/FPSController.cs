@@ -65,8 +65,8 @@ public partial class FPSController : CharacterBody3D
 		context = new PlayerContext
 		{
 			player = this,
-			camera = WorldCameraController,
-			weapon = WEAPON
+			cameraController = WorldCameraController,
+			weaponController = WEAPON
 		};
 
 		WEAPON.SetContext(context);

@@ -20,7 +20,7 @@ public partial class FullAutoWeaponAction : IWeaponAction
         // This function is only triggered once the button is first pressed
         // Because of that we can call firing here to give the player immediate feedback
         // when they first start shooting and prevent a sloppy delay
-        if(!CurrentWeapon.IsReloading)
+        if(!CurrentWeapon.IsReloading) // Consider Ammo counts here too 
         {
             CurrentWeapon.Fire();
             Timer = Interval;
@@ -40,7 +40,7 @@ public partial class FullAutoWeaponAction : IWeaponAction
         Timer -= (float)delta;
         if(Timer <= 0)
         {
-            CurrentWeapon.Fire();
+            CurrentWeapon.Fire(); // RPC inside this function
             Timer += Interval;
         }
     }

@@ -2,7 +2,18 @@
 
 [ext_resource type="PackedScene" uid="uid://bfxtyf6bjfce4" path="res://Scenes/serverJoinButton.tscn" id="1_dvbg0"]
 [ext_resource type="Script" uid="uid://vwwfepl0wp74" path="res://Network/ServerBrowser.cs" id="1_q28kv"]
+[ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="3_6dsuc"]
 [ext_resource type="PackedScene" uid="uid://q1nvrlvncwdr" path="res://Scenes/warningScreen.tscn" id="3_jv4oc"]
+[ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="4_0jj3a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dsuc"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
 
 [node name="ServerBrowser" type="Control" unique_id=1493102563 node_paths=PackedStringArray("gameServerContainer", "userNameEntryBox", "warningScreen")]
 layout_mode = 3
@@ -24,19 +35,35 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.23934713, 0.23934713, 0.23934713, 1)
+color = Color(0.25454006, 2.466701e-07, 0.0132194115, 0.9411765)
+
+[node name="Panel" type="Panel" parent="Background" unique_id=1477455322]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.041
+anchor_top = 0.115
+anchor_right = 0.96400005
+anchor_bottom = 0.127
+offset_left = -0.7200012
+offset_top = -0.20000458
+offset_right = -0.88012695
+offset_bottom = -0.16000366
+theme_override_styles/panel = SubResource("StyleBoxFlat_6dsuc")
 
 [node name="Title" type="Label" parent="." unique_id=824067743]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -121.5
-offset_right = 121.5
-offset_bottom = 67.0
+offset_left = -257.5
+offset_right = 257.5
+offset_bottom = 135.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 48
-text = "Server List"
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_6dsuc")
+theme_override_font_sizes/font_size = 76
+text = "SERVER LIST"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -58,9 +85,9 @@ grow_vertical = 2
 [node name="RefreshButton" type="Button" parent="." unique_id=1370067125]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.44500002
+anchor_left = 0.44069794
 anchor_top = 0.84900004
-anchor_right = 0.555
+anchor_right = 0.5598229
 anchor_bottom = 0.93100005
 offset_left = -0.14001465
 offset_top = -0.15203857
@@ -68,8 +95,13 @@ offset_right = 0.14001465
 offset_bottom = -0.2880249
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 32
-text = "Refresh"
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_0jj3a")
+theme_override_font_sizes/font_size = 38
+text = "REFRESH"
 metadata/_edit_use_anchors_ = true
 
 [node name="LineEdit" type="LineEdit" parent="." unique_id=1668289669]
@@ -82,8 +114,13 @@ anchor_bottom = 0.531
 offset_top = 0.26400757
 offset_right = 0.12799072
 offset_bottom = -0.088012695
-theme_override_font_sizes/font_size = 32
-placeholder_text = "Username"
+theme_override_colors/font_selected_color = Color(1, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_colors/font_placeholder_color = Color(1, 1, 1, 0.76862746)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_0jj3a")
+theme_override_font_sizes/font_size = 38
+placeholder_text = "USERNAME"
 alignment = 1
 metadata/_edit_use_anchors_ = true
 

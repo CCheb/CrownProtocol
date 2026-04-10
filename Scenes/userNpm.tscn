@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bbqbrwrkn0gpq" path="res://Network/UserNpm.cs" id="1_402pr"]
 [ext_resource type="Script" uid="uid://b50ifcyoi47w5" path="res://Network/Cores/NetID.cs" id="2_fu0en"]
+[ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="3_fu0en"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_youx3"]
 properties/0/path = NodePath("Background/ReadyStatus:color")
@@ -38,6 +39,9 @@ color = Color(0.20332181, 0.20332184, 0.20332178, 1)
 layout_mode = 0
 offset_right = 288.0
 offset_bottom = 40.0
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_fu0en")
 text = "John Doe"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -53,11 +57,16 @@ visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.1110001
-anchor_right = 1.3060001
+anchor_right = 1.3230001
 anchor_bottom = 0.77500004
 offset_left = 0.031982422
-offset_right = -0.12802124
+offset_right = -0.024017334
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("3_fu0en")
 toggle_mode = true
-text = "Ready"
+text = "ready"
 
 [connection signal="toggled" from="Background/Ready" to="." method="OnReadyUpButtonToggled"]

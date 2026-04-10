@@ -9,6 +9,15 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r7yey"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyvu1"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
+
 [sub_resource type="Animation" id="Animation_uyvu1"]
 length = 0.001
 tracks/0/type = "value"
@@ -245,7 +254,20 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_r7yey")
 text = "stay in
    lobby   "
 
-[node name="StayInLobbyButton2" type="Button" parent="MarginContainer/ColorRect/MarginContainer/HBoxContainer" unique_id=218891100]
+[node name="Panel" type="Panel" parent="MarginContainer/ColorRect/MarginContainer/HBoxContainer/StayInLobbyButton" unique_id=757177677]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.246
+anchor_top = 0.83900005
+anchor_right = 0.73800004
+anchor_bottom = 0.91700006
+offset_left = -0.052001953
+offset_top = -0.020004272
+offset_right = -0.15600586
+offset_bottom = -0.060012817
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvu1")
+
+[node name="LeaveLobbyButton" type="Button" parent="MarginContainer/ColorRect/MarginContainer/HBoxContainer" unique_id=218891100]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
@@ -258,6 +280,19 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_nwomp")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_uyvu1")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_r7yey")
 text = " leave lobby "
+
+[node name="Panel" type="Panel" parent="MarginContainer/ColorRect/MarginContainer/HBoxContainer/LeaveLobbyButton" unique_id=261435271]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.095000006
+anchor_top = 0.66700006
+anchor_right = 0.883
+anchor_bottom = 0.744
+offset_left = 0.050029755
+offset_top = -0.060012817
+offset_right = -0.029968262
+offset_bottom = 0.08000183
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvu1")
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/ColorRect" unique_id=1521767524]
 visible = false

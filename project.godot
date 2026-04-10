@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TestNetworkTemplate2"
-run/main_scene="uid://jcnhka4tj6uy"
+run/main_scene="uid://cdx3esl7y7mq3"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 run/max_fps=60
 config/icon="res://icon.svg"

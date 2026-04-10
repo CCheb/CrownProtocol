@@ -95,7 +95,7 @@ public partial class MovementStateMachine : PlayerMovementState
                 // So as to execute its update funcition in process
                 CURRENT_STATE = newState;
                 // Notify the Weapon Controller that the Current Movement State has changed
-                context.weapon.OnMovementStateChange(CURRENT_STATE);
+                context.weaponController.OnMovementStateChange(CURRENT_STATE);
             }
         }
         else

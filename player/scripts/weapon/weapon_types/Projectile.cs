@@ -70,7 +70,8 @@ public partial class Projectile : WeaponBase
 
     private Godot.Collections.Dictionary CalculateRay(float length = 1000.0f)
     {
-		Camera3D camera = Globals.player.WorldCameraController.Camera;
+		//Camera3D camera = Globals.player.WorldCameraController.Camera;
+        Camera3D camera = weaponController.context.cameraController.Camera;
 		// Grab the worlds 3D physics state/sandbox. This state is where all of the physics occurs and its handled by the physics server
 		var spaceState = camera.GetWorld3D().DirectSpaceState;
 		

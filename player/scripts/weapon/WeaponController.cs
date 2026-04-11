@@ -64,7 +64,6 @@ public partial class WeaponController : Node3D
         SetPhysicsProcess(true);
         SetProcess(true);
 
-        //MovementChanged += OnMovementStateChange;
         // All peers load weapon
         LoadWeapon();
 
@@ -86,7 +85,6 @@ public partial class WeaponController : Node3D
 			// Need to cast event over to InputEventMouseMotion, copy that into a local variable and
 			// pass the Relative (mouse deltas between frames) over to MouseMovement 
 			InputEventMouseMotion MouseEvent = (InputEventMouseMotion)@event;
-			//MouseMovement = MouseEvent.Relative;
             procedural.SetMouseMovementDelta(MouseEvent);
 		}
 
@@ -113,7 +111,6 @@ public partial class WeaponController : Node3D
         {   
             if(@event.IsActionPressed($"weapon_{i}"))
             {
-                //TryWeaponSwap(i - 1);
                 RpcId(SERVER, MethodName.TryWeaponSwap, i-1);
             }
         }
@@ -139,7 +136,7 @@ public partial class WeaponController : Node3D
         if (context.player.myNetId.IsLocal || GenericCore.Instance.IsServer)
         {
             ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
-            JumpRecoilRef.AddChild(CurrentWeapon);
+            JumpRecoilRef.AddChild(CurrentWeapon, true);
             CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);   
         }
             

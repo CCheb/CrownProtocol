@@ -48,6 +48,8 @@ public partial class FPSController : CharacterBody3D
 	[ExportGroup("Misc")]
 	[Export] private Label3D playerNameTag; 
 	[Export] private MovementStateMachine stateMachine;
+	[Export] private FPSPauseMenu pauseMenu;
+	private bool isInPauseMenu;
 	private const int SERVER = 1;
 	public PlayerContext context;
 
@@ -56,7 +58,11 @@ public partial class FPSController : CharacterBody3D
 		base._Input(@event);
 		
 		if (@event.IsActionPressed("pause") && myNetId.IsLocal)
-			Input.MouseMode = Input.MouseModeEnum.Visible;
+		{
+			//Input.MouseMode = Input.MouseModeEnum.Visible;
+			pauseMenu.UnHideMenu();
+			isInPauseMenu = true;
+		}
 	}
 
     public override void _EnterTree()
@@ -80,11 +86,13 @@ public partial class FPSController : CharacterBody3D
 
 		myNetId.NetIdIsReady += OnNetIdReady;
 
-		Globals.player = this; // Make this script globally accessible
+		//Globals.player = this; // Make this script globally accessible
 		
 		crouchShapeCast.AddException(this);	// Ignore ourselves
 
 		lastPosition = GlobalPosition;
+
+		
 	}
 
 	private void OnNetIdReady()
@@ -99,6 +107,11 @@ public partial class FPSController : CharacterBody3D
 		EmitSignalPlayerReady();
 	}
 
+	private void OnResumeButtonClicked()
+	{
+		isInPauseMenu = false;
+	}
+
 	private void SetAsLocalPlayer()
 	{
 		Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -106,6 +119,8 @@ public partial class FPSController : CharacterBody3D
 
 		visor.Visible = false;
 		playerNameTag.Visible = false;
+
+		pauseMenu.ResumeButtonClicked += OnResumeButtonClicked;
 		
 	}
 
@@ -156,7 +171,7 @@ public partial class FPSController : CharacterBody3D
 	{
 		base._PhysicsProcess(delta);
 
-		if(myNetId.IsLocal)
+		if(myNetId.IsLocal && !isInPauseMenu)
 		{	
 			GenerateAndSendMovementInput();
 			ResetRotationDeltas();

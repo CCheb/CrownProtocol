@@ -44,6 +44,9 @@ public partial class Projectile : WeaponBase
     // Function gets called at very specific moments during the firing animation
     public void EjectShell()
     {
+        if (!weaponController.context.player.myNetId.IsLocal)
+            return;
+            
         ShellEjection Shell = ShellCasingScene.Instantiate<ShellEjection>();
         GetTree().CurrentScene.AddChild(Shell);
         Shell.GlobalTransform = ShellEjectionMarker.GlobalTransform;
@@ -57,7 +60,7 @@ public partial class Projectile : WeaponBase
 
         (Vector3 originPoint, Vector3 endPoint) projectedRay = ClientCalculateRay();
         PlayFireSequence();
-        RpcId(SERVER, MethodName.RequestFire, projectedRay.originPoint, projectedRay.endPoint, MuzzleFlashRef.GlobalTransform*weaponController.context.cameraController.Camera.GlobalTransform);
+        RpcId(SERVER, MethodName.RequestFire, projectedRay.originPoint, projectedRay.endPoint);
 
         await ToSignal(WeaponAnimPlayer, "animation_finished");
 
@@ -77,8 +80,6 @@ public partial class Projectile : WeaponBase
     private (Vector3, Vector3) ClientCalculateRay(float length = 1000.0f)
     {
         Camera3D camera = weaponController.context.cameraController.Camera;
-        // Grab the worlds 3D physics state/sandbox. This state is where all of the physics occurs and its handled by the physics server
-        var spaceState = camera.GetWorld3D().DirectSpaceState;
 		
 		Vector2 screenCenter = (Vector2)GetViewport().Get("size") / 2;
 		
@@ -89,7 +90,7 @@ public partial class Projectile : WeaponBase
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-    private void RequestFire(Vector3 originPoint, Vector3 endPoint, Transform3D clientMuzzleFlash)
+    private void RequestFire(Vector3 originPoint, Vector3 endPoint)
     {
         if (!GenericCore.Instance.IsServer)
             return;
@@ -101,9 +102,7 @@ public partial class Projectile : WeaponBase
         if (collisionResult.Count != 0)
         {
             Vector3 direction = (endPoint - originPoint).Normalized();
-
             Vector3 spawnPos = originPoint + direction * 0.5f; // small offset in front of camera
-
             Transform3D t = new Transform3D(Basis.LookingAt(endPoint, Vector3.Up), spawnPos);
 
             var gameManager = GetTree().CurrentScene as GameManager;
@@ -113,7 +112,8 @@ public partial class Projectile : WeaponBase
 
     private Godot.Collections.Dictionary ServerCalculateRay(Vector3 originPoint, Vector3 endPoint)
     {
-        var spaceState = GetWorld3D().DirectSpaceState; //GetWorld3D??
+        // Grab the worlds 3D physics state/sandbox. This state is where all of the physics occurs and its handled by the physics server
+        var spaceState = GetWorld3D().DirectSpaceState;
 
         var queryCollisions = PhysicsRayQueryParameters3D.Create(originPoint, endPoint);
         queryCollisions.CollideWithBodies = true;

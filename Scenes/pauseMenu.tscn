@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dfu6tgj6aqqoi"]
 
-[ext_resource type="Script" uid="uid://ctq5ecynmx51" path="res://Network/PauseMenu.cs" id="1_15pn7"]
+[ext_resource type="Script" uid="uid://ctq5ecynmx51" path="res://Network/FPSPauseMenu.cs" id="1_15pn7"]
 
 [node name="PauseMenu" type="Control" unique_id=217911543]
 visible = false

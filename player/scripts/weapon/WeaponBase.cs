@@ -16,7 +16,7 @@ public abstract partial class WeaponBase : Node3D
     protected float FireAnimationSpeed = 1.0f;
     public bool IsReloading = false;
     public bool IsFiring = false;
-
+    public const int SERVER = 1;
     public virtual void Spin(float spinSpeed)
     {
         GD.Print("From Weapon Base!");

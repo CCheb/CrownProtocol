@@ -65,11 +65,12 @@ public partial class WeaponController : Node3D
         SetProcess(true);
 
         //MovementChanged += OnMovementStateChange;
+        // All peers load weapon
+        LoadWeapon();
 
         if(!context.player.myNetId.IsLocal)
             return;
 
-        LoadWeapon();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
         procedural.SetRandSwayNoise(RandSwayNoise);
     }
@@ -134,11 +135,14 @@ public partial class WeaponController : Node3D
         // Could be for everyone
         UpdateCurrentWeapon();
         UpdateCurrentWeaponActions();
-        ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
 
-        // Local Player as well
-        JumpRecoilRef.AddChild(CurrentWeapon);
-        CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);
+        if (context.player.myNetId.IsLocal || GenericCore.Instance.IsServer)
+        {
+            ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
+            JumpRecoilRef.AddChild(CurrentWeapon);
+            CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);   
+        }
+            
     }
 
     private void UpdateCurrentWeapon()
@@ -200,15 +204,16 @@ public partial class WeaponController : Node3D
     {
         base._PhysicsProcess(delta);
 
-        if (!context.player.myNetId.IsLocal)
-            return;
-
+        // Every loads weapons when they notice a change
         if(LastWeaponIndex != CurrentWeaponIndex)
         {
             GD.Print("Swaping Weapon!!!");
             LastWeaponIndex = CurrentWeaponIndex;
             SwapWeapon();   // Clients and server would diverge from here
         }
+
+        if (!context.player.myNetId.IsLocal)
+            return;
 
         Vector3 WeaponPos = Position;
 		Vector3 WeaponRotDeg = RotationDegrees;

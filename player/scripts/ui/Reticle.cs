@@ -6,7 +6,7 @@ public partial class Reticle : CenterContainer
 	// Array for holding the 4 reticle lines
 	[Export] public Line2D[] reticleLines;
 	// Need to correlate the player speed with the reticle 
-	[Export] public CharacterBody3D playerController;
+	[Export] public FPSController playerController;
 	// How fast the recticle moves
 	[Export] float reticleSpeed = 0.25f;
 	// How far out will the reticle move
@@ -15,21 +15,32 @@ public partial class Reticle : CenterContainer
 	[Export] public Color dotColor = new Color(1.0f, 1.0f, 1.0f);
 	[Export] public Color enemyColor = new Color(1.0f, 0.0f, 0.0f);
 	private bool isColliding = false;
+	private Vector3 previousPosition;
 
 	public override void _Ready()
 	{
+		if (!playerController.myNetId.IsLocal)
+			return;
+
 		QueueRedraw();
+		previousPosition = playerController.GlobalPosition;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (!playerController.myNetId.IsLocal)
+			return;
+
 		// Continuously update the reticle
 		AdjustReticleLines();
 	}
 
 	public override void _Draw()
 	{
+		if (!playerController.myNetId.IsLocal)
+			return;
+		
 		base._Draw();
 		// Drawing the center dot of the reticle. Initial drawing of the middle dot
 		DrawCircle(new Vector2(0.0f, 0.0f), dotRadius, isColliding ? enemyColor : dotColor);
@@ -40,6 +51,7 @@ public partial class Reticle : CenterContainer
 		// Its important that we grab the physical/in-game velocity of the player and not just
 		// inputs. This will take into account gravity, sliding, and other movements beyond just the input
 		Vector3 vel = playerController.GetRealVelocity();
+
 
 		// Need it to offset the reticle. Pos helps us anchor the reticle and have a reference point. It will move relative to it
 		// Right now since its set to (0,0) it doesnt really matter much since we are adding (0,0) but if it was at another location

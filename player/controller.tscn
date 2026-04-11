@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://f2xquxt4nbfd" path="res://player/scripts/movement/FallingPlayerState.cs" id="12_js2ha"]
 [ext_resource type="Script" uid="uid://ncx2ue03ay7l" path="res://player/scripts/ui/WeaponViewport.cs" id="13_feqls"]
 [ext_resource type="Script" uid="uid://5ikj1mrvr5tr" path="res://player/scripts/ui/WeaponCamera.cs" id="14_tx066"]
+[ext_resource type="PackedScene" uid="uid://dfu6tgj6aqqoi" path="res://Scenes/pauseMenu.tscn" id="23_tx066"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tx066"]
 properties/0/path = NodePath(".:position")
@@ -693,7 +694,7 @@ _data = {
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tsrlm"]
 
-[node name="Player" type="CharacterBody3D" unique_id=260508337 node_paths=PackedStringArray("WorldCameraController", "cameraPivot", "ANIMATION", "crouchShapeCast", "WEAPON", "myNetId", "visor", "playerNameTag", "stateMachine")]
+[node name="Player" type="CharacterBody3D" unique_id=260508337 node_paths=PackedStringArray("WorldCameraController", "cameraPivot", "ANIMATION", "crouchShapeCast", "WEAPON", "myNetId", "visor", "playerNameTag", "stateMachine", "pauseMenu")]
 collision_layer = 4
 script = ExtResource("1_c8ah5")
 TiltLowerLimit = -90.0
@@ -707,6 +708,7 @@ myNetId = NodePath("MultiplayerSynchronizer")
 visor = NodePath("CameraPivot/Visor")
 playerNameTag = NodePath("PlayerTag")
 stateMachine = NodePath("PlayerStateMachine")
+pauseMenu = NodePath("PauseMenu")
 
 [node name="PlayerTag" type="Label3D" parent="." unique_id=220730786]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2777987, 0)
@@ -887,3 +889,5 @@ WorldCamera = NodePath("../../../CameraPivot/WorldCameraController/Camera3D")
 [node name="WeaponController" parent="SubViewportContainer/SubViewport/Camera3D/WeaponHolder" unique_id=231687715 node_paths=PackedStringArray("CameraControllerRef") instance=ExtResource("6_4xmcj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, -0.23, 0.16)
 CameraControllerRef = NodePath("../../../../../CameraPivot/WorldCameraController")
+
+[node name="PauseMenu" parent="." unique_id=217911543 instance=ExtResource("23_tx066")]

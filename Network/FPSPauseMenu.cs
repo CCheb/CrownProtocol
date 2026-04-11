@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class PauseMenu : Control
+public partial class FPSPauseMenu : Control
 {   
     [Signal] public delegate void ResumeButtonClickedEventHandler();
     public void UnHideMenu()

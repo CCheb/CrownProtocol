@@ -8,7 +8,7 @@ public partial class NetworkPlayer : CharacterBody3D
 	[Export] private Node3D cameraController;
 	[Export] private MeshInstance3D visor;
 	[Export] private Label3D playerNameTag;
-	[Export] private PauseMenu pauseMenu; 
+	[Export] private FPSPauseMenu pauseMenu; 
 	[Export] private PackedScene cameraScene;
 	private bool isInPauseMenu = false;
 

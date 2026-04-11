@@ -5,15 +5,18 @@ using System.ComponentModel;
 public partial class ArcadeBullet : CharacterBody3D, IBullet
 {
 	[Export] private Area3D area;
-	private float speed;
+	private float speed = 50f;
 	// Called when the node enters the scene tree for the first time.
-	public void Initialize(Transform3D transform, float speed)
+	public void Initialize(Transform3D transform)
 	{
 		GlobalTransform = transform;
-		this.speed = speed;
+		GD.Print($"Bullet Spawned at {GlobalTransform}");
 	}
 	public override void _Ready()
 	{
+		if(!GenericCore.Instance.IsServer)
+			return;
+
 		area.BodyEntered += OnBodyEntered;
 
 		StartBulletTimeout();
@@ -22,6 +25,9 @@ public partial class ArcadeBullet : CharacterBody3D, IBullet
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!GenericCore.Instance.IsServer)
+			return;
+
 		Velocity = -Transform.Basis.Z * speed;
 		MoveAndSlide();
 	}

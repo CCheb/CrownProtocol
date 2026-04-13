@@ -14,7 +14,7 @@ public partial class NetworkPlayer : CharacterBody3D
 
 	private const int SERVER = 1;
 	private float jumpVelocity = 4.5f;
-	private float speed = 5.0f;
+	private float speed = 10.0f;
 
 	private Vector3 totalMouseRotation = Vector3.Zero;
 	private Vector3 verticalRotation = Vector3.Zero;

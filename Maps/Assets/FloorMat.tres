@@ -1,0 +1,23 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bqpaj5hsulmq0"]
+
+[ext_resource type="Texture2D" uid="uid://hg3q6aw3p2n0" path="res://Maps/Assets/gray-cement-wall-256x256.png" id="1_tr4cr"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jfoe8"]
+frequency = 0.0357
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jmoj2"]
+noise = SubResource("FastNoiseLite_jfoe8")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_38guq"]
+noise = SubResource("FastNoiseLite_jfoe8")
+
+[resource]
+cull_mode = 2
+albedo_texture = ExtResource("1_tr4cr")
+metallic_specular = 0.0
+roughness_texture = SubResource("NoiseTexture2D_38guq")
+detail_enabled = true
+detail_blend_mode = 3
+detail_albedo = SubResource("NoiseTexture2D_jmoj2")
+uv1_scale = Vector3(30, 30, 30)
+uv1_triplanar = true

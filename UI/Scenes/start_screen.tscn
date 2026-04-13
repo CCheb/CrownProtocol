@@ -782,9 +782,9 @@ alignment = 1
 [node name="Label6" type="Label" parent="Control/CreditsTab/ColorRect/VBoxContainer/HBoxContainer" unique_id=387380295]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 3
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("9_546pw")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 26
 text = "Font : orion pax (angelina62, font.download)
 Title Screen Inspiration : StarCraft Terran
 Laser Sound : laser beam 4 (mozfoo, freesound)
@@ -794,10 +794,10 @@ Click Sound : Click 2 (crunchpixstudio, freesound)"
 [node name="Label7" type="Label" parent="Control/CreditsTab/ColorRect/VBoxContainer/HBoxContainer" unique_id=375283941]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 3
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("9_546pw")
-theme_override_font_sizes/font_size = 30
-text = "-<OTHER RESOURCE HERE>
+theme_override_font_sizes/font_size = 26
+text = "Player Model : 3D Robot (Shtiffer, turbosquid)
 -<OTHER RESOURCE HERE>
 -<OTHER RESOURCE HERE>
 -<OTHER RESOURCE HERE>
@@ -812,6 +812,24 @@ theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("9_546pw")
 theme_override_font_sizes/font_size = 60
 text = "BACK"
+
+[node name="Label2" type="Label" parent="Control/CreditsTab/ColorRect" unique_id=182241184]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1246.0
+offset_top = 478.0
+offset_right = -54.0
+offset_bottom = -370.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("9_546pw")
+theme_override_font_sizes/font_size = 22
+text = "*resource (author, website name)*"
+horizontal_alignment = 1
 
 [node name="OptionsTab" parent="." unique_id=2084655736 instance=ExtResource("8_wub3w")]
 visible = false

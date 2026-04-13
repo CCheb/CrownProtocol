@@ -1,63 +1,143 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.ComponentModel;
+using System.Dynamic;
 
 public partial class FPSController : CharacterBody3D
 {
+	[Signal] public delegate void PlayerReadyEventHandler();
+
 	[ExportGroup("Player Stats")]
 	[Export] public float speed = 6.0f;
+	[Export] public float acceleration = 0.1f;
+	[Export] public float deceleration = 0.25f;
+	[Export] public float jumpVelocity = 8.5f;
 	
 	[ExportGroup("Mouse Parameters")]
 	[Export] public float MouseSensitivity = 0.1f;
-	// How far down we can look
 	[Export] public float TiltLowerLimit { get; set; } = Mathf.DegToRad(-90.0f);
-	// How far up we can look
-	[Export] public float TiltUpperLimit { get; set; } = Mathf.DegToRad(90.0f);
+	[Export] public float TiltUpperLimit { get; set; } = Mathf.DegToRad(90.0f); 
 
 	[ExportGroup("Camera Settings")]
-	// Camera controller that we will manipulate in script
-	[Export] public CameraController WorldCameraController { get; set; }
-	[Export] private InputLayer InputCameraLayer;
+	[Export] public CameraController WorldCameraController;
+	[Export] public Node3D cameraPivot;
+	private Camera3D worldCamera;
+	private Camera3D weaponCamera;
 	static public float DefaultFov = 90;
-	
 	private bool InputIsMouse = false;
 	private Vector3 totalMouseRotation;
 	private float yawDelta;
 	private float pitchDelta;
 	private Vector3 horizontalRotation;
-	
-	// Used by sliding state
-	public float _currentRotation;
+	private Vector3 verticalRotation;
+	public float _currentRotation; // Used by sliding state
 
-	/* PLAYER API */
-	//------------------------------------------
 	[ExportGroup("Player API")]
-	// Animation player node
 	[Export] public AnimationPlayer ANIMATION;
-	// Sphere shapecast above the player
 	[Export] public  ShapeCast3D crouchShapeCast;
-	// Reference so that the movement states are able to access the WeaponController
-	// Player acts as the middle man between the movement and weapon states
 	[Export] public WeaponController WEAPON;
+
+	[ExportGroup("Network")]
+	[Export] public NetID myNetId;
+	[Export] private MeshInstance3D visor;
+	private PlayerInput input = new();
+	private Vector3 lastPosition;
+	public Vector3 DerivedVelocity { get; private set; }
+
+	[ExportGroup("Misc")]
+	[Export] private Label3D playerNameTag; 
+	[Export] private MovementStateMachine stateMachine;
+	[Export] private FPSPauseMenu pauseMenu;
+	private bool isInPauseMenu;
+	private const int SERVER = 1;
+	public PlayerContext context;
 
 	public override void _Input(InputEvent @event)
 	{
 		base._Input(@event);
 		
-		if (@event.IsActionPressed("pause"))
-			Input.MouseMode = Input.MouseModeEnum.Visible;
+		if (@event.IsActionPressed("pause") && myNetId.IsLocal)
+		{
+			//Input.MouseMode = Input.MouseModeEnum.Visible;
+			pauseMenu.UnHideMenu();
+			isInPauseMenu = true;
+		}
 	}
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+		context = new PlayerContext
+		{
+			player = this,
+			cameraController = WorldCameraController,
+			weaponController = WEAPON
+		};
+
+		WEAPON.SetContext(context);
+		WorldCameraController.SetContext(context);
+		stateMachine.SetContext(context);
+    }
 
 	public override void _Ready()
 	{
 		base._Ready();
 
-		Globals.player = this; // Make this script globally accessible
-	
-		Input.MouseMode = Input.MouseModeEnum.Captured;
-	
-		WorldCameraController.Camera.Fov = DefaultFov;
+		myNetId.NetIdIsReady += OnNetIdReady;
+
+		//Globals.player = this; // Make this script globally accessible
 		
 		crouchShapeCast.AddException(this);	// Ignore ourselves
+
+		lastPosition = GlobalPosition;
+
+		
+	}
+
+	private void OnNetIdReady()
+	{
+		if(myNetId.IsLocal)
+			SetAsLocalPlayer();
+		else
+			SetAsNonLocalPlayer();
+		
+		SetPlayerNameTag();
+
+		EmitSignalPlayerReady();
+	}
+
+	private void OnResumeButtonClicked()
+	{
+		isInPauseMenu = false;
+	}
+
+	private void SetAsLocalPlayer()
+	{
+		Input.MouseMode = Input.MouseModeEnum.Captured;
+		WorldCameraController.Camera.Fov = DefaultFov;
+
+		visor.Visible = false;
+		playerNameTag.Visible = false;
+
+		pauseMenu.ResumeButtonClicked += OnResumeButtonClicked;
+		
+	}
+
+	private void SetAsNonLocalPlayer()
+	{
+		worldCamera = GetNode<Camera3D>("CameraPivot/WorldCameraController/Camera3D");
+		weaponCamera = GetNode<Camera3D>("SubViewportContainer/SubViewport/Camera3D");
+		
+		worldCamera.Current = false;
+		weaponCamera.Current = false;
+
+		visor.Visible = true;
+	}
+
+	private void SetPlayerNameTag()
+	{
+		playerNameTag.Text = GenericCore.Instance.connectedPeers[myNetId.OwnerId]["UserName"];
 	}
 
 	// _Input > UI > _UnhandledInput. We use _UnhandledInput here since we dont want any mouse movement
@@ -66,7 +146,7 @@ public partial class FPSController : CharacterBody3D
 	{
 		base._UnhandledInput(@event);
 
-		if (CurrentInputIsMouse(@event))
+		if (CurrentInputIsMouse(@event) && myNetId.IsLocal)
 		{
 			CalculateRotationDeltas((InputEventMouseMotion)@event);
 		}
@@ -74,7 +154,7 @@ public partial class FPSController : CharacterBody3D
 
 	private bool CurrentInputIsMouse(InputEvent @event)
 	{
-		return InputIsMouse = (@event is InputEventMouseMotion) && (Input.MouseMode == Input.MouseModeEnum.Captured);
+		return (@event is InputEventMouseMotion) && (Input.MouseMode == Input.MouseModeEnum.Captured);
 	}
 
 	private void CalculateRotationDeltas(InputEventMouseMotion mouseMotion)
@@ -83,74 +163,85 @@ public partial class FPSController : CharacterBody3D
 
 		// Its important that we negate these values because turning right in screen space is + but in world space will
 		// be negative. Thats why we take the screen space rotation and negate it over to world space rotation 
-		yawDelta = -mouseMotion.Relative.X * MouseSensitivity;
-		pitchDelta = -mouseMotion.Relative.Y * MouseSensitivity;
+		input.yawDelta = -mouseMotion.Relative.X * MouseSensitivity;
+		input.pitchDelta = -mouseMotion.Relative.Y * MouseSensitivity;
 	}
 
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
-		base._Process(delta);
-		UpdateRotations(delta); // Camera updates should be as fast as possible
+		base._PhysicsProcess(delta);
+
+		if(myNetId.IsLocal && !isInPauseMenu)
+		{	
+			GenerateAndSendMovementInput();
+			ResetRotationDeltas();
+		}
+
+		if(GenericCore.Instance.IsServer)
+			ApplyInput(delta);
+
 	}
 
-	private void UpdateRotations(double delta)
+	private void GenerateAndSendMovementInput()
 	{
-		SetOverallRotation();
-		RotatePlayer(delta);
-		RotateCamera(delta);
-		ResetRotationDeltas();
-	}
-
-	private void SetOverallRotation()
-	{
-		_currentRotation = yawDelta;
-	}
-
-	private void RotatePlayer(double delta)
-	{
-		// Player rotation, want horizontal rotation
-		totalMouseRotation.Y += yawDelta * (float)delta; // Parse total mouse rotation.
-		horizontalRotation = new Vector3(0.0f, totalMouseRotation.Y, 0.0f);
-		Basis = Basis.FromEuler(horizontalRotation);
-	}
-
-	private void RotateCamera(double delta)
-	{
-		// Send the pitch values over to the InputCameraLayer. In this case the player owns side ways rotation while
-		// the camera controller handles pitch which is the only rotation applied to the camera
-		InputCameraLayer.AddPitch(pitchDelta * (float)delta);
+		// Simply grab the input and pass it forward for calculation
+		Vector2 move = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
+    	bool jump = Input.IsActionJustPressed("jump");
+		RpcId(SERVER, MethodName.SendInput, move, jump, input.yawDelta, input.pitchDelta);
 	}
 
 	private void ResetRotationDeltas()
 	{
 		// Dont want previous frame rotation inputs to affect the current frame
-		yawDelta = 0.0f;
-		pitchDelta = 0.0f;
+		input.yawDelta = 0.0f;
+		input.pitchDelta = 0.0f;
 	}
 
-
-
-	//---CALLED BY OUR STATE SCRIPTS--//
-	//--------------------------------//
-	public void UpdateGravity(double delta)
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	private void SendInput(Vector2 move, bool jump, float yawDelta, float pitchDelta)
 	{
-		// Only add gravity when in the air
-		if (!IsOnFloor())
-		{	
-			// Its essential to only update the players Velocity and keep vel local 
-			Vector3 velocity = Velocity;
-			velocity += GetGravity() * (float)delta * 2.0f;
-			Velocity = velocity;
-		}
+		if(!GenericCore.Instance.IsServer)
+			return;
+
+		// From client to client representation on the server side
+		input.move = move;
+		input.jump = jump;
+		input.yawDelta = yawDelta;
+		input.pitchDelta = pitchDelta;
 	}
-	public void UpdateInput(float speed, float acceleration, float deceleration)
+
+	private void ApplyInput(double delta)
 	{
+		CalculateMovement(delta);
+		CalculateRotations(delta);
+	}
+
+	private void CalculateDerivedVelocity(double delta)
+	{
+		DerivedVelocity = (GlobalPosition - lastPosition) / (float)delta;
+		lastPosition = GlobalPosition;
+	}
+
+	private void CalculateMovement(double delta)
+	{
+		
 		Vector3 velocity = Velocity;
-		// Get the input direction and handle the movement/deceleration.
-		Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
-		// want the direction to always be in terms of the local characters coordinate/basis. If we rotate
-		// and move forward the input will rotate the same amount and move forward
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+
+		// Add the gravity.
+		if (!IsOnFloor())
+		{
+			velocity += GetGravity() * (float)delta;
+		}
+
+		// Handle Jump. This is more of a one time thing
+		if (input.jump && IsOnFloor())
+		{
+			velocity.Y = jumpVelocity;
+		}
+
+		Vector3 direction = (Transform.Basis * new Vector3(input.move.X, 0, input.move.Y)).Normalized();
+
+		
 		if (direction != Vector3.Zero)
 		{
 			// You will reach the maximum speed over time (linearly) and not instantly
@@ -168,27 +259,71 @@ public partial class FPSController : CharacterBody3D
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, deceleration);
 			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, deceleration);
 		}
+		
+
+		//velocity.X = direction.X * speed;
+		//velocity.Z = direction.Z * speed;
+
 
 		Velocity = velocity;
-	}
-	public void UpdateVelocity()
-	{
-		// Before we updated velocity here by doing Velocity = velocity for the sake of keeping
-		// a global private velocity. That then caused the jump velocity to be cancelled since this
-		// velocity did not know of any jumps (Y = 0) and overwrote the jump velocity
 
-		// Called by each of the movement states
+		// Calculates/simulates the movement 
 		MoveAndSlide();
+	}
+
+	private void CalculateJump(float jumpVelocity)
+	{   
+		Vector3 velocity = Velocity;
+		// Handle Jump. This is more of a one time thing
+		if (input.jump && IsOnFloor())
+		{
+			velocity.Y = jumpVelocity;
+		}
+	}
+
+	private void CalculateRotations(double delta)
+	{
+		RotatePlayer(delta);
+		RotateCamera(delta);
+	}
+
+	private void SetOverallRotation()
+	{
+		_currentRotation = yawDelta;
+	}
+
+	private void RotatePlayer(double delta)
+	{
+		// Player rotation, want horizontal rotation
+		totalMouseRotation.Y += input.yawDelta * (float)delta; // Parse total mouse rotation.
+		horizontalRotation = new Vector3(0.0f, totalMouseRotation.Y, 0.0f);
+		Basis = Basis.FromEuler(horizontalRotation);
+	}
+
+	private void RotateCamera(double delta)
+	{
+		// Camera rotation, want vertical rotation
+		totalMouseRotation.X += input.pitchDelta * (float)delta; // Parse total mouse rotation
+		totalMouseRotation.X = Mathf.Clamp(totalMouseRotation.X, Mathf.DegToRad(-90.0f), Mathf.DegToRad(90.0f));
+		verticalRotation = new Vector3(totalMouseRotation.X, 0.0f, 0.0f);	// In Radians
+
+		cameraPivot.Rotation = verticalRotation;
+	}
+
+
+	//---Single Player stuff--//
+	//--------------------------------//
+	public void UpdateGravity(double delta)
+	{
+	}
+
+	public void UpdateInput(float speed, float acceleration, float deceleration)
+	{
 		
 	}
 
-
-	
-
-
-
-
-	
-	
-
+	public void UpdateVelocity()
+	{
+		
+	}
 }

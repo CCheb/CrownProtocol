@@ -5,16 +5,43 @@
 [ext_resource type="PackedScene" uid="uid://m2qog1d32hi4" path="res://Scenes/networkCamera.tscn" id="2_81xng"]
 [ext_resource type="PackedScene" uid="uid://cvkx4oslqntvk" path="res://Maps/Assets/space_map.tscn" id="4_81xng"]
 
-[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore")]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6phgx"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_81xng"]
+sky_material = SubResource("ProceduralSkyMaterial_6phgx")
+
+[sub_resource type="Environment" id="Environment_wqkje"]
+background_mode = 2
+sky = SubResource("Sky_81xng")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_51e2h"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tumq0"]
+size = Vector3(30, 1, 30)
+
+[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "projectileSpawner")]
 script = ExtResource("1_6phgx")
 spectatorSpawn = NodePath("SpectatorSpawn")
 netCore = NodePath("MultiplayerSpawner")
+projectileSpawner = NodePath("ProjectileSpawner")
 cameraScene = ExtResource("2_81xng")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1075431530]
+environment = SubResource("Environment_wqkje")
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
-_spawnable_scenes = PackedStringArray("uid://bjabjte8r8sau", "uid://m2qog1d32hi4")
+_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
+
+[node name="ProjectileSpawner" type="MultiplayerSpawner" parent="." unique_id=849467511]
+_spawnable_scenes = PackedStringArray("uid://e5kh6jpm8qar")
+spawn_path = NodePath("..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=936373086]
 transform = Transform3D(-0.8273534, -0.5614224, -0.017066605, -0.25590295, 0.34972116, 0.9012263, -0.50000006, 0.75, -0.43301266, 0, 0, 0)

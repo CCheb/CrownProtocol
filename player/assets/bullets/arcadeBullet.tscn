@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" uid="uid://bqste58x0dr5l" path="res://player/scripts/weapon/ArcadeBullet.cs" id="1_bf8t7"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bf8t7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_xc2s7"]
 size = Vector3(0.3, 0.3, 0.3)
 
@@ -19,6 +24,9 @@ size = Vector3(0.2, 0.2, 0.2)
 collision_layer = 2
 script = ExtResource("1_bf8t7")
 area = NodePath("Area3D")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1276127273]
+replication_config = SubResource("SceneReplicationConfig_bf8t7")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1557106084]
 collision_layer = 2

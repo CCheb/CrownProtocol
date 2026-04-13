@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b1derc5wqq21i"]
 
 [ext_resource type="Script" uid="uid://bo86bnx0tb20n" path="res://player/scripts/FPSController.cs" id="1_c8ah5"]
+[ext_resource type="Script" uid="uid://b50ifcyoi47w5" path="res://Network/Cores/NetID.cs" id="2_feqls"]
 [ext_resource type="Script" uid="uid://bsgnp7hqer3q6" path="res://player/scripts/camera/CameraController.cs" id="2_r1uwb"]
 [ext_resource type="Script" uid="uid://cwwpqyfa81oqg" path="res://player/scripts/weapon/EnemyDetection.cs" id="3_4xmcj"]
 [ext_resource type="Script" uid="uid://b0ao5786ln062" path="res://player/scripts/ui/Reticle.cs" id="4_tsrlm"]
@@ -21,6 +22,21 @@
 [ext_resource type="Script" uid="uid://f2xquxt4nbfd" path="res://player/scripts/movement/FallingPlayerState.cs" id="12_js2ha"]
 [ext_resource type="Script" uid="uid://ncx2ue03ay7l" path="res://player/scripts/ui/WeaponViewport.cs" id="13_feqls"]
 [ext_resource type="Script" uid="uid://5ikj1mrvr5tr" path="res://player/scripts/ui/WeaponCamera.cs" id="14_tx066"]
+[ext_resource type="PackedScene" uid="uid://dfu6tgj6aqqoi" path="res://Scenes/pauseMenu.tscn" id="23_tx066"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tx066"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CameraPivot:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("SubViewportContainer/SubViewport/Camera3D/WeaponHolder/WeaponController:CurrentWeaponIndex")
+properties/3/spawn = true
+properties/3/replication_mode = 2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xbwus"]
 
@@ -31,6 +47,9 @@ roughness = 0.4
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_blutv"]
 material = SubResource("StandardMaterial3D_js2ha")
+
+[sub_resource type="BoxMesh" id="BoxMesh_js2ha"]
+size = Vector3(0.8, 0.2, 0.8)
 
 [sub_resource type="Animation" id="Animation_3yk5y"]
 resource_name = "Crouch"
@@ -61,7 +80,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = false
-tracks/2/path = NodePath("CameraTest/WorldCameraController:position")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -85,7 +104,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position")
+tracks/4/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -101,7 +120,7 @@ length = 0.4
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = false
-tracks/0/path = NodePath("CameraTest/WorldCameraController:rotation:x")
+tracks/0/path = NodePath("CameraPivot/WorldCameraController:rotation:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -112,7 +131,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = false
-tracks/1/path = NodePath("CameraTest/WorldCameraController:position")
+tracks/1/path = NodePath("CameraPivot/WorldCameraController:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -124,7 +143,7 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:rotation:x")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:rotation:x")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -135,7 +154,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position")
+tracks/3/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -151,7 +170,7 @@ length = 0.55
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = false
-tracks/0/path = NodePath("CameraTest/WorldCameraController:rotation:x")
+tracks/0/path = NodePath("CameraPivot/WorldCameraController:rotation:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -162,7 +181,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = false
-tracks/1/path = NodePath("CameraTest/WorldCameraController:position")
+tracks/1/path = NodePath("CameraPivot/WorldCameraController:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -174,7 +193,7 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:rotation:x")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:rotation:x")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -185,7 +204,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position")
+tracks/3/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -224,7 +243,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("CameraTest/WorldCameraController:position")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -248,7 +267,7 @@ tracks/3/keys = {
 tracks/4/type = "bezier"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("CameraTest/WorldCameraController:rotation:x")
+tracks/4/path = NodePath("CameraPivot/WorldCameraController:rotation:x")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -259,7 +278,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("CameraTest/WorldCameraController:rotation")
+tracks/5/path = NodePath("CameraPivot/WorldCameraController:rotation")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -283,7 +302,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("CameraTest/WorldCameraController/Camera3D:fov")
+tracks/7/path = NodePath("CameraPivot/WorldCameraController/Camera3D:fov")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -295,7 +314,7 @@ tracks/7/keys = {
 tracks/8/type = "bezier"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:z")
+tracks/8/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:z")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -306,7 +325,7 @@ tracks/8/keys = {
 tracks/9/type = "bezier"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:x")
+tracks/9/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:x")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -317,7 +336,7 @@ tracks/9/keys = {
 tracks/10/type = "bezier"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:y")
+tracks/10/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:y")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -328,7 +347,7 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position")
+tracks/11/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -340,7 +359,7 @@ tracks/11/keys = {
 tracks/12/type = "bezier"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:rotation:x")
+tracks/12/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:rotation:x")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
@@ -351,7 +370,7 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:rotation")
+tracks/13/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:rotation")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
@@ -363,7 +382,7 @@ tracks/13/keys = {
 tracks/14/type = "bezier"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:z")
+tracks/14/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:z")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -374,7 +393,7 @@ tracks/14/keys = {
 tracks/15/type = "bezier"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:y")
+tracks/15/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:y")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
@@ -385,7 +404,7 @@ tracks/15/keys = {
 tracks/16/type = "bezier"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:x")
+tracks/16/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:x")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -424,7 +443,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = false
-tracks/2/path = NodePath("CameraTest/WorldCameraController:position")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -436,7 +455,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = false
-tracks/3/path = NodePath("CameraTest/WorldCameraController:rotation")
+tracks/3/path = NodePath("CameraPivot/WorldCameraController:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -486,7 +505,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("CameraTest/WorldCameraController/Camera3D:fov")
+tracks/7/path = NodePath("CameraPivot/WorldCameraController/Camera3D:fov")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -498,7 +517,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position")
+tracks/8/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -510,7 +529,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:rotation")
+tracks/9/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:rotation")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -527,7 +546,7 @@ loop_mode = 1
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = false
-tracks/0/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:x")
+tracks/0/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -538,7 +557,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = false
-tracks/1/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:y")
+tracks/1/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -549,7 +568,7 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = false
-tracks/2/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:z")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:z")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -560,7 +579,7 @@ tracks/2/keys = {
 tracks/3/type = "bezier"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:x")
+tracks/3/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:x")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -571,7 +590,7 @@ tracks/3/keys = {
 tracks/4/type = "bezier"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:y")
+tracks/4/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:y")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -582,7 +601,7 @@ tracks/4/keys = {
 tracks/5/type = "bezier"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:z")
+tracks/5/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:z")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -598,7 +617,7 @@ loop_mode = 1
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = false
-tracks/0/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:x")
+tracks/0/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -609,7 +628,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = false
-tracks/1/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:y")
+tracks/1/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -620,7 +639,7 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = false
-tracks/2/path = NodePath("CameraTest/WorldCameraController/Camera3D:position:z")
+tracks/2/path = NodePath("CameraPivot/WorldCameraController/Camera3D:position:z")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -631,7 +650,7 @@ tracks/2/keys = {
 tracks/3/type = "bezier"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:x")
+tracks/3/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:x")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -642,7 +661,7 @@ tracks/3/keys = {
 tracks/4/type = "bezier"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:y")
+tracks/4/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:y")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -653,7 +672,7 @@ tracks/4/keys = {
 tracks/5/type = "bezier"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("CameraTest/WorldCameraController/MovementLayer/OffsetProxy:position:z")
+tracks/5/path = NodePath("CameraPivot/WorldCameraController/MovementLayer/OffsetProxy:position:z")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -675,27 +694,44 @@ _data = {
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tsrlm"]
 
-[node name="Player" type="CharacterBody3D" unique_id=260508337 node_paths=PackedStringArray("WorldCameraController", "InputCameraLayer", "ANIMATION", "crouchShapeCast", "WEAPON")]
+[node name="Player" type="CharacterBody3D" unique_id=260508337 node_paths=PackedStringArray("WorldCameraController", "cameraPivot", "ANIMATION", "crouchShapeCast", "WEAPON", "myNetId", "visor", "playerNameTag", "stateMachine", "pauseMenu")]
 collision_layer = 4
 script = ExtResource("1_c8ah5")
 TiltLowerLimit = -90.0
 TiltUpperLimit = 90.0
-WorldCameraController = NodePath("CameraTest/WorldCameraController")
-InputCameraLayer = NodePath("CameraTest/WorldCameraController/InputLayer")
+WorldCameraController = NodePath("CameraPivot/WorldCameraController")
+cameraPivot = NodePath("CameraPivot")
 ANIMATION = NodePath("PlayerMovement")
 crouchShapeCast = NodePath("ShapeCast3D")
 WEAPON = NodePath("SubViewportContainer/SubViewport/Camera3D/WeaponHolder/WeaponController")
+myNetId = NodePath("MultiplayerSynchronizer")
+visor = NodePath("CameraPivot/Visor")
+playerNameTag = NodePath("PlayerTag")
+stateMachine = NodePath("PlayerStateMachine")
+pauseMenu = NodePath("PauseMenu")
+
+[node name="PlayerTag" type="Label3D" parent="." unique_id=220730786]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2777987, 0)
+billboard = 1
+text = "John Doe
+"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1688743772]
+replication_config = SubResource("SceneReplicationConfig_tx066")
+script = ExtResource("2_feqls")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=743150347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 shape = SubResource("CapsuleShape3D_xbwus")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=591769764]
 mesh = SubResource("CapsuleMesh_blutv")
 
-[node name="CameraTest" type="Node3D" parent="." unique_id=1202100459]
+[node name="CameraPivot" type="Node3D" parent="." unique_id=989952180]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.428, 0)
 
-[node name="WorldCameraController" type="Node3D" parent="CameraTest" unique_id=1021783261 node_paths=PackedStringArray("_camera", "InputCameraLayer", "MovementLayer", "cameraRecoilLayer", "CameraReload", "CameraJumpingLayer", "cameraZoomLayer")]
+[node name="WorldCameraController" type="Node3D" parent="CameraPivot" unique_id=1021783261 node_paths=PackedStringArray("_camera", "InputCameraLayer", "MovementLayer", "cameraRecoilLayer", "CameraReload", "CameraJumpingLayer", "cameraZoomLayer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.428, 0)
 script = ExtResource("2_r1uwb")
 _camera = NodePath("Camera3D")
@@ -706,36 +742,41 @@ CameraReload = NodePath("CameraReloadLayer")
 CameraJumpingLayer = NodePath("CameraJumpingLayer")
 cameraZoomLayer = NodePath("CameraZoomLayer")
 
-[node name="InputLayer" type="Node" parent="CameraTest/WorldCameraController" unique_id=1250523351]
+[node name="InputLayer" type="Node" parent="CameraPivot/WorldCameraController" unique_id=1250523351]
 script = ExtResource("6_8qmmn")
 
-[node name="MovementLayer" type="Node" parent="CameraTest/WorldCameraController" unique_id=1188070128 node_paths=PackedStringArray("OffsetProxy")]
+[node name="MovementLayer" type="Node" parent="CameraPivot/WorldCameraController" unique_id=1188070128 node_paths=PackedStringArray("OffsetProxy")]
 script = ExtResource("5_8qmmn")
 OffsetProxy = NodePath("OffsetProxy")
 
-[node name="OffsetProxy" type="Node3D" parent="CameraTest/WorldCameraController/MovementLayer" unique_id=668815468]
+[node name="OffsetProxy" type="Node3D" parent="CameraPivot/WorldCameraController/MovementLayer" unique_id=668815468]
 
-[node name="CameraRecoilLayer" type="Node" parent="CameraTest/WorldCameraController" unique_id=877924563]
+[node name="CameraRecoilLayer" type="Node" parent="CameraPivot/WorldCameraController" unique_id=877924563]
 script = ExtResource("6_yqj3k")
 
-[node name="CameraReloadLayer" type="Node" parent="CameraTest/WorldCameraController" unique_id=904232906]
+[node name="CameraReloadLayer" type="Node" parent="CameraPivot/WorldCameraController" unique_id=904232906]
 script = ExtResource("6_b58ve")
 
-[node name="CameraJumpingLayer" type="Node" parent="CameraTest/WorldCameraController" unique_id=873963481]
+[node name="CameraJumpingLayer" type="Node" parent="CameraPivot/WorldCameraController" unique_id=873963481]
 script = ExtResource("7_b58ve")
 
-[node name="CameraZoomLayer" type="Node" parent="CameraTest/WorldCameraController" unique_id=437367071]
+[node name="CameraZoomLayer" type="Node" parent="CameraPivot/WorldCameraController" unique_id=437367071]
 script = ExtResource("8_js2ha")
 
-[node name="Camera3D" type="Camera3D" parent="CameraTest/WorldCameraController" unique_id=724038303]
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/WorldCameraController" unique_id=724038303]
 cull_mask = 1048573
 current = true
 
-[node name="RayCast3D" type="RayCast3D" parent="CameraTest/WorldCameraController/Camera3D" unique_id=71602110 node_paths=PackedStringArray("reticle")]
+[node name="RayCast3D" type="RayCast3D" parent="CameraPivot/WorldCameraController/Camera3D" unique_id=71602110 node_paths=PackedStringArray("reticle")]
 target_position = Vector3(0, 0, -50)
 collision_mask = 8
 script = ExtResource("3_4xmcj")
 reticle = NodePath("../../../../UserInterface/Reticle")
+
+[node name="Visor" type="MeshInstance3D" parent="CameraPivot" unique_id=1326431801]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.402)
+visible = false
+mesh = SubResource("BoxMesh_js2ha")
 
 [node name="PlayerMovement" type="AnimationPlayer" parent="." unique_id=2130178659]
 libraries/ = SubResource("AnimationLibrary_4gogw")
@@ -838,13 +879,15 @@ render_target_update_mode = 4
 script = ExtResource("13_feqls")
 
 [node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=114416263 node_paths=PackedStringArray("WorldCamera")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.428, 0)
 cull_mask = 1048574
 script = ExtResource("14_tx066")
-WorldCamera = NodePath("../../../CameraTest/WorldCameraController/Camera3D")
+WorldCamera = NodePath("../../../CameraPivot/WorldCameraController/Camera3D")
 
 [node name="WeaponHolder" type="Node3D" parent="SubViewportContainer/SubViewport/Camera3D" unique_id=1926499543]
 
 [node name="WeaponController" parent="SubViewportContainer/SubViewport/Camera3D/WeaponHolder" unique_id=231687715 node_paths=PackedStringArray("CameraControllerRef") instance=ExtResource("6_4xmcj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, -0.23, 0.16)
-CameraControllerRef = NodePath("../../../../../CameraTest/WorldCameraController")
+CameraControllerRef = NodePath("../../../../../CameraPivot/WorldCameraController")
+
+[node name="PauseMenu" parent="." unique_id=217911543 instance=ExtResource("23_tx066")]

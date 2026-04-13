@@ -24,7 +24,8 @@ public partial class WeaponController : Node3D
     }; 
 
     // This variable would be the most important to synchronize
-    private int CurrentWeaponIndex = 0;
+    private int LastWeaponIndex = 0;
+    [Export] public int CurrentWeaponIndex = 0;
     private const int MAX_WEAPON_AMMOUNT = 2;
     private WeaponBase CurrentWeapon;
     private Procedural procedural = new();
@@ -35,32 +36,62 @@ public partial class WeaponController : Node3D
     [Export] public JumpRecoil JumpRecoilRef;
 	[Export] private NoiseTexture2D RandSwayNoise;
 
+    public PlayerContext context;
+    private const int SERVER = 1;
+
+    // Runs before _Ready()
+    public void SetContext(PlayerContext ctx)
+    {
+        context = ctx;
+    }
 
     public override void _Ready()
     {
         base._Ready();
-        MovementChanged += OnMovementStateChange;
+
+        SetPhysicsProcess(false);
+        SetProcess(false);
+
+        LastWeaponIndex = CurrentWeaponIndex;
+
+        context.player.PlayerReady += OnPlayerReady;        
+    }
+
+    private void OnPlayerReady()
+    {
+        GD.Print("WeaponController ready!");
+        
+        SetPhysicsProcess(true);
+        SetProcess(true);
+
+        // All peers load weapon
         LoadWeapon();
+
+        if(!context.player.myNetId.IsLocal)
+            return;
+
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
         procedural.SetRandSwayNoise(RandSwayNoise);
     }
 
     public override void _Input(InputEvent @event)
     {
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         base._Input(@event);
         if (@event is InputEventMouseMotion)
 		{
 			// Need to cast event over to InputEventMouseMotion, copy that into a local variable and
 			// pass the Relative (mouse deltas between frames) over to MouseMovement 
 			InputEventMouseMotion MouseEvent = (InputEventMouseMotion)@event;
-			//MouseMovement = MouseEvent.Relative;
             procedural.SetMouseMovementDelta(MouseEvent);
 		}
 
         // In _Input, the event actions are not polled and are only triggered once everytime the key is pressed 
         if(@event.IsActionPressed("primary_action"))
             CurrentPrimaryWeaponAction?.OnActionPressed();
-
+        
         if(@event.IsActionReleased("primary_action"))
             CurrentPrimaryWeaponAction?.OnActionReleased();
     
@@ -79,41 +110,41 @@ public partial class WeaponController : Node3D
         for(int i = 1; i <= MAX_WEAPON_AMMOUNT; i++)
         {   
             if(@event.IsActionPressed($"weapon_{i}"))
-                TryWeaponSwap(i - 1);
+            {
+                RpcId(SERVER, MethodName.TryWeaponSwap, i-1);
+            }
         }
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void TryWeaponSwap(int ProposedWeapon)
     {
         // If the proposed weapon is already the same as the CurrentWeaponIndex then dont do anything
         if(ProposedWeapon == CurrentWeaponIndex || ProposedWeapon > Arsenal.Length)
             return;
-    
+
+        // Server changes this
         CurrentWeaponIndex = ProposedWeapon;
-
-        // Send RPC here?
-        SwapWeapon();
     }
     
-    // This will most likely be an rpc done on the server
-    private void SwapWeapon()
-    {
-        CurrentWeapon?.QueueFree();
-        // By this time the CurrentWeaponIndex has already moved to the next weapon
-        LoadWeapon();
-    }
-
     private void LoadWeapon()
     {
+        // Could be for everyone
         UpdateCurrentWeapon();
         UpdateCurrentWeaponActions();
-        ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
-        JumpRecoilRef.AddChild(CurrentWeapon);
-        CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);
+
+        if (context.player.myNetId.IsLocal || GenericCore.Instance.IsServer)
+        {
+            ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
+            JumpRecoilRef.AddChild(CurrentWeapon, true);
+            CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);   
+        }
+            
     }
 
     private void UpdateCurrentWeapon()
     {
+        // Local Player = build weapon; Non-local Player = swap weapon models
         CurrentWeapon = WeaponFactory.Create(Arsenal[CurrentWeaponIndex], this);
         if(CurrentWeapon == null)
         {
@@ -146,6 +177,7 @@ public partial class WeaponController : Node3D
 
     private void ParseWeaponResource(in WeaponResource weaponResource)
     {
+        // Local player only
         Position = weaponResource.ViewportPosition;
         RotationDegrees = weaponResource.ViewportRotation;
         Scale = weaponResource.ViewportScale;
@@ -169,6 +201,17 @@ public partial class WeaponController : Node3D
     {
         base._PhysicsProcess(delta);
 
+        // Every loads weapons when they notice a change
+        if(LastWeaponIndex != CurrentWeaponIndex)
+        {
+            GD.Print("Swaping Weapon!!!");
+            LastWeaponIndex = CurrentWeaponIndex;
+            SwapWeapon();   // Clients and server would diverge from here
+        }
+
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         Vector3 WeaponPos = Position;
 		Vector3 WeaponRotDeg = RotationDegrees;
 
@@ -181,13 +224,28 @@ public partial class WeaponController : Node3D
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         CurrentPrimaryWeaponAction?.Update(delta);
         CurrentSecondaryWeaponAction?.Update(delta);
     }
 
-    // Triggered every movement state change
-    private void OnMovementStateChange(State NextMovementState)
+    // This will most likely be an rpc done on the server
+    private void SwapWeapon()
     {
+        CurrentWeapon?.QueueFree();
+        // By this time the CurrentWeaponIndex has already moved to the next weapon
+        LoadWeapon();
+    }
+
+    // Triggered every movement state change
+    public void OnMovementStateChange(State NextMovementState)
+    {
+        if (!context.player.myNetId.IsLocal)
+            return;
+
         CurrentMovementState = NextMovementState.GetStateName();
         CurrentWeaponMovementProfile = NextMovementState.GetWeaponProfile();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);

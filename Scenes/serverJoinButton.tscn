@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bfxtyf6bjfce4"]
 
 [ext_resource type="Script" uid="uid://cd7h4l8b3oney" path="res://Network/ServerJoinButton.cs" id="1_hcg2c"]
+[ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="2_jc6ct"]
 
 [node name="Control" type="Control" unique_id=321566243]
 custom_minimum_size = Vector2(192, 64)
@@ -15,5 +16,10 @@ custom_minimum_size = Vector2(128, 32)
 layout_mode = 0
 offset_right = 192.0
 offset_bottom = 32.0
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_jc6ct")
 theme_override_font_sizes/font_size = 24
-text = "Default Server"
+text = "default server"

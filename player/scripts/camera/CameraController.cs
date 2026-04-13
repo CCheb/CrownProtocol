@@ -24,12 +24,38 @@ public partial class CameraController : Node3D
     [Export] public  CameraLayer CameraJumpingLayer;
     [Export] public  CameraZoomLayer cameraZoomLayer;
     // BaseOffset helps in giving us an origin/base to apply all of the camera translations
-    [Export] private Vector3 BaseOffset = new Vector3(0.0f, 1.428f, 0.0f);
+    [Export] private Vector3 BaseOffset = new Vector3(0.0f, 0.0f, 0.0f);
     
-    
+    private PlayerContext context;
+
+    public void SetContext(PlayerContext ctx)
+    {
+        context = ctx;
+    }
+
+    public override void _Ready()
+    {
+        base._Ready();
+       
+        SetProcess(false);
+
+        context.player.PlayerReady += OnPlayerReady;   
+    }
+
+    private void OnPlayerReady()
+    {
+        SetProcess(true);
+
+        GD.Print("CameraController Ready!");
+    }
+
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        if (!context.player.myNetId.IsLocal)    // This might not be ready by the time it executes
+            return;
+
         // Its essential that we reset these values every frame. If we left these two outside then the offsets would stack
         // which is not something we would like. Since _Process happens so fast these calculation feel smooth when in-game
 
@@ -38,12 +64,14 @@ public partial class CameraController : Node3D
         Vector3 finalRotation = Vector3.Zero;
         float finalFov = 0.0f;
 
+        /*
         if(InputCameraLayer != null)
         {
             // InputCameraLayer is special since it acts as the base rotation that we would like to keep when the player stops looking around.
             // Its a base rotation that everything else applies on top of. Every frame we start at a base rotation 
             finalRotation = InputCameraLayer.RotationOffset;
         }
+        */
 
         // All of the layers that are considered offsets MUST BE ADDED to the final transform. If we used = then they would take over
         if(MovementLayer != null)

@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://q1nvrlvncwdr"]
 
 [ext_resource type="Script" uid="uid://rae0nirmar6p" path="res://Network/WarningScreen.cs" id="1_ep4bi"]
+[ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="2_h76i0"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="3_u5otg"]
 
 [node name="WarningScreen" type="Control" unique_id=36651003]
 visible = false
@@ -25,7 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.14509805, 0, 0, 0.9137255)
 metadata/_edit_use_anchors_ = true
 
 [node name="Foreground" type="ColorRect" parent="." unique_id=1763896888]
@@ -40,7 +42,7 @@ offset_right = -0.35205078
 offset_bottom = -3.0517578e-05
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.22490484, 0.22490484, 0.22490484, 1)
+color = Color(0.25490198, 0, 0.011764706, 0.9411765)
 metadata/_edit_use_anchors_ = true
 
 [node name="Message" type="Label" parent="." unique_id=1273109486]
@@ -56,7 +58,10 @@ offset_right = 230.0
 offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_h76i0")
+theme_override_font_sizes/font_size = 48
 text = "Server is busy or not available
 Please refresh server list"
 horizontal_alignment = 1
@@ -74,7 +79,34 @@ offset_right = 0.079956055
 offset_bottom = -0.06402588
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_h76i0")
+theme_override_font_sizes/font_size = 48
 text = "OK"
+
+[node name="Sorry" type="Label" parent="." unique_id=1854564773]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.432
+anchor_top = 0.25300002
+anchor_right = 0.549
+anchor_bottom = 0.31300002
+offset_left = -0.37615967
+offset_top = -0.5011902
+offset_right = 0.0357666
+offset_bottom = -0.09799194
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_h76i0")
+theme_override_font_sizes/font_size = 50
+text = "SORRY!"
+horizontal_alignment = 1
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=922134882]
+stream = ExtResource("3_u5otg")
+volume_db = -5.0
 
 [connection signal="pressed" from="Ok" to="." method="OnOkButtonPressed"]

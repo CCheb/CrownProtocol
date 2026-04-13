@@ -25,6 +25,9 @@ public partial class Hitscan : WeaponBase
         SetWeaponNodes();
         FireAnimationSpeed = CalculateFireAnimationSpeed();
         TryPlayingDrawAnimation();
+
+        if(GenericCore.Instance.IsServer)
+            GD.Print("Swapped to hitscan!");
     }
 
     private void SetWeaponNodes()
@@ -39,6 +42,9 @@ public partial class Hitscan : WeaponBase
     // Function gets called at very specific moments during the firing animation
     public void EjectShell()
     {
+        if (!weaponController.context.player.myNetId.IsLocal)
+            return;
+
         ShellEjection Shell = ShellCasingScene.Instantiate<ShellEjection>();
         GetTree().CurrentScene.AddChild(Shell);
         Shell.GlobalTransform = ShellEjectionMarker.GlobalTransform;
@@ -46,51 +52,69 @@ public partial class Hitscan : WeaponBase
         Shell.Eject(EjectDir, 0.3f);
     }
 
-    public override async void Fire()
+     public override async void Fire()
     {
         IsFiring = true;
-        
-        // Find out if the ray intersected with a body. It will return nothing if not
-        Godot.Collections.Dictionary collisionResult = CalculateRay();
-        if(collisionResult.Count != 0)
-        {
-            PlayFireSequence();
-            // This gets ignored by certain Actions like FullAuto
-            await ToSignal(WeaponAnimPlayer, "animation_finished");
-        }
+
+        (Vector3 originPoint, Vector3 endPoint) projectedRay = ClientCalculateRay();
+        PlayFireSequence();
+        RpcId(SERVER, MethodName.RequestFire, projectedRay.originPoint, projectedRay.endPoint);
+
+        await ToSignal(WeaponAnimPlayer, "animation_finished");
 
         IsFiring = false;
     }
 
-    private Godot.Collections.Dictionary CalculateRay(float length = 1000.0f)
+    private void PlayFireSequence()
     {
-		Camera3D camera = Globals.player.WorldCameraController.Camera;
-		// Grab the worlds 3D physics state/sandbox. This state is where all of the physics occurs and its handled by the physics server
-		var spaceState = camera.GetWorld3D().DirectSpaceState;
+        SignalNodes();
+        UpdateAmmo();
+        WeaponAnimPlayer.Play(WeaponData.Fire.AnimationName, WeaponData.Fire.BlendAmount,FireAnimationSpeed);
+        WeaponAnimPlayer.Seek(0.02f, true); // Nudge animation forward to the "kick" pose
+        GunSound.GlobalTransform = weaponController.context.player.GlobalTransform;
+        GunSound.Play();
+    }
+    
+    private (Vector3, Vector3) ClientCalculateRay(float length = 1000.0f)
+    {
+        Camera3D camera = weaponController.context.cameraController.Camera;
 		
 		Vector2 screenCenter = (Vector2)GetViewport().Get("size") / 2;
 		
 		Vector3 originPoint = camera.ProjectRayOrigin(screenCenter);
 		Vector3 endPoint = originPoint + camera.ProjectRayNormal(screenCenter) * length;
 
-		// Create the ray which will return back a dictionary with metadata on any
-		// physics collisions. Make sure to enable collision with bodies or areas
-		var queryCollisions = PhysicsRayQueryParameters3D.Create(originPoint, endPoint);
+        return (originPoint, endPoint);
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+    private void RequestFire(Vector3 originPoint, Vector3 endPoint)
+    {
+        if (!GenericCore.Instance.IsServer)
+            return;
+        
+        // TODO: Verify points are good here
+
+        Godot.Collections.Dictionary collisionResult = ServerCalculateRay(originPoint, endPoint);
+
+        if (collisionResult.Count != 0)
+        {
+            GD.Print($"Hitscan hit at: {collisionResult["position"]}, {collisionResult["collider"]}");
+        }
+    }
+
+    private Godot.Collections.Dictionary ServerCalculateRay(Vector3 originPoint, Vector3 endPoint)
+    {
+        var spaceState = GetWorld3D().DirectSpaceState;
+
+        var queryCollisions = PhysicsRayQueryParameters3D.Create(originPoint, endPoint);
         queryCollisions.CollideWithBodies = true;
 		queryCollisions.CollideWithAreas = true;
 		queryCollisions.CollisionMask = (1 << 0) | (1 << 1) | (1 << 2); // Detect layers 1, 2, and 3
 
-		var collisionResult = spaceState.IntersectRay(queryCollisions);
+        var collisionResult = spaceState.IntersectRay(queryCollisions);
+        
         return collisionResult;
-    }
-
-    private void PlayFireSequence()
-    {
-        SignalNodes();
-        WeaponAnimPlayer.Play(WeaponData.Fire.AnimationName, WeaponData.Fire.BlendAmount,FireAnimationSpeed);
-        UpdateAmmo();
-        WeaponAnimPlayer.Seek(0.02f, true); // Nudge animation forward to the "kick" pose
-        GunSound.Play();
     }
 
     private void SignalNodes()

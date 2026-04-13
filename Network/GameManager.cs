@@ -5,6 +5,7 @@ public partial class GameManager : Node3D
 {
 	[Export] private Marker3D spectatorSpawn;
 	[Export] private NetworkCore netCore;
+	[Export] private MultiplayerSpawner projectileSpawner;
 	[Export] private PackedScene cameraScene;
 	private Godot.Collections.Array<Marker3D> playerSpawns;
 	private int connectedPlayers = 0;
@@ -55,6 +56,22 @@ public partial class GameManager : Node3D
 			}
 			
 		}
+	}
+
+	public void SpawnProjectile(PackedScene projectileScene, Transform3D muzzleRef)
+	{
+		if (!GenericCore.Instance.IsServer)
+			return;
+
+		var projectile = projectileScene.Instantiate();
+
+		if (projectile is IBullet bullet)
+		{
+			//var spawnRoot = GetNode(projectileSpawner.SpawnPath);
+			AddChild(projectile, true);
+			bullet.Initialize(muzzleRef);
+		}
+		
 	}
 
 	private async void OnPlayerDisconnected(long id)

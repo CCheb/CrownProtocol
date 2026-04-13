@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dq7685x7jils3" path="res://Network/GameLobby.cs" id="1_d3m63"]
 [ext_resource type="Script" uid="uid://dhp14ud86aqe7" path="res://Network/Cores/NetworkCore.cs" id="2_xt36j"]
+[ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="3_fa2ey"]
+[ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="4_8n78e"]
+[ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="5_b83i7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fa2ey"]
 properties/0/path = NodePath("CountDown:visible")
@@ -10,6 +13,15 @@ properties/0/replication_mode = 2
 properties/1/path = NodePath("CountDown:text")
 properties/1/spawn = true
 properties/1/replication_mode = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa2ey"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
 
 [node name="GameLobby" type="Control" unique_id=220696743 node_paths=PackedStringArray("lobby", "countDownLabel", "netCore")]
 layout_mode = 3
@@ -41,21 +53,37 @@ offset_top = 8.0
 offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.23934713, 0.23934713, 0.23934713, 1)
+color = Color(0.25490198, 0, 0.011764706, 0.9411765)
 
 [node name="LobbyTitle" type="Label" parent="." unique_id=1217420392]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
+offset_left = -308.0
+offset_right = 308.0
+offset_bottom = 135.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 64
-text = "Game Lobby"
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_fa2ey")
+theme_override_font_sizes/font_size = 76
+text = "GAME LOBBY"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="LobbyTitle" unique_id=537943226]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.541
+anchor_top = 0.874
+anchor_right = 1.5840001
+anchor_bottom = 1.0
+offset_left = 0.25601196
+offset_top = 0.009994507
+offset_right = 0.2559204
+offset_bottom = -3.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fa2ey")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1737203123]
 layout_mode = 1
@@ -83,6 +111,9 @@ offset_left = -0.44802856
 offset_top = -0.12005615
 offset_right = 0.27197266
 offset_bottom = 4.7039795
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_8n78e")
 theme_override_font_sizes/font_size = 32
 text = "5"
 metadata/_edit_use_anchors_ = true
@@ -95,21 +126,33 @@ anchor_right = -1.5560001
 anchor_bottom = 1.000111
 offset_right = 0.0080013275
 offset_bottom = -0.0049934387
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_8n78e")
 theme_override_font_sizes/font_size = 32
-text = "Game Starting in:"
+text = "GAME STARTING IN :"
 metadata/_edit_use_anchors_ = true
 
 [node name="Button" type="Button" parent="." unique_id=669074425]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.055555556
-anchor_top = 0.061728396
-anchor_right = 0.1208889
-anchor_bottom = 0.14769137
+anchor_left = 0.039583333
+anchor_top = 0.06574074
+anchor_right = 0.113852784
+anchor_bottom = 0.15602471
 offset_right = -0.26400757
 offset_bottom = -2.7040024
-theme_override_font_sizes/font_size = 32
-text = "Quit"
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_8n78e")
+theme_override_font_sizes/font_size = 44
+text = "quit"
 metadata/_edit_use_anchors_ = true
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=696971625]
+stream = ExtResource("5_b83i7")
+volume_db = -5.0
 
 [connection signal="pressed" from="Button" to="." method="OnQuitButtonPressed"]

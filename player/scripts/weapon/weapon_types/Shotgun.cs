@@ -30,12 +30,9 @@ public partial class Shotgun : WeaponBase
     private void SetWeaponNodes()
     {
         MuzzleFlashRef = GetNode<MuzzleFlash>("./MuzzleFlash");
-        if(MuzzleFlashRef == null)
-            GD.Print("Empty!");
-
-        /*
-        GunSoundEmpty = GetNode<AudioStreamPlayer3D>("GunSoundEmpty");
-        */
+        
+        //GunSoundEmpty = GetNode<AudioStreamPlayer3D>("GunSoundEmpty");
+        
         GunSound = GetNode<AudioStreamPlayer3D>("GunSound");
         WeaponAnimPlayer = GetNode<AnimationPlayer>("./Meshes/AnimationPlayer");
     }
@@ -54,29 +51,10 @@ public partial class Shotgun : WeaponBase
     {
         IsFiring = true;
 
-        // Shotgun shoots various pelets
-        for(int i = 0; i < 12; i++)
-        {
-            // Find out if the ray intersected with a body. It will return nothing if not
-            Godot.Collections.Dictionary collisionResult = CalculateRay();
-
-            if(collisionResult.Count != 0)
-                SpawnDecal((Vector3)collisionResult["position"]);
-        }
-
-        weaponController.CameraControllerRef.RequestCameraRecoil();
-        weaponController.WeaponRecoilRef.RequestWeaponRecoil();
-        MuzzleFlashRef.RequestMuzzleFlash(WeaponData.FireRate);
-        // Update Ammo here
-        // Gun Sound here
-        GunSound.Play();
-    
-        // Weapon animations should be reactive not authorative in nature
-        // Also animation name should be abstracted out to keep it dynamic
-
-        // Fire animation
-        WeaponAnimPlayer.Play(WeaponData.Fire.AnimationName, WeaponData.Fire.BlendAmount,FireAnimationSpeed);
-        WeaponAnimPlayer.Seek(0.02f, true); // Nudge animation forward to the "kick" pose
+        (Vector3 originPoint, Vector3 endPoint) projectedRay = ClientCalculateRay();
+        PlayFireSequence();
+        RpcId(SERVER, MethodName.RequestFire, projectedRay.originPoint, projectedRay.endPoint);
+        
         await ToSignal(WeaponAnimPlayer, "animation_finished");
         
         // Pump/rack animation 
@@ -89,33 +67,73 @@ public partial class Shotgun : WeaponBase
         IsFiring = false;
     }
 
-    // Shoot a ray cast from the center of the screen
-	// straight outwards until it either collides with a body or reaches limit
-    private Godot.Collections.Dictionary CalculateRay(float spreadRadiusInPixels = 50.0f, float length = 1000.0f)
+    private void PlayFireSequence()
     {
-		Camera3D camera = Globals.player.WorldCameraController.Camera;
-		// Grab the worlds 3D physics state/sandbox. This state is where all of the physics occurs and its handled by the physics server
-		var spaceState = camera.GetWorld3D().DirectSpaceState;
-	
+        SignalNodes();
+        UpdateAmmo();
+        WeaponAnimPlayer.Play(WeaponData.Fire.AnimationName, WeaponData.Fire.BlendAmount,FireAnimationSpeed);
+        WeaponAnimPlayer.Seek(0.02f, true); // Nudge animation forward to the "kick" pose
+        GunSound.GlobalTransform = weaponController.context.player.GlobalTransform;
+        GunSound.Play();
+    }
+
+    private void SignalNodes()
+    {
+        weaponController.CameraControllerRef.RequestCameraRecoil();
+        weaponController.WeaponRecoilRef.RequestWeaponRecoil();
+        MuzzleFlashRef.RequestMuzzleFlash(WeaponData.FireRate);
+    }
+
+    private void UpdateAmmo()
+    {
+        return;
+    }
+
+    private (Vector3, Vector3) ClientCalculateRay(float length = 1000.0f)
+    {
+        Camera3D camera = weaponController.context.cameraController.Camera;
+		
 		Vector2 screenCenter = (Vector2)GetViewport().Get("size") / 2;
 		Vector3 originPoint = camera.ProjectRayOrigin(screenCenter);
 		Vector3 endPoint = originPoint + camera.ProjectRayNormal(screenCenter) * length;
-    
-        endPoint.Y += (float)GD.RandRange(-spreadRadiusInPixels*2.0f, spreadRadiusInPixels*2.0f);
-        endPoint.X += (float)GD.RandRange(-spreadRadiusInPixels*2.0f, spreadRadiusInPixels*2.0f);
 
-		// Create the ray which will return back a dictionary with metadata on any
-		// physics collisions. Make sure to enable collision with bodies or areas
-		var query = PhysicsRayQueryParameters3D.Create(originPoint, endPoint);
-		query.CollideWithBodies = true;
-		query.CollideWithAreas = true;
-		query.CollisionMask = (1 << 0) | (1 << 1) | (1 << 2); // Detect layers 1, 2, and 3
-		
-		// We are essentially creating a dictionary holding a number of keys that pertain to the collision information
-		var collisionResult = spaceState.IntersectRay(query);
-        return collisionResult;
+        return (originPoint, endPoint);
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+    private void RequestFire(Vector3 originPoint, Vector3 endPoint)
+    {   
+        //TODO: Dont hard code the shotcount
+        for(int i = 0; i < 12; i++)
+        {
+            Godot.Collections.Dictionary collisionResult = ServerCalculateRay(originPoint, endPoint);
+            
+            if(collisionResult.Count != 0)
+            {   
+                GD.Print($"Pellet hit at: {collisionResult["position"]}");
+                //SpawnDecal((Vector3)collisionResult["position"]);
+            }
+        }
+    }
+    private Godot.Collections.Dictionary ServerCalculateRay(Vector3 originPoint, Vector3 endPoint, float spreadRadiusInPixels = 50.0f)
+    {
+        var spaceState = GetWorld3D().DirectSpaceState;
+
+        Vector3 randEndPoint = endPoint;
+        randEndPoint.Y += (float)GD.RandRange(-spreadRadiusInPixels*2.0f, spreadRadiusInPixels*2.0f);
+        randEndPoint.X += (float)GD.RandRange(-spreadRadiusInPixels*2.0f, spreadRadiusInPixels*2.0f);
+
+        var queryCollisions = PhysicsRayQueryParameters3D.Create(originPoint, randEndPoint);
+        queryCollisions.CollideWithBodies = true;
+		queryCollisions.CollideWithAreas = true;
+        queryCollisions.CollisionMask = (1 << 0) | (1 << 1) | (1 << 2); // Detect layers 1, 2, and 3
+
+        var collisionResult = spaceState.IntersectRay(queryCollisions);
+        
+        return collisionResult;
+
+    }
+   
     private async void SpawnDecal(Vector3 position)
     {
         // This can be offloaded to a seperate decal script

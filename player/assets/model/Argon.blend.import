@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "jump": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://player/assets/model/jump.anim",
+"save_to_file/fallback_path": "res://player/assets/model/jumpInPlace.anim",
 "save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://d2ktqfeh6e4jm",
 "settings/loop_mode": 0,

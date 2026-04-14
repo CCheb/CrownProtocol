@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://d1gkqspmbf812"]
+
+[ext_resource type="Script" uid="uid://dfe0snu41fopf" path="res://player/scripts/etc/WeaponBurstProfile.cs" id="1_1v3r2"]
+[ext_resource type="Script" uid="uid://c8of8infi526n" path="res://player/scripts/etc/AnimationProfile.cs" id="1_goc56"]
+[ext_resource type="PackedScene" uid="uid://dyk8nokmfq10c" path="res://player/assets/bullets/rocket.tscn" id="2_bgqxs"]
+[ext_resource type="Script" uid="uid://cmymrn4gpv3y3" path="res://player/scripts/weapon/WeaponResource.cs" id="2_ghydk"]
+[ext_resource type="PackedScene" uid="uid://dhfmbkq18ci0k" path="res://player/assets/weapons/bazooka/bazooka.tscn" id="2_ip05j"]
+
+[sub_resource type="Resource" id="Resource_goc56"]
+script = ExtResource("1_goc56")
+AnimationName = "Draw"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_b7dpl"]
+script = ExtResource("1_goc56")
+AnimationName = "Fire"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_lii1u"]
+script = ExtResource("1_goc56")
+AnimationName = "Reload"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_2rays"]
+script = ExtResource("1_1v3r2")
+
+[resource]
+script = ExtResource("2_ghydk")
+WeaponName = "BAZOOKA"
+WeaponType = 1
+PrimaryWeaponAction = 1
+SecondaryWeaponAction = 5
+ViewportPosition = Vector3(0.167, -0.218, -0.787)
+WeaponScene = ExtResource("2_ip05j")
+FireRate = 220.0
+AmmoCount = 25
+AmmoCapacity = 25
+projectileScene = ExtResource("2_bgqxs")
+Fire = SubResource("Resource_b7dpl")
+Reload = SubResource("Resource_lii1u")
+Draw = SubResource("Resource_goc56")
+metadata/_custom_type_script = "uid://cmymrn4gpv3y3"

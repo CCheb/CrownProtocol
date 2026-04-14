@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dy70oeyssvmaw" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Frame.png" id="1_7kbgt"]
 [ext_resource type="Script" uid="uid://calmebmmja1tt" path="res://player/scripts/weapon/weapon_types/Projectile.cs" id="1_42rsu"]
 [ext_resource type="Texture2D" uid="uid://csmkgbc4dfeqd" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Handle.png" id="2_kpksr"]
-[ext_resource type="PackedScene" uid="uid://6ugaon0u6a2q" path="res://player/assets/weapons/rifle/RifleShellCasing.tscn" id="2_l35yr"]
+[ext_resource type="PackedScene" uid="uid://6ugaon0u6a2q" path="res://player/assets/weapons/burstRifle/RifleShellCasing.tscn" id="2_l35yr"]
 [ext_resource type="Texture2D" uid="uid://cljk1468q5228" path="res://player/assets/weapons/DrewPistol/Hg_v1_HG_Panel.png" id="3_ck7u8"]
 [ext_resource type="Texture2D" uid="uid://c4ccyhxyngioh" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Frame2.png" id="4_4p75e"]
 [ext_resource type="Texture2D" uid="uid://c316fl2drmat3" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Barrel.png" id="5_2atdd"]
@@ -291,6 +291,34 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_e8tlj")
 
+[sub_resource type="Animation" id="Animation_6hnfy"]
+resource_name = "Draw"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hg_v1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.29, -0.4, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hg_v1:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.7853982, 1.2566371, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_l35yr"]
 resource_name = "Fire"
 length = 0.233
@@ -308,13 +336,66 @@ tracks/0/keys = {
 "method": &"EjectShell"
 }]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hg_v1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hg_v1:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nyw3o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hg_v1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hg_v1:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_vpvwe"]
 resource_name = "Reload"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nyw3o"]
 _data = {
+&"Draw": SubResource("Animation_6hnfy"),
 &"Fire": SubResource("Animation_l35yr"),
+&"RESET": SubResource("Animation_nyw3o"),
 &"Reload": SubResource("Animation_vpvwe")
 }
 
@@ -326,23 +407,23 @@ gravity = Vector3(0, 0.2, 0)
 scale_min = 0.5
 scale_max = 2.0
 
-[sub_resource type="Gradient" id="Gradient_58icr"]
+[sub_resource type="Gradient" id="Gradient_l35yr"]
 colors = PackedColorArray(0.9834301, 0.28700325, 7.70092e-07, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_3leg5"]
-gradient = SubResource("Gradient_58icr")
+gradient = SubResource("Gradient_l35yr")
 fill = 2
 fill_from = Vector2(0.5, 0.5)
 
-[sub_resource type="Gradient" id="Gradient_5du0i"]
+[sub_resource type="Gradient" id="Gradient_vpvwe"]
 colors = PackedColorArray(0.9834301, 0.28700325, 7.70092e-07, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_4cwbm"]
-gradient = SubResource("Gradient_5du0i")
+gradient = SubResource("Gradient_vpvwe")
 fill = 2
 fill_from = Vector2(0.5, 0.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8echa"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nyw3o"]
 transparency = 1
 blend_mode = 1
 vertex_color_use_as_albedo = true
@@ -356,13 +437,13 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_i4fyq"]
-material = SubResource("StandardMaterial3D_8echa")
+material = SubResource("StandardMaterial3D_nyw3o")
 size = Vector2(0.5, 0.5)
 
 [node name="Node3D" type="Node3D" unique_id=720787963 node_paths=PackedStringArray("ShellEjectionMarker")]
 script = ExtResource("1_42rsu")
 ShellCasingScene = ExtResource("2_l35yr")
-ShellEjectionMarker = NodePath("ShellEjectionTest")
+ShellEjectionMarker = NodePath("ShellEjection")
 
 [node name="Meshes" type="Node3D" parent="." unique_id=1238503741]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -0.23284191, 0)
@@ -458,7 +539,7 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_ex53p")
 draw_pass_1 = SubResource("QuadMesh_i4fyq")
 
-[node name="ShellEjectionTest" type="Marker3D" parent="." unique_id=662687759]
+[node name="ShellEjection" type="Marker3D" parent="." unique_id=662687759]
 transform = Transform3D(0.562805, -0.82658964, 0, 0.82658964, 0.562805, 0, 0, 0, 1, 0, 0.06688545, 0.045254827)
 
 [node name="GunSound" type="AudioStreamPlayer3D" parent="." unique_id=547245048]
@@ -466,6 +547,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0024175718, -0.13947529
 stream = ExtResource("8_kpksr")
 
 [node name="CameraReloadProxy" type="Node3D" parent="." unique_id=125113514]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.41, -0.12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.1, 0.4)
 
 [node name="Camera3D" type="Camera3D" parent="CameraReloadProxy" unique_id=1725359410]

@@ -24,7 +24,7 @@ public partial class Projectile : WeaponBase
     {
         base._Ready();
         
-        ShellEjectionMarker = GetNode<Marker3D>("ShellEjectionTest");
+        ShellEjectionMarker = GetNode<Marker3D>("ShellEjection");
         // No need to initialize Position, Rotation, and Scale here since the WeaponController is already doing that for us
         // We do however need to initialize more weapon specific things like nodes
         SetWeaponNodes();
@@ -102,8 +102,12 @@ public partial class Projectile : WeaponBase
         if (collisionResult.Count != 0)
         {
             Vector3 direction = (endPoint - originPoint).Normalized();
-            Vector3 spawnPos = originPoint + direction * 0.5f; // small offset in front of camera
-            Transform3D t = new Transform3D(Basis.LookingAt(endPoint, Vector3.Up), spawnPos);
+            Vector3 spawnPos = originPoint + direction * 0.85f; // small offset in front of camera
+            //Transform3D t = new Transform3D(Basis.LookingAt(endPoint, Vector3.Up), spawnPos);
+
+            Transform3D t = Transform3D.Identity;
+            t.Origin = spawnPos;
+            t = t.LookingAt(spawnPos + direction, Vector3.Up);
 
             var gameManager = GetTree().CurrentScene as GameManager;
             gameManager.SpawnProjectile(projectileScene, t);

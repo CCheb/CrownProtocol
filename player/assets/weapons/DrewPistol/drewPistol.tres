@@ -6,6 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://bfjnhx3rnpc5k" path="res://player/assets/weapons/DrewPistol/drewPistol.tscn" id="2_jxtl0"]
 [ext_resource type="PackedScene" uid="uid://e5kh6jpm8qar" path="res://player/assets/bullets/arcadeBullet.tscn" id="4_jxtl0"]
 
+[sub_resource type="Resource" id="Resource_jxtl0"]
+script = ExtResource("1_rrfom")
+AnimationName = "Draw"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
 [sub_resource type="Resource" id="Resource_1svjh"]
 script = ExtResource("1_rrfom")
 AnimationName = "Fire"
@@ -16,7 +21,7 @@ script = ExtResource("1_rrfom")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_jxtl0"]
+[sub_resource type="Resource" id="Resource_2rays"]
 script = ExtResource("1_5x5cf")
 
 [resource]
@@ -33,4 +38,5 @@ AmmoCapacity = 250
 projectileScene = ExtResource("4_jxtl0")
 Fire = SubResource("Resource_1svjh")
 Reload = SubResource("Resource_rrfom")
+Draw = SubResource("Resource_jxtl0")
 metadata/_custom_type_script = "uid://cmymrn4gpv3y3"

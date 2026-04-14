@@ -25,9 +25,6 @@ public partial class Hitscan : WeaponBase
         SetWeaponNodes();
         FireAnimationSpeed = CalculateFireAnimationSpeed();
         TryPlayingDrawAnimation();
-
-        if(GenericCore.Instance.IsServer)
-            GD.Print("Swapped to hitscan!");
     }
 
     private void SetWeaponNodes()
@@ -99,7 +96,7 @@ public partial class Hitscan : WeaponBase
 
         if (collisionResult.Count != 0)
         {
-            GD.Print($"Hitscan hit at: {collisionResult["position"]}, {collisionResult["collider"]}");
+            //GD.Print($"Hitscan hit at: {collisionResult["position"]}, {collisionResult["collider"]}");
         }
     }
 

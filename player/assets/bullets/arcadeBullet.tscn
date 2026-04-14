@@ -6,6 +6,9 @@
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xc2s7"]
 size = Vector3(0.3, 0.3, 0.3)
@@ -20,10 +23,11 @@ albedo_color = Color(0.4376985, 0.0022525191, 0.9398231, 1)
 material = SubResource("StandardMaterial3D_rvhy2")
 size = Vector3(0.2, 0.2, 0.2)
 
-[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1383605961 node_paths=PackedStringArray("area")]
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1383605961 node_paths=PackedStringArray("area", "mesh")]
 collision_layer = 2
 script = ExtResource("1_bf8t7")
 area = NodePath("Area3D")
+mesh = NodePath("CollisionShape3D/MeshInstance3D")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1276127273]
 replication_config = SubResource("SceneReplicationConfig_bf8t7")

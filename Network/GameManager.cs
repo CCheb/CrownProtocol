@@ -66,7 +66,7 @@ public partial class GameManager : Node3D
 		var projectile = projectileScene.Instantiate();
 
 		if (projectile is IBullet bullet)
-		{
+		{	
 			//var spawnRoot = GetNode(projectileSpawner.SpawnPath);
 			AddChild(projectile, true);
 			bullet.Initialize(muzzleRef);

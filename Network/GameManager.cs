@@ -5,9 +5,11 @@ public partial class GameManager : Node3D
 {
 	[Export] private Marker3D spectatorSpawn;
 	[Export] private NetworkCore netCore;
+	[Export] private NetworkCore itemSpawner;
 	[Export] private MultiplayerSpawner projectileSpawner;
 	[Export] private PackedScene cameraScene;
 	private Godot.Collections.Array<Marker3D> playerSpawns;
+	private Godot.Collections.Array<PickupItemMarker> itemSpawns;
 	private int connectedPlayers = 0;
 	private const int MASTER = 1;
 
@@ -28,6 +30,13 @@ public partial class GameManager : Node3D
     	    if (node is Marker3D marker)
     	        playerSpawns.Add(marker);
     	}
+
+		itemSpawns = new Godot.Collections.Array<PickupItemMarker>();
+		foreach (var node in GetTree().GetNodesInGroup("ItemSpawns"))
+		{
+			if (node is PickupItemMarker pickUpItem)
+				itemSpawns.Add(pickUpItem);
+		}
 
 		if(GenericCore.Instance.IsServer)
 			GenericCore.Instance.ClientDisconnectedNotifier += OnPlayerDisconnected;
@@ -55,6 +64,16 @@ public partial class GameManager : Node3D
 				spectatorSpawn.AddChild(playerCamera);
 			}
 			
+		}
+	}
+
+	public void ServerSpawnItems()
+	{
+		foreach (PickupItemMarker item in itemSpawns)
+		{
+			GD.Print(item);
+			GD.Print((int)item.itemToBeSpawned);
+			itemSpawner.NetCreateObject((int)item.itemToBeSpawned, item.GlobalPosition, item.Quaternion);
 		}
 	}
 

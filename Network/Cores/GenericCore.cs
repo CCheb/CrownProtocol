@@ -340,6 +340,7 @@ public partial class GenericCore : Node
         if (IsServer)
         {
             var gm = GetTree().Root.GetNode<GameManager>("GameManager");
+            gm.ServerSpawnItems();
             gm.ServerSpawnPlayers();
         }
     }

@@ -47,5 +47,16 @@ public partial class Globals : Node
         public float VerticalBobAmount;
     }
 
+    public enum PickupItems
+    {
+        Smg,
+        BurstRifle,
+        Shotgun,
+        Bazooka,
+        Sniper,
+        Health,
+        Armor,
+    }
+
 
 }

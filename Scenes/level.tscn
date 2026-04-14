@@ -5,10 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://m2qog1d32hi4" path="res://Scenes/networkCamera.tscn" id="2_81xng"]
 [ext_resource type="PackedScene" uid="uid://cvkx4oslqntvk" path="res://Maps/Assets/space_map.tscn" id="4_81xng"]
 
-[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore")]
+[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "projectileSpawner")]
 script = ExtResource("1_6phgx")
 spectatorSpawn = NodePath("SpectatorSpawn")
 netCore = NodePath("MultiplayerSpawner")
+projectileSpawner = NodePath("ProjectileSpawner")
 cameraScene = ExtResource("2_81xng")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
@@ -17,7 +18,7 @@ spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
 
 [node name="ProjectileSpawner" type="MultiplayerSpawner" parent="." unique_id=849467511]
-_spawnable_scenes = PackedStringArray("uid://e5kh6jpm8qar")
+_spawnable_scenes = PackedStringArray("uid://e5kh6jpm8qar", "uid://dyk8nokmfq10c")
 spawn_path = NodePath("..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=936373086]

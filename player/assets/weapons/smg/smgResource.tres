@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://mijnshbmyiy8"]
+
+[ext_resource type="Script" uid="uid://c8of8infi526n" path="res://player/scripts/etc/AnimationProfile.cs" id="1_2rays"]
+[ext_resource type="Script" uid="uid://dfe0snu41fopf" path="res://player/scripts/etc/WeaponBurstProfile.cs" id="1_mjjlj"]
+[ext_resource type="Script" uid="uid://cmymrn4gpv3y3" path="res://player/scripts/weapon/WeaponResource.cs" id="2_iqh0y"]
+[ext_resource type="PackedScene" uid="uid://daf2hxpfxrtme" path="res://player/assets/weapons/smg/smg.tscn" id="2_juue4"]
+
+[sub_resource type="Resource" id="Resource_juue4"]
+script = ExtResource("1_2rays")
+AnimationName = "Draw"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_rbuic"]
+script = ExtResource("1_2rays")
+AnimationName = "Fire"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_fngbp"]
+script = ExtResource("1_2rays")
+AnimationName = "Reload"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_2rays"]
+script = ExtResource("1_mjjlj")
+
+[resource]
+script = ExtResource("2_iqh0y")
+WeaponName = "someting"
+SecondaryWeaponAction = 5
+ViewportPosition = Vector3(0.121, -0.135, -0.42)
+WeaponScene = ExtResource("2_juue4")
+AmmoCount = 500
+AmmoCapacity = 500
+Fire = SubResource("Resource_rbuic")
+Reload = SubResource("Resource_fngbp")
+Draw = SubResource("Resource_juue4")
+metadata/_custom_type_script = "uid://cmymrn4gpv3y3"

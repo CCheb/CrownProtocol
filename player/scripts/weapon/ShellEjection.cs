@@ -14,7 +14,7 @@ public partial class ShellEjection : RigidBody3D
         );
 
 		// delete after 10 seconds
-    	GetTree().CreateTimer(10).Timeout += QueueFree;
+    	GetTree().CreateTimer(3).Timeout += QueueFree;
     }
 	public void Eject(Vector3 direction, float force)
     {

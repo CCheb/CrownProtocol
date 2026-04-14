@@ -6,11 +6,11 @@ public partial class ArcadeBullet : CharacterBody3D, IBullet
 {
 	[Export] private Area3D area;
 	private float speed = 50f;
+	private Vector3 direction;
 	// Called when the node enters the scene tree for the first time.
 	public void Initialize(Transform3D transform)
 	{
 		GlobalTransform = transform;
-		GD.Print($"Bullet Spawned at {GlobalTransform}");
 	}
 	public override void _Ready()
 	{
@@ -29,6 +29,10 @@ public partial class ArcadeBullet : CharacterBody3D, IBullet
 			return;
 
 		Velocity = -Transform.Basis.Z * speed;
+		
+
+	
+
 		MoveAndSlide();
 	}
 

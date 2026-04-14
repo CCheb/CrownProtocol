@@ -1,0 +1,85 @@
+[gd_scene format=4 uid="uid://dyk8nokmfq10c"]
+
+[ext_resource type="Script" uid="uid://bqste58x0dr5l" path="res://player/scripts/weapon/ArcadeBullet.cs" id="1_7gpia"]
+[ext_resource type="Texture2D" uid="uid://dcrgyp4drj8je" path="res://player/assets/weapons/bazooka/rocket/BazookaRound_BazookaRound.png" id="2_3yk7k"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_7gpia"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e7oh8"]
+radius = 0.2084961
+height = 0.689585
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vxkys"]
+radius = 0.1899414
+height = 0.69257814
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xr1fq"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("2_3yk7k")
+metallic = 1.0
+roughness = 0.46363637
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_fho1x"]
+_surfaces = [{
+"aabb": AABB(-0.022097088, -0.022097088, -0.049879808, 0.044194177, 0.044194177, 0.0859375),
+"format": 34896613377,
+"index_count": 66,
+"index_data": PackedByteArray("BwACAAUAAQAFAAIAAAABAAIABwAAAAIAAAAEAAEAAAAHAAYAAAAGAAQABAAIAAEAAQAIAAUABAAGAAgACQAHAAUABwAKAAYABwAJAAoABgALAAgABgAKAAsACAAMAAUACQAFAAwACAALAAwACQADAAoACgADAAsADAADAAkACwADAAwA"),
+"lods": [0.030823983, PackedByteArray("AAACAAUAAQAFAAIAAAABAAIAAQADAAUAAwAAAAUAAAAEAAEABAADAAEAAAADAAYABAAGAAMAAAAGAAQA"), 0.04623598, PackedByteArray("AAABAAIAAQADAAIAAwAAAAIAAAAEAAEABAADAAEAAAADAAQA")],
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 13,
+"vertex_data": PackedByteArray("AAD/fwAAAAD///9/AAAAAP9///8AAAAA/3//f///AAD/fwAAAAAAAP9///8tugAA/38AAC26AAAAAP9/LboAAP///38tugAA/z//f7noAAD/f/8/uegAAP+//3+56AAA/3//v7noAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_02vq2"]
+resource_name = "BazookaRound_Cube_001"
+_surfaces = [{
+"aabb": AABB(-0.022097088, -0.022097088, -0.049879808, 0.044194177, 0.044194177, 0.0859375),
+"attribute_data": PackedByteArray("/z//I/8v/zP/L/8j/z//M/8v/xP/A/8L/y//A/8v/zP/A/8r/y//I/8D/xv/L/8T/y//I/8v/0P/A/87/y//M/8P/yP/D/8D/w//I/8P/0P/D/8T/wf/F/8H/x//D/8T/wf/B/8H/w//D/8z/wf/J/8H/y//B/83/w//M/8H/z8="),
+"format": 34896613399,
+"index_count": 66,
+"index_data": PackedByteArray("FAAMABAAFAALAAwAFQAUABAAFQAQABYAFgAKABUAAAABAAIAAAADAAEAFwAYABEAFwAZABgAGQAFABgABAAXABEABAARAAYAGgAbABIAGgAcABsAHAAIABsABwAaABIABwASAAkAEwAdAB4AEwAfAB0AHwAOAB0ADQATAB4ADQAeAA8A"),
+"lods": [0.030823983, PackedByteArray("CwAMABAACgALABAAAAABAAIAAAADAAEABAAFABEABAARAAYABwASAAkABwAIABIADQAOAA8ADQATAA4A"), 0.04623598, PackedByteArray("AAABAAIAAAADAAEABAAFAAYABwAIAAkACgALAAwADQAOAA8A")],
+"material": SubResource("StandardMaterial3D_xr1fq"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("AAD/fwAA//////9/AAD///9///8AAP///38AAAAA//8AAP9/AACq6f9//3///4zi/38AAAAAqun///9/AAD8xf9//3///6es/3///wAA/MX/f/9///+M4gAA/38AAKrp/3///wAAqun/fwAAAAD8xf9//3///6es////fwAA/MX/f///LbqJ5/9/AAAtuonn/3///y26Nr//fwAALbo2vwAA/38tuonn/z//f7noHeT/f/+/uegd5AAA/38tuonn/3//P7noHeT/P/9/uegd5P///38tuja//3//v7noDrP/v/9/uegOs/+//3+56A6z////fy26Nr//f/8/uegOs4JagdqCWoHaglqB2oJagdr6SglqkF4mcvpKCWr9uf8c+sr2Ff25/xwl8m8hCOoENQjqBDUAY/45CWr6SgBj/jnZ66QwW0/Za0a9ohtcZEY92eukMJ7viSee74knW0/Za3ZYn292WJ9vRr2iG/7EcBj+xHAYj2f/RFxkRj2PZ/9E")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_fho1x")
+
+[node name="Rocket" type="CharacterBody3D" unique_id=1383605961 node_paths=PackedStringArray("area", "mesh")]
+collision_layer = 2
+script = ExtResource("1_7gpia")
+area = NodePath("Area3D")
+mesh = NodePath("CollisionShape3D/Cube")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=729008033]
+replication_config = SubResource("SceneReplicationConfig_7gpia")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1557106084]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1123063685]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 7.2279577e-10, -0.01653564)
+shape = SubResource("CapsuleShape3D_e7oh8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1445113331]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_vxkys")
+
+[node name="Cube" type="MeshInstance3D" parent="CollisionShape3D" unique_id=679770404]
+transform = Transform3D(8, 0, 0, 0, -8.582753e-07, -8, 0, 8, -8.582753e-07, 0, -0.0478255, 2.090519e-09)
+mesh = SubResource("ArrayMesh_02vq2")

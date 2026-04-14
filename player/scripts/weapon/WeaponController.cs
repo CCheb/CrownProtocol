@@ -252,4 +252,10 @@ public partial class WeaponController : Node3D
         CurrentWeaponMovementProfile = NextMovementState.GetWeaponProfile();
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
     }
+
+    public void OnWeaponPickedUp()
+    {
+        GD.Print("Server sensed the pickup!");
+        return;
+    }
 }

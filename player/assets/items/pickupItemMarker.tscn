@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d3crcq2oaiwca"]
+
+[ext_resource type="Script" uid="uid://cx8fosxap5qpm" path="res://player/assets/items/PickupItemMarker.cs" id="1_8ks5l"]
+
+[node name="PickupItemMarker" type="Marker3D" unique_id=836819965]
+script = ExtResource("1_8ks5l")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=188074775]
+omni_range = 2.0
+omni_attenuation = 2.0

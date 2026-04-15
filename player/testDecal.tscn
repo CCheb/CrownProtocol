@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://nr16qgoyv6g5"]
+
+[ext_resource type="Texture2D" uid="uid://ba32vnyd1qncv" path="res://player/assets/textures/decals/bullet_hole.png" id="1_vgw5u"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vgw5u"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="Decal" type="Decal" unique_id=798936095]
+texture_albedo = ExtResource("1_vgw5u")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=986093340]
+replication_config = SubResource("SceneReplicationConfig_vgw5u")

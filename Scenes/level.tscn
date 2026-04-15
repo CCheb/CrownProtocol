@@ -6,12 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://cvkx4oslqntvk" path="res://Maps/Assets/space_map.tscn" id="4_81xng"]
 [ext_resource type="PackedScene" uid="uid://d3crcq2oaiwca" path="res://player/assets/items/pickupItemMarker.tscn" id="5_wqkje"]
 
-[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "itemSpawner", "projectileSpawner")]
+[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "itemSpawner", "projectileSpawner", "decalSpawner")]
 script = ExtResource("1_6phgx")
 spectatorSpawn = NodePath("SpectatorSpawn")
 netCore = NodePath("MultiplayerSpawner")
 itemSpawner = NodePath("ItemSpawner")
 projectileSpawner = NodePath("ProjectileSpawner")
+decalSpawner = NodePath("DecalSpawner")
 cameraScene = ExtResource("2_81xng")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
@@ -27,6 +28,10 @@ spawn_path = NodePath("..")
 _spawnable_scenes = PackedStringArray("uid://hhoe7wf5nrug", "uid://dj61f2e2txuot")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
+
+[node name="DecalSpawner" type="MultiplayerSpawner" parent="." unique_id=1318929807]
+_spawnable_scenes = PackedStringArray("uid://nr16qgoyv6g5")
+spawn_path = NodePath("..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=936373086]
 transform = Transform3D(-0.8273534, -0.5614224, -0.017066605, -0.25590295, 0.34972116, 0.9012263, -0.50000006, 0.75, -0.43301266, 0, 0, 0)

@@ -28,6 +28,7 @@ script = ExtResource("2_rjuuy")
 WeaponName = "SNIPER"
 PrimaryWeaponAction = 1
 SecondaryWeaponAction = 3
+Status = 1
 ViewportPosition = Vector3(0.167, -0.198, -0.657)
 WeaponScene = ExtResource("1_rjuuy")
 WeaponRecoilAmount = Vector3(0.01, 0.01, 0.5)

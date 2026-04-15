@@ -96,7 +96,9 @@ public partial class Hitscan : WeaponBase
 
         if (collisionResult.Count != 0)
         {
-            //GD.Print($"Hitscan hit at: {collisionResult["position"]}, {collisionResult["collider"]}");
+            GD.Print($"Hitscan hit at: {collisionResult["position"]}, {collisionResult["collider"]}");
+            var gameManager = GetTree().CurrentScene as GameManager;
+            gameManager.SpawnDecal(WeaponDecal, (Vector3)collisionResult["normal"], (Vector3)collisionResult["position"]);
         }
     }
 

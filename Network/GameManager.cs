@@ -7,6 +7,7 @@ public partial class GameManager : Node3D
 	[Export] private NetworkCore netCore;
 	[Export] private NetworkCore itemSpawner;
 	[Export] private MultiplayerSpawner projectileSpawner;
+	[Export] private MultiplayerSpawner decalSpawner;
 	[Export] private PackedScene cameraScene;
 	private Godot.Collections.Array<Marker3D> playerSpawns;
 	private Godot.Collections.Array<PickupItemMarker> itemSpawns;
@@ -90,6 +91,38 @@ public partial class GameManager : Node3D
 			AddChild(projectile, true);
 			bullet.Initialize(muzzleRef);
 		}
+		
+	}
+
+	public async void SpawnDecal(PackedScene decalScene, Vector3 normal, Vector3 endPoint)
+	{
+		if (!GenericCore.Instance.IsServer)
+			return;
+
+		Decal d = decalScene.Instantiate<Decal>();
+
+		AddChild(d, true);
+		d.Position = endPoint;
+
+		// First argument creates a point on the normal of the surface which defines
+		// where the object should look. The second argument ensures the decal doesnt roll the wrong way
+		d.LookAt(d.GlobalTransform.Origin + normal, Vector3.Up);
+		if (normal != Vector3.Up || normal != Vector3.Down)
+        {
+			d.RotateObjectLocal(new Vector3(1.0f, 0.0f, 0.0f), Mathf.DegToRad(90));
+        }
+		// Despawn timer
+		await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+		// Here we want to create a fade effect. So we create a tween and change linearly interpolate the decals alpha
+		var fade = GetTree().CreateTween();
+		//var fade2 = GetTree().CreateTween();
+		fade.TweenProperty(d, "emission_energy", 0, 1.5);
+		//fade2.TweenProperty(d, "modulate:a", 0, 1.5);
+		// Need to provide the tween some time for it to interpolate the alpha to 0.0f
+		await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+		// Once the timer goes out then we can delete the decal. In this case the decal will
+		// only be deleted when its alpha is 0.0f which is basically invisible
+		d.QueueFree();
 		
 	}
 

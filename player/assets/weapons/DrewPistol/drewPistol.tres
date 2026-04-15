@@ -21,7 +21,7 @@ script = ExtResource("1_rrfom")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_2rays"]
+[sub_resource type="Resource" id="Resource_4e82x"]
 script = ExtResource("1_5x5cf")
 
 [resource]
@@ -29,6 +29,7 @@ script = ExtResource("2_ity4n")
 WeaponName = "DREW_PISTOL"
 WeaponType = 1
 SecondaryWeaponAction = 5
+Status = 1
 ViewportPosition = Vector3(0.2, -0.1, -0.4)
 WeaponScene = ExtResource("2_jxtl0")
 WeaponRecoilAmount = Vector3(0.01, 0.01, 0.2)

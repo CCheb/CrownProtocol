@@ -22,13 +22,14 @@ public partial class WeaponController : Node3D
         GD.Load<WeaponResource>("res://player/assets/weapons/DrewPistol/drewPistol.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/smg/smgResource.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/burstRifle/burstRifleResource.tres"),
-        GD.Load<WeaponResource>("res://player/assets/weapons/bazooka/bazookaResource.tres")
+        GD.Load<WeaponResource>("res://player/assets/weapons/bazooka/bazookaResource.tres"),
+        GD.Load<WeaponResource>("res://player/assets/weapons/sniper/sniperResource.tres")
     }; 
 
     // This variable would be the most important to synchronize
     private int LastWeaponIndex = 0;
     [Export] public int CurrentWeaponIndex = 0;
-    private const int MAX_WEAPON_AMMOUNT = 4;
+    private const int MAX_WEAPON_AMMOUNT = 5;
     private WeaponBase CurrentWeapon;
     private Procedural procedural = new();
     private IWeaponAction CurrentPrimaryWeaponAction;
@@ -122,7 +123,7 @@ public partial class WeaponController : Node3D
     private void TryWeaponSwap(int ProposedWeapon)
     {
         // If the proposed weapon is already the same as the CurrentWeaponIndex then dont do anything
-        if(ProposedWeapon == CurrentWeaponIndex || ProposedWeapon > Arsenal.Length)
+        if(ProposedWeapon == CurrentWeaponIndex || ProposedWeapon > Arsenal.Length || Arsenal[ProposedWeapon].Status == Globals.WeaponStatus.Locked)
             return;
 
         // Server changes this
@@ -253,9 +254,16 @@ public partial class WeaponController : Node3D
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
     }
 
-    public void OnWeaponPickedUp()
+    public void OnWeaponPickedUp(int pickedWeapon)
     {
         GD.Print("Server sensed the pickup!");
-        return;
+
+        if (Arsenal[pickedWeapon].Status == Globals.WeaponStatus.Locked)
+        {
+            CurrentWeaponIndex = pickedWeapon; // Will automatically cause a Swap weapon to occur
+            Arsenal[pickedWeapon].Status = Globals.WeaponStatus.Unlocked;
+        }
+        else
+            GD.Print("Weapon already unlocked; picking up some ammo");
     }
 }

@@ -13,6 +13,7 @@ public partial class WeaponResource : Resource
     [Export] public Globals.WeaponTypes WeaponType;
     [Export] public Globals.WeaponActions PrimaryWeaponAction;
     [Export] public Globals.WeaponActions SecondaryWeaponAction;
+    [Export] public Globals.WeaponStatus Status = Globals.WeaponStatus.Locked;
 
     [ExportGroup("Weapon Transform")]
     [Export] public Vector3 ViewportPosition;

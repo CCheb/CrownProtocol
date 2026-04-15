@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bv513bcbnd8iq"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ke3t5"]
+load_path = "res://.godot/imported/bullet_hole.png-f2856db7c3062362d7b5f6cd33eb71ce.ctex"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vgw5u"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="SmgDecal" type="Decal" unique_id=798936095]
+size = Vector3(0.5, 0.5, 0.5)
+texture_albedo = SubResource("CompressedTexture2D_ke3t5")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=986093340]
+replication_config = SubResource("SceneReplicationConfig_vgw5u")

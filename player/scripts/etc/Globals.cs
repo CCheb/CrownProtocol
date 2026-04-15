@@ -58,5 +58,11 @@ public partial class Globals : Node
         Armor,
     }
 
+    public enum WeaponStatus
+    {
+        Locked,
+        Unlocked
+    }
+
 
 }

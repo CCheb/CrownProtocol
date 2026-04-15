@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dj61f2e2txuot"]
+
+[ext_resource type="Script" uid="uid://b7egl2320i1ny" path="res://player/assets/items/WeaponPickup.cs" id="1_ffqku"]
+[ext_resource type="PackedScene" uid="uid://c0keplgih43kl" path="res://player/assets/weapons/burstRifle/BurstRifleV1.glb" id="1_ju4cb"]
+[ext_resource type="AudioStream" uid="uid://mdfhvnmooa55" path="res://player/assets/audio/1911-reload-6248.mp3" id="2_ffqku"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_nl6bm"]
+properties/0/path = NodePath("Area3D:monitoring")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Area3D:monitorable")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("AudioStreamPlayer3D:playing")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:position")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exxeo"]
+size = Vector3(0.1, 0.4, 1)
+
+[node name="Node3D" type="Node3D" unique_id=1692302020 node_paths=PackedStringArray("area", "audio")]
+script = ExtResource("1_ffqku")
+desiredPickup = 1
+area = NodePath("Area3D")
+audio = NodePath("AudioStreamPlayer3D")
+itemHeightFromGround = 1.0
+pickupTimeout = 16.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=180098256]
+replication_config = SubResource("SceneReplicationConfig_nl6bm")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1106749558]
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1099563496]
+shape = SubResource("BoxShape3D_exxeo")
+
+[node name="BurstRifleV1" parent="Area3D/CollisionShape3D" unique_id=1490177264 instance=ExtResource("1_ju4cb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17012036, 0.18142772)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1410071307]
+stream = ExtResource("2_ffqku")

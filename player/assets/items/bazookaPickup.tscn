@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://1hdrer8xajji"]
+
+[ext_resource type="Script" uid="uid://b7egl2320i1ny" path="res://player/assets/items/WeaponPickup.cs" id="1_agv2f"]
+[ext_resource type="PackedScene" uid="uid://dgcp0yhwn5isa" path="res://player/assets/weapons/bazooka/BazookaV1-1.glb" id="1_pp6mj"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_agv2f"]
+properties/0/path = NodePath("Area3D:monitoring")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Area3D:monitorable")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:position")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("AudioStreamPlayer3D:playing")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hc1l0"]
+size = Vector3(0.2, 0.6, 1.1)
+
+[node name="Node3D" type="Node3D" unique_id=1624555050]
+script = ExtResource("1_agv2f")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=399218139]
+replication_config = SubResource("SceneReplicationConfig_agv2f")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=444154785]
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1740349785]
+shape = SubResource("BoxShape3D_hc1l0")
+
+[node name="BazookaV1-1" parent="Area3D/CollisionShape3D" unique_id=718303051 instance=ExtResource("1_pp6mj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2742068, -0.45781395)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=165212552]

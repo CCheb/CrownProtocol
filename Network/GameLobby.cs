@@ -8,8 +8,9 @@ public partial class GameLobby : Control
 {
 	[Export] private GridContainer lobby; 
 	[Export] private Label countDownLabel;
-
 	[Export] private NetworkCore netCore;
+	private Godot.Collections.Array<Sprite2D> levelImages;
+	private short currentLevelImageIndex = 0;
 	private short clientsConnected = 0;
 	private short countDown = 5;
 	private bool gameStarted = false;
@@ -33,20 +34,81 @@ public partial class GameLobby : Control
 
 		lobby = GetNodeOrNull<GridContainer>("./GridContainer");
 		netCore = GetNodeOrNull<NetworkCore>("./MultiplayerSpawner");
-
 		beep = GetNode<AudioStreamPlayer>("Beep");
 
-		if (netCore == null)
-			GD.Print("netCore is null");
+		// Grab level images
+		levelImages = new Godot.Collections.Array<Sprite2D>();
+
+		foreach (Sprite2D image in GetTree().GetNodesInGroup("LevelImages"))
+		{
+			levelImages.Add(image);
+		}
 
 		netCore.PlayerJoined += OnPlayerJoined;
+		GenericCore.Instance.FirstClient += OnFirstClientConnected;
     }
+
+	private void OnFirstClientConnected()
+	{
+		if(!GenericCore.Instance.IsServer && GenericCore.Instance.isFirstClientToJoin)
+		{
+			SetUpPopupMenu();
+		}
+	}
+
+	private void SetUpPopupMenu()
+	{
+		var popup = GetNode<MenuButton>("MenuBackground/MenuButton").GetPopup();
+
+		popup.IdPressed += OnPopupPressed;
+
+		GetNode<ColorRect>("MenuBackground").Visible = true;
+	}
+
+	private void OnPopupPressed(long id)
+	{
+		// Only first connected client will be able to run this
+		beep.Play();
+		RpcId(1, MethodName.RequestLevelImageChange, (short)id);
+	}
 
 
 	private void OnQuitButtonPressed()
 	{
 		beep.Play();
 		GenericCore.Instance.DisconnectFromGame();
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer,CallLocal = false,TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void RequestLevelImageChange(short newLevelIndex = 0)
+	{
+		if(GenericCore.Instance.IsServer)
+		{
+			// Swap with new
+			levelImages[currentLevelImageIndex].Visible = false;
+			levelImages[newLevelIndex].Visible = true;
+			currentLevelImageIndex = newLevelIndex;
+			Rpc(MethodName.BroadcastLevelPath, newLevelIndex);
+		}
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority,CallLocal = true,TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void BroadcastLevelPath(short newLevelIndex)
+	{
+		// Its necessary for all the peers to know what level to load into
+		switch (newLevelIndex)
+		{
+			case 0:
+				GenericCore.Instance.levelPath = new string($"res://Scenes/level.tscn");
+				break;
+			case 1:
+				GenericCore.Instance.levelPath = new string($"res://Scenes/level.tscn");
+				break;
+			case 2:
+				GenericCore.Instance.levelPath = new string($"res://Scenes/level.tscn");
+				break;
+
+		}
 	}
 	
 	private void OnPlayerJoined(Node node)

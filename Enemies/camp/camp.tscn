@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bsoj2xpvksuh7"]
+
+[ext_resource type="Script" uid="uid://cmn3vl28qv7iw" path="res://Enemies/camp/CampController.cs" id="1_dpfv7"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dpfv7"]
+height = 1.4445801
+radius = 11.400879
+
+[node name="Camp" type="Area3D" unique_id=1531066013 node_paths=PackedStringArray("spawnPoints")]
+script = ExtResource("1_dpfv7")
+spawnPoints = [NodePath("SpawnPoints/Marker3D"), NodePath("SpawnPoints/Marker3D2"), NodePath("SpawnPoints/Marker3D3"), NodePath("SpawnPoints/Marker3D4")]
+
+[node name="SightRange" type="CollisionShape3D" parent="." unique_id=450366768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7149658, 0)
+shape = SubResource("CylinderShape3D_dpfv7")
+debug_color = Color(0.8784314, 0.6, 0.69803923, 0.94509804)
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=444756325]
+
+[node name="Marker3D" type="Marker3D" parent="SpawnPoints" unique_id=1252475584]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5164753, 0, -2.5434432)
+
+[node name="Marker3D2" type="Marker3D" parent="SpawnPoints" unique_id=662051866]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9287775, 0, -1.1909251)
+
+[node name="Marker3D3" type="Marker3D" parent="SpawnPoints" unique_id=1630454600]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6701097, -1.4305115e-06, 1.9468107)
+
+[node name="Marker3D4" type="Marker3D" parent="SpawnPoints" unique_id=1411227983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5624795, -4.7683716e-07, 1.8889341)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

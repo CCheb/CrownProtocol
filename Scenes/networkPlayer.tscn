@@ -31,7 +31,7 @@ albedo_color = Color(0.65628535, 0.6562854, 0.6562854, 1)
 material = SubResource("StandardMaterial3D_mannh")
 size = Vector3(0.8, 0.2, 0.8)
 
-[node name="CharacterBody3D" type="CharacterBody3D" unique_id=820896333 node_paths=PackedStringArray("myNetId", "cameraController", "visor", "playerNameTag", "pauseMenu")]
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=820896333 node_paths=PackedStringArray("myNetId", "cameraController", "visor", "playerNameTag", "pauseMenu") groups=["Player"]]
 script = ExtResource("1_8isjg")
 myNetId = NodePath("MultiplayerSynchronizer")
 cameraController = NodePath("CameraController")

@@ -2,19 +2,20 @@
 
 [ext_resource type="Texture2D" uid="uid://t3tir6jdgb3a" path="res://Maps/Assets/dark-background-with-gray-shapes.jpg" id="1_05o8o"]
 
-[sub_resource type="Gradient" id="Gradient_jmoj2"]
-colors = PackedColorArray(0.28653428, 0.2071929, 0.087123714, 1, 0.66753757, 0.35269517, 1.540184e-06, 1)
+[sub_resource type="Gradient" id="Gradient_05o8o"]
+colors = PackedColorArray(0.59607846, 0.43529412, 0.25490198, 1, 0.8335705, 0.44410157, 0, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ctlde"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_um10r"]
 noise_type = 2
-frequency = 0.0042
+frequency = 0.0033
 fractal_lacunarity = 13.395
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o2i1g"]
-noise = SubResource("FastNoiseLite_ctlde")
-color_ramp = SubResource("Gradient_jmoj2")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_70c0b"]
+noise = SubResource("FastNoiseLite_um10r")
+color_ramp = SubResource("Gradient_05o8o")
 seamless = true
-seamless_blend_skirt = 0.467
+invert = true
+seamless_blend_skirt = 1.0
 
 [resource]
 cull_mode = 2
@@ -22,7 +23,7 @@ albedo_texture = ExtResource("1_05o8o")
 detail_enabled = true
 detail_blend_mode = 1
 detail_uv_layer = 1
-detail_albedo = SubResource("NoiseTexture2D_o2i1g")
+detail_albedo = SubResource("NoiseTexture2D_70c0b")
 uv1_scale = Vector3(43.556, 48.401, 41.266)
 uv1_triplanar = true
 uv1_triplanar_sharpness = 28.840004

@@ -19,6 +19,8 @@ public partial class GenericCore : Node
     public delegate void ServerFailedEventHandler(Error error);
     [Signal]
     public delegate void ConnectedPeersDictionaryUpdatedEventHandler(long newPeerId);
+    [Signal]
+    public delegate void FirstClientEventHandler();
 
     private int localPort = 9000;
     private int portMinimum = 9000;
@@ -42,6 +44,7 @@ public partial class GenericCore : Node
     public bool IsServer;
     public bool PeerConnected;
     public bool IsGenericCoreConnected;
+    public bool isFirstClientToJoin = false;
 
    
     public override void _Ready()
@@ -213,6 +216,12 @@ public partial class GenericCore : Node
         // From the perspective of the receiver. Goes both ways
         int newPeerId = Multiplayer.GetRemoteSenderId(); //Who is sending to call this function
 
+        if (IsServer && !isFirstClientToJoin)
+        {
+            RpcId(newPeerId, MethodName.SetUpFirstClient);
+            isFirstClientToJoin = true;
+        }
+
         GD.Print($"Generic Core - Peer {Multiplayer.GetUniqueId()} registering peer {newPeerId}\n");
 
         if (newPeerId == 1 && !Multiplayer.IsServer())  
@@ -226,6 +235,14 @@ public partial class GenericCore : Node
         EmitSignalConnectedPeersDictionaryUpdated(newPeerId);   // Not everyone subscribes to these signals
 
         GD.Print(connectedPeers);
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void SetUpFirstClient()
+    {
+        GD.Print($"{Multiplayer.GetUniqueId()} is the first client to join!");
+        isFirstClientToJoin = true;
+        EmitSignalFirstClient();
     }
 
     public void RegisterObject(NetID netId)
@@ -288,6 +305,7 @@ public partial class GenericCore : Node
     //----//
 
     public int playersLoaded = 0;
+    public string levelPath = "res://Scenes/level.tscn";
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer,CallLocal = true,TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void PlayerLoaded()
@@ -308,7 +326,7 @@ public partial class GenericCore : Node
 	private void StartGame()
 	{
 		GD.Print($"Generic Core - Peer {Multiplayer.GetUniqueId()} now starting...\n");
-		PackedScene level = (PackedScene)ResourceLoader.LoadThreadedGet("res://Scenes/level.tscn");
+		PackedScene level = (PackedScene)ResourceLoader.LoadThreadedGet(levelPath);
 		GetTree().ChangeSceneToPacked(level);
     }
 

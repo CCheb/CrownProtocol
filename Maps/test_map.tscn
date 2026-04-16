@@ -155,5 +155,3 @@ shape = SubResource("ConcavePolygonShape3D_cprwh")
 
 [node name="Camp" parent="." unique_id=1531066013 instance=ExtResource("16_1vdvk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23455286, 3.0706477, 0.23175907)
-
-[editable path="Camp"]

@@ -99,13 +99,13 @@ public partial class GameLobby : Control
 		switch (newLevelIndex)
 		{
 			case 0:
-				GenericCore.Instance.levelPath = new string($"res://Scenes/level.tscn");
+				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
 				break;
 			case 1:
-				GenericCore.Instance.levelPath = new string($"res://Scenes/level.tscn");
+				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
 				break;
 			case 2:
-				GenericCore.Instance.levelPath = new string($"res://Scenes/level.tscn");
+				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
 				break;
 
 		}

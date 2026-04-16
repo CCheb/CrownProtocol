@@ -3,7 +3,6 @@ using System;
 
 public partial class LoadingScreen : Control
 {
-	private const string levelPath = "res://Scenes/level.tscn";
 	private int _playersLoaded = 0;
 	private bool alreadyLoaded = false;
 
@@ -17,7 +16,7 @@ public partial class LoadingScreen : Control
 
 	private void StartLoadingLevel()
 	{
-		ResourceLoader.LoadThreadedRequest(levelPath);
+		ResourceLoader.LoadThreadedRequest(GenericCore.Instance.levelPath);
 	}
 
 	public override void _Process(double delta)
@@ -35,6 +34,6 @@ public partial class LoadingScreen : Control
 	}
 	private ResourceLoader.ThreadLoadStatus GetLevelLoadingStatus()
 	{
-		return ResourceLoader.LoadThreadedGetStatus(levelPath);
+		return ResourceLoader.LoadThreadedGetStatus(GenericCore.Instance.levelPath);
 	}
 }

@@ -99,9 +99,12 @@ public partial class Hitscan : WeaponBase
             GD.Print($"Hitscan hit at: {collisionResult["position"]}, {collisionResult["collider"]}");
             
 
-            if ((Node)collisionResult["collider"] is FPSController player)
+            if((Node)collisionResult["collider"] is IEnemy enemy)
             {
-                player.Hit(weaponController.GetCurrentWeaponsDamage(), player.myNetId.OwnerId);
+                if(enemy is FPSController player)
+                    player.Hit(weaponController.GetCurrentWeaponsDamage(), Multiplayer.GetRemoteSenderId(), player.myNetId.OwnerId);
+                else
+                    enemy.Hit(weaponController.GetCurrentWeaponsDamage());
             }
 
             else

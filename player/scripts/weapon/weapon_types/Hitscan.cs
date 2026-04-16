@@ -138,7 +138,7 @@ public partial class Hitscan : WeaponBase
 
     private void UpdateAmmo()
     {
-        return;
+        weaponController.UpdateCurrentWeaponAmmo();
     }
 
     // Could make this abstract so that all guns must implement reload

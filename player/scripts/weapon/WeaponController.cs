@@ -140,7 +140,8 @@ public partial class WeaponController : Node3D
         {
             ParseWeaponResource(in Arsenal[CurrentWeaponIndex]);
             JumpRecoilRef.AddChild(CurrentWeapon, true);
-            CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);   
+            CameraControllerRef.SetCameraReloadLayer(CurrentWeapon.CameraReloadProxy);  
+            GD.Print($"Ammo count: {Arsenal[CurrentWeaponIndex].AmmoCount}"); 
         }
             
     }
@@ -264,7 +265,29 @@ public partial class WeaponController : Node3D
             Arsenal[pickedWeapon].Status = Globals.WeaponStatus.Unlocked;
         }
         else
+        {
             GD.Print("Weapon already unlocked; picking up some ammo");
+            RpcId(context.player.myNetId.OwnerId, MethodName.AddAmmoTo, pickedWeapon);
+        }
+    }
+
+    private void AddAmmoTo(int weaponIndex)
+    {
+        if(!context.player.myNetId.IsLocal)
+            return;
+
+        GD.Print("Adding ammo!!");
+        Arsenal[weaponIndex].AmmoCount = Arsenal[weaponIndex].AmmoCapacity;
+    }
+
+    public void UpdateCurrentWeaponAmmo()
+    {
+        Arsenal[CurrentWeaponIndex].AmmoCount--;
+    }
+
+    public int CheckCurrentWeaponAmmo()
+    {
+        return Arsenal[CurrentWeaponIndex].AmmoCount;
     }
 
     public float GetCurrentWeaponsDamage()
@@ -300,4 +323,6 @@ public partial class WeaponController : Node3D
                 break;
         }
     }
+
+   
 }

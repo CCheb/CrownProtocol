@@ -7,6 +7,7 @@ public partial class PlayerMovementState : State
     // animation, camera and weapon properties
     protected FPSController PLAYER;
     protected AnimationPlayer ANIMATION;
+    protected AnimationTree CHARACTER_ANIMATION;
     protected CameraController CAMERA_CONTROLLER;
     public WeaponController WEAPON_CONTROLLER;
 
@@ -19,6 +20,7 @@ public partial class PlayerMovementState : State
         // PLAYER API
         PLAYER = (FPSController)Owner;
         ANIMATION = PLAYER.ANIMATION;
+        CHARACTER_ANIMATION = PLAYER.characterAnimations;
         CAMERA_CONTROLLER = PLAYER.WorldCameraController;
         WEAPON_CONTROLLER = PLAYER.WEAPON;
 

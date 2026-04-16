@@ -35,6 +35,20 @@ public partial class IdlePlayerState : PlayerMovementState
             ANIMATION.Pause();
         }
 
+        if (!PLAYER.myNetId.IsLocal && !GenericCore.Instance.IsServer)
+        {
+            if(!PLAYER.context.movementStateMachine.IsShootingAnimationPlaying())
+            {
+                if(prevState == null || prevState.GetStateName() == Globals.MovementStates.Walk)
+                {
+                    CHARACTER_ANIMATION.Set("parameters/conditions/idle", true);
+                    CHARACTER_ANIMATION.Set("parameters/conditions/running", false);
+                    CHARACTER_ANIMATION.Set("parameters/run/blend_position", new Vector2(0, 1));
+                }
+            }
+            
+        }
+
         PLAYER.speed = speed;
         PLAYER.acceleration = acceleration;
         PLAYER.deceleration = decelaration;
@@ -63,5 +77,12 @@ public partial class IdlePlayerState : PlayerMovementState
 
         if (PLAYER.Velocity.Length() > 0.1f && PLAYER.IsOnFloor())
             EmitSignal(SignalName.Transition, "WalkingPlayerState");
+    }
+
+    public override void ToggleAnimation(bool condition)
+    {
+        base.ToggleAnimation(condition);
+
+        CHARACTER_ANIMATION.Set("parameters/conditions/idle", condition);
     }
 }

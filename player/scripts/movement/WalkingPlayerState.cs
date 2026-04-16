@@ -44,6 +44,17 @@ public partial class WalkingPlayerState : PlayerMovementState
             
         }
 
+
+        if (!PLAYER.myNetId.IsLocal && !GenericCore.Instance.IsServer)
+        {
+            if(!PLAYER.context.movementStateMachine.IsShootingAnimationPlaying() && prevState.GetStateName() == Globals.MovementStates.Idle)
+            {
+                CHARACTER_ANIMATION.Set("parameters/conditions/idle", false);
+                CHARACTER_ANIMATION.Set("parameters/conditions/running", true);
+                CHARACTER_ANIMATION.Set("parameters/run/blend_position", new Vector2(0, 1));
+            }
+        }
+
         GD.Print("Entered Walking State!");
 
         PLAYER.speed = speed;
@@ -87,5 +98,12 @@ public partial class WalkingPlayerState : PlayerMovementState
         var alpha = Mathf.Remap(currSpeed, 0.0f, speed, 0.0f, 1.0f);
         // Linearly interpolate from 0.0f to topAnimationSpeed with defined alpha weight
         ANIMATION.SpeedScale = (float)Mathf.Lerp(0.0, topAnimationSpeed, alpha);
+    }
+
+    public override void ToggleAnimation(bool condition)
+    {
+        base.ToggleAnimation(condition);
+
+        CHARACTER_ANIMATION.Set("parameters/conditions/running", condition);
     }
 }

@@ -3,13 +3,15 @@ using System;
 
 public partial class FullAutoWeaponAction : IWeaponAction
 {
+    private WeaponController weaponController;
     private WeaponBase CurrentWeapon;
     private bool IsHeld = false;
     private float Timer = 0.0f;
     private float Interval = 0.0f;
-    public FullAutoWeaponAction(WeaponBase CurrentWeapon, float FireRate)
+    public FullAutoWeaponAction(WeaponController weaponController, WeaponBase CurrentWeapon, float FireRate)
     {
         this.CurrentWeapon = CurrentWeapon;
+        this.weaponController = weaponController;
         // Fire rate is in terms of RPM (Rounds Per Minute)
         Interval = 60.0f/FireRate;
     }
@@ -17,6 +19,7 @@ public partial class FullAutoWeaponAction : IWeaponAction
     {
         IsHeld = true;
 
+        weaponController.Rpc("BroadCastShooting", true);
         // This function is only triggered once the button is first pressed
         // Because of that we can call firing here to give the player immediate feedback
         // when they first start shooting and prevent a sloppy delay
@@ -27,7 +30,11 @@ public partial class FullAutoWeaponAction : IWeaponAction
         }
     } 
 
-    public void OnActionReleased() => IsHeld = false;
+    public void OnActionReleased()
+    {
+        IsHeld = false;
+        weaponController.Rpc("BroadCastShooting", false);
+    } 
 
     public void Update(double delta)
     {

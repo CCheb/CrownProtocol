@@ -271,4 +271,33 @@ public partial class WeaponController : Node3D
     {
         return Arsenal[CurrentWeaponIndex].damage;
     }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+    public void BroadCastShooting(bool condition)
+    {
+        if(context.player.myNetId.IsLocal || GenericCore.Instance.IsServer)
+            return;
+
+        context.movementStateMachine.ToogleStateAnimation(!condition);
+
+        switch(context.movementStateMachine.GetCurrentStateName())
+        {
+            case Globals.MovementStates.Idle:
+                //context.player.characterAnimations.Set("parameters/conditions/idle", false);
+                context.player.characterAnimations.Set("parameters/conditions/shooting", condition);
+                context.player.characterAnimations.Set("parameters/conditions/runShoot", false);
+                context.player.characterAnimations.Set("parameters/conditions/jump_shoot", false);
+                break;
+            case Globals.MovementStates.Walk:
+                context.player.characterAnimations.Set("parameters/conditions/runShoot", condition);
+                context.player.characterAnimations.Set("parameters/conditions/shooting", false);
+                context.player.characterAnimations.Set("parameters/conditions/jumpShoot", false);
+                break;
+            case Globals.MovementStates.Jump:
+                context.player.characterAnimations.Set("parameters/conditions/jumpShoot", condition);
+                context.player.characterAnimations.Set("parameters/conditions/shooting", false);
+                context.player.characterAnimations.Set("parameters/conditions/runShoot", false);
+                break;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 public partial class MovementStateMachine : PlayerMovementState
 {
@@ -104,6 +105,24 @@ public partial class MovementStateMachine : PlayerMovementState
         }
     }
 
+    public Globals.MovementStates GetCurrentStateName()
+    {
+        return CURRENT_STATE.GetStateName();
+    }
+
+    public bool IsShootingAnimationPlaying()
+    {
+        bool isShooting = (bool)context.player.characterAnimations.Get("parameters/conditions/shooting");
+        bool isRunningShooting = (bool)context.player.characterAnimations.Get("parameters/conditions/runShoot");
+        bool isJumpingShooting = (bool)context.player.characterAnimations.Get("parameters/conditions/jumpShoot");
+
+        return isShooting || isRunningShooting || isJumpingShooting;
+    }
+
+    public void ToogleStateAnimation(bool condition)
+    {
+        CURRENT_STATE.ToggleAnimation(condition);
+    }
     
     private void BroadcastStateTransition(string newStateName)
     {

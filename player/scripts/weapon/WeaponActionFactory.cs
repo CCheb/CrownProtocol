@@ -10,11 +10,11 @@ public static partial class FireModeFactory
             // Based on the CurrentFireMode we return the appropriate FireMode object. If the WeaponResource specified
             // FireMode Shotgun then the factory will return the ShotgunFireMode and so on
             case Globals.WeaponActions.FullAuto :
-                return new FullAutoWeaponAction(CurrentWeapon, WeaponData.FireRate);
+                return new FullAutoWeaponAction(weaponController, CurrentWeapon, WeaponData.FireRate);
             case Globals.WeaponActions.SemiAuto :
-                return new SemiAutoWeaponAction(CurrentWeapon);
+                return new SemiAutoWeaponAction(weaponController, CurrentWeapon);
             case Globals.WeaponActions.BurstFire:
-                return new BurstFireWeaponAction(CurrentWeapon, WeaponData.burstProfile);
+                return new BurstFireWeaponAction(weaponController, CurrentWeapon, WeaponData.burstProfile);
             case Globals.WeaponActions.Zoom :
                 return new ZoomWeaponAction(weaponController, WeaponData.desiredZoom);
             case Globals.WeaponActions.Spin:

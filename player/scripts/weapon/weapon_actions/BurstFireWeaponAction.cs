@@ -3,13 +3,15 @@ using System;
 
 public partial class BurstFireWeaponAction : IWeaponAction
 {
+    private WeaponController weaponController;
     private WeaponBase CurrentWeapon;
     private bool CanFire = true;
     private int shotsPerBurst = 3;
     private float burstCadence = 0.08f;
 
-    public BurstFireWeaponAction(WeaponBase weapon, WeaponBurstProfile burstProfile)
+    public BurstFireWeaponAction(WeaponController weaponController, WeaponBase weapon, WeaponBurstProfile burstProfile)
     {
+        this.weaponController = weaponController;
         CurrentWeapon = weapon;
         shotsPerBurst = burstProfile.ShotsPerBurst;
         burstCadence = burstProfile.BurstCadence;
@@ -20,6 +22,7 @@ public partial class BurstFireWeaponAction : IWeaponAction
         if (!CanFire || CurrentWeapon.IsReloading || CurrentWeapon.IsFiring)
             return;
 
+        weaponController.Rpc("BroadCastShooting", true);
         // The weapon only really cares on how the fire is implemented and needs to be told when to fire 
         CanFire = false;
         for(int i = 0; i < shotsPerBurst; i++)
@@ -34,6 +37,9 @@ public partial class BurstFireWeaponAction : IWeaponAction
         // Need to let go of the trigger before the weapon can shoot again. This is the core
         // of a semi-auto fire mode
         CanFire = true;
+
+        weaponController.Rpc("BroadCastShooting", false);
+
     }
 
     // We dont implement anything in Update since we allow the trigger to be pressed and released as many

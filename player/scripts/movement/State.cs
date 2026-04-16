@@ -15,6 +15,7 @@ public partial class State : Node
     public virtual void Init() { GD.PushError($"{Name} did not override Init()!"); }
     public virtual void Enter(State prevState) { }
     public virtual void Exit() { }
+    public virtual void ToggleAnimation(bool condition) { }
     public virtual void Update(double delta) { }    // _Process()
     public virtual void PhysicsUpdate(double delta) { }     // _PhysicsProcess()
 }

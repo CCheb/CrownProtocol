@@ -110,7 +110,7 @@ public partial class Projectile : WeaponBase
             t = t.LookingAt(spawnPos + direction, Vector3.Up);
 
             var gameManager = GetTree().CurrentScene as GameManager;
-            gameManager.SpawnProjectile(projectileScene, t);
+            gameManager.SpawnProjectile(projectileScene, t, Multiplayer.GetRemoteSenderId());
         }
     }
 

@@ -78,7 +78,7 @@ public partial class GameManager : Node3D
 		}
 	}
 
-	public void SpawnProjectile(PackedScene projectileScene, Transform3D muzzleRef)
+	public void SpawnProjectile(PackedScene projectileScene, Transform3D muzzleRef, long senderId)
 	{
 		if (!GenericCore.Instance.IsServer)
 			return;
@@ -89,7 +89,7 @@ public partial class GameManager : Node3D
 		{	
 			//var spawnRoot = GetNode(projectileSpawner.SpawnPath);
 			AddChild(projectile, true);
-			bullet.Initialize(muzzleRef);
+			bullet.Initialize(muzzleRef, senderId);
 		}
 		
 	}

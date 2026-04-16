@@ -6,4 +6,5 @@ public partial class PlayerContext : Node
     public FPSController player;
     public CameraController cameraController;
     public WeaponController weaponController;
+    public MovementStateMachine movementStateMachine;
 }

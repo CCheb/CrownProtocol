@@ -42,10 +42,11 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	[Export] public AnimationPlayer ANIMATION;
 	[Export] public  ShapeCast3D crouchShapeCast;
 	[Export] public WeaponController WEAPON;
+	[Export] public AnimationTree characterAnimations;
 
 	[ExportGroup("Network")]
 	[Export] public NetID myNetId;
-	[Export] private MeshInstance3D visor;
+	[Export] private Node3D characterModel;
 	private PlayerInput input = new();
 	private Vector3 lastPosition;
 	public Vector3 DerivedVelocity { get; private set; }
@@ -83,7 +84,8 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		{
 			player = this,
 			cameraController = WorldCameraController,
-			weaponController = WEAPON
+			weaponController = WEAPON,
+			movementStateMachine = stateMachine
 		};
 
 		WEAPON.SetContext(context);
@@ -126,7 +128,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 		WorldCameraController.Camera.Fov = DefaultFov;
 
-		visor.Visible = false;
+		characterModel.Visible = false;
 		playerNameTag.Visible = false;
 
 		pauseMenu.ResumeButtonClicked += OnResumeButtonClicked;
@@ -141,7 +143,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		worldCamera.Current = false;
 		weaponCamera.Current = false;
 
-		visor.Visible = true;
+		characterModel.Visible = true;
 	}
 
 	private void SetPlayerNameTag()

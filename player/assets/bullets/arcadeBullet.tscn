@@ -23,17 +23,17 @@ albedo_color = Color(0.4376985, 0.0022525191, 0.9398231, 1)
 material = SubResource("StandardMaterial3D_rvhy2")
 size = Vector3(0.2, 0.2, 0.2)
 
-[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1383605961 node_paths=PackedStringArray("area", "mesh")]
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1383605961 node_paths=PackedStringArray("area")]
 collision_layer = 2
 script = ExtResource("1_bf8t7")
 area = NodePath("Area3D")
-mesh = NodePath("CollisionShape3D/MeshInstance3D")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1276127273]
 replication_config = SubResource("SceneReplicationConfig_bf8t7")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1557106084]
 collision_layer = 2
+collision_mask = 5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1123063685]
 shape = SubResource("BoxShape3D_xc2s7")

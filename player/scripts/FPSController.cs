@@ -9,6 +9,9 @@ public partial class FPSController : CharacterBody3D
 	[Signal] public delegate void PlayerReadyEventHandler();
 
 	[ExportGroup("Player Stats")]
+	[Export] public float health = 100.0f;
+	[Export] public float score = 0.0f;
+	[Export] public int deaths = 0;
 	[Export] public float speed = 6.0f;
 	[Export] public float acceleration = 0.1f;
 	[Export] public float deceleration = 0.25f;
@@ -310,6 +313,25 @@ public partial class FPSController : CharacterBody3D
 		cameraPivot.Rotation = verticalRotation;
 	}
 
+	public void Hit(float damageRecieved, long peerId)
+	{
+		// Server handles this
+		health -= damageRecieved;
+		RpcId(peerId, MethodName.OnHitUpdateUI);
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	private void OnHitUpdateUI()
+	{
+		if(!context.player.myNetId.IsLocal)
+			return;
+
+			
+		pauseMenu.UnHideMenu();
+		GD.Print("I got hit! Update UI here!");
+		GD.Print(health);
+		
+	}
 
 	//---Single Player stuff--//
 	//--------------------------------//

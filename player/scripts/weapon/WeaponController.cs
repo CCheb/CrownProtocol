@@ -266,4 +266,9 @@ public partial class WeaponController : Node3D
         else
             GD.Print("Weapon already unlocked; picking up some ammo");
     }
+
+    public float GetCurrentWeaponsDamage()
+    {
+        return Arsenal[CurrentWeaponIndex].damage;
+    }
 }

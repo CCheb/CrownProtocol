@@ -27,8 +27,11 @@ public partial class BurstFireWeaponAction : IWeaponAction
         CanFire = false;
         for(int i = 0; i < shotsPerBurst; i++)
         {
-            CurrentWeapon.Fire();
-            await CurrentWeapon.ToSignal(CurrentWeapon.GetTree().CreateTimer(burstCadence), "timeout");
+            if(weaponController.CheckCurrentWeaponAmmo() > 0)
+            {
+                CurrentWeapon.Fire();
+                await CurrentWeapon.ToSignal(CurrentWeapon.GetTree().CreateTimer(burstCadence), "timeout");
+            }
         }
     }
 

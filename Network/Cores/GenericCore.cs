@@ -305,7 +305,7 @@ public partial class GenericCore : Node
     //----//
 
     public int playersLoaded = 0;
-    public string levelPath = "res://Scenes/level.tscn";
+    public string levelPath = "res://Scenes/spaceLevel.tscn";
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer,CallLocal = true,TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void PlayerLoaded()

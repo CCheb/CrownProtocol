@@ -3,8 +3,9 @@ using Godot.Collections;
 using System;
 using System.ComponentModel;
 using System.Dynamic;
+using System.Runtime.CompilerServices;
 
-public partial class FPSController : CharacterBody3D
+public partial class FPSController : CharacterBody3D, IEnemy
 {
 	[Signal] public delegate void PlayerReadyEventHandler();
 
@@ -12,6 +13,7 @@ public partial class FPSController : CharacterBody3D
 	[Export] public float health = 100.0f;
 	[Export] public float score = 0.0f;
 	[Export] public int deaths = 0;
+	[Export] public int kills = 0;
 	[Export] public float speed = 6.0f;
 	[Export] public float acceleration = 0.1f;
 	[Export] public float deceleration = 0.25f;
@@ -52,6 +54,11 @@ public partial class FPSController : CharacterBody3D
 	[Export] private Label3D playerNameTag; 
 	[Export] private MovementStateMachine stateMachine;
 	[Export] private FPSPauseMenu pauseMenu;
+	[Export] private CollisionShape3D hitBox;
+	[Export] private AudioStreamPlayer3D hitMarkerPing;
+	[Export] private AudioStreamPlayer3D killBell;
+	[Export] public bool deathConfirmed = false;
+	private Node3D lookAtRef;
 	private bool isInPauseMenu;
 	private const int SERVER = 1;
 	public PlayerContext context;
@@ -63,6 +70,7 @@ public partial class FPSController : CharacterBody3D
 		if (@event.IsActionPressed("pause") && myNetId.IsLocal)
 		{
 			//Input.MouseMode = Input.MouseModeEnum.Visible;
+			GD.Print($"client kills {kills}");
 			pauseMenu.UnHideMenu();
 			isInPauseMenu = true;
 		}
@@ -94,8 +102,6 @@ public partial class FPSController : CharacterBody3D
 		crouchShapeCast.AddException(this);	// Ignore ourselves
 
 		lastPosition = GlobalPosition;
-
-		
 	}
 
 	private void OnNetIdReady()
@@ -174,7 +180,7 @@ public partial class FPSController : CharacterBody3D
 	{
 		base._PhysicsProcess(delta);
 
-		if(myNetId.IsLocal && !isInPauseMenu)
+		if(myNetId.IsLocal && !isInPauseMenu && !deathConfirmed)
 		{	
 			GenerateAndSendMovementInput();
 			ResetRotationDeltas();
@@ -313,23 +319,92 @@ public partial class FPSController : CharacterBody3D
 		cameraPivot.Rotation = verticalRotation;
 	}
 
-	public void Hit(float damageRecieved, long peerId)
-	{
-		// Server handles this
-		health -= damageRecieved;
-		RpcId(peerId, MethodName.OnHitUpdateUI);
+	// PLAYER INTERACTIONS 
+	public void Hit(float damageRecieved, long senderId, long receiverId)
+	{	
+		// Hit is handled by the server
+
+		if(deathConfirmed)
+		{
+			GD.Print("Player is Dead! Stop shooting at it bro");
+			return;
+		}
+
+		if (health - damageRecieved <= 0)
+		{
+			GD.Print("Player just died! Send them a UI signal");
+		
+			foreach(var enemy in GetTree().GetNodesInGroup("Enemies"))
+			{
+				if(enemy is FPSController player && player.myNetId.OwnerId == senderId)
+				{
+					player.kills++;
+					GD.Print($"Player should have {player.kills} kills");
+					lookAtRef = player.hitBox;
+				}
+			}
+			
+			// Server sets these variables and MultiplayerSynchronizer handles the rest
+			health = 0.0f;
+			deaths++;
+			deathConfirmed = true;	
+
+			StartRespawnSequence();
+		}
+		else
+		{
+			GD.Print("Player just got hit! Send them a UI signal");
+			health -= damageRecieved;
+		}	
+
+		// Send Rpc's to both sender and receiver players to update their UI
+		RpcId(receiverId, MethodName.OnReceiverHitUpdateUI);
+		RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	private void OnHitUpdateUI()
+	private async void StartRespawnSequence()
 	{
-		if(!context.player.myNetId.IsLocal)
+		await ToSignal(GetTree().CreateTimer(5), "timeout");
+
+		var gameManager = GetTree().CurrentScene as GameManager;
+		Node3D randomSpawn = gameManager.RequestRandomPlayerSpawn();
+
+		deathConfirmed = false;
+		health = 100.0f;
+
+		GlobalTransform = randomSpawn.GlobalTransform;
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void OnReceiverHitUpdateUI()
+	{
+		if(!myNetId.IsLocal)
 			return;
 
+		if (deathConfirmed) 
+		{
+			GD.Print("I just died!");
+			// Maybe start timer here and show death screen
+		}
 			
-		pauseMenu.UnHideMenu();
 		GD.Print("I got hit! Update UI here!");
 		GD.Print(health);
+		
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void OnSenderHitUpdateUI(bool deathConfirmed)
+	{
+		if (deathConfirmed)
+		{
+			GD.Print("I just killed something!");
+			GD.Print(kills);
+			killBell.Play();
+		}
+		else
+		{
+			hitMarkerPing.Play();
+		}
 		
 	}
 

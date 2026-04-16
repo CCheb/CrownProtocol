@@ -35,6 +35,7 @@ project/assembly_name="TestNetworkTemplate2"
 [global_group]
 
 Player=""
+Enemies=""
 
 [input]
 

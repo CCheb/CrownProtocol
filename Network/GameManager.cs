@@ -126,6 +126,11 @@ public partial class GameManager : Node3D
 		
 	}
 
+	public Node3D RequestRandomPlayerSpawn()
+	{
+		return playerSpawns[GD.RandRange(0, playerSpawns.Count-1)];
+	}
+
 	private async void OnPlayerDisconnected(long id)
 	{
 		connectedPlayers--;

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cvbnyftcd3pd8"]
 
-[ext_resource type="Script" path="res://UI/InGameUI/Scripts/Leaderboard.cs" id="1_0h41l"]
+[ext_resource type="Script" uid="uid://6uxk0ckxa5y2" path="res://UI/InGameUI/Scripts/Leaderboard.cs" id="1_0h41l"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="1_afmvw"]
 
 [sub_resource type="Animation" id="Animation_fsfxn"]
@@ -177,7 +177,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 58.0
-offset_right = -1120.0
+offset_right = -1075.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.22000659, 0, 0, 0.89411765)
@@ -191,9 +191,9 @@ anchor_bottom = 1.0
 offset_left = 13.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/h_separation = 115
+theme_override_constants/h_separation = 215
 theme_override_constants/v_separation = 20
-columns = 5
+columns = 4
 
 [node name="PlayerLabel" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=1135492803]
 layout_mode = 2
@@ -235,16 +235,6 @@ theme_override_fonts/font = ExtResource("1_afmvw")
 theme_override_font_sizes/font_size = 50
 text = "deaths"
 
-[node name="AssistsLabel" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=1715166521]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/font = ExtResource("1_afmvw")
-theme_override_font_sizes/font_size = 50
-text = "assists"
-
 [node name="PlayerLabel1" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=737620090]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -273,15 +263,6 @@ theme_override_fonts/font = ExtResource("1_afmvw")
 theme_override_font_sizes/font_size = 50
 
 [node name="DeathsLabel1" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=1542732898]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/font = ExtResource("1_afmvw")
-theme_override_font_sizes/font_size = 50
-
-[node name="AssistsLabel1" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=1925350919]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -326,15 +307,6 @@ theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("1_afmvw")
 theme_override_font_sizes/font_size = 50
 
-[node name="AssistsLabel2" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=275853458]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/font = ExtResource("1_afmvw")
-theme_override_font_sizes/font_size = 50
-
 [node name="PlayerLabel3" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=1923237155]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -371,15 +343,6 @@ theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("1_afmvw")
 theme_override_font_sizes/font_size = 50
 
-[node name="AssistsLabel3" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=684910586]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/font = ExtResource("1_afmvw")
-theme_override_font_sizes/font_size = 50
-
 [node name="PlayerLabel4" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=1276511608]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -408,15 +371,6 @@ theme_override_fonts/font = ExtResource("1_afmvw")
 theme_override_font_sizes/font_size = 50
 
 [node name="DeathsLabel4" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=173975680]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/font = ExtResource("1_afmvw")
-theme_override_font_sizes/font_size = 50
-
-[node name="AssistsLabel4" type="Label" parent="MarginContainer/ColorRect/GridContainer" unique_id=2095503403]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0

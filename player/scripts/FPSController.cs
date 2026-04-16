@@ -64,6 +64,17 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	private const int SERVER = 1;
 	public PlayerContext context;
 
+	// UI Additions
+	private ProgressBar[] healthBarSegments;
+	private Color segmentColors;
+	private ProgressBar xpBar;
+	private TextureProgressBar captureBar;
+	private GridContainer leaderboard;
+	private Label[] playerNameLabels;
+	private Label[] pointsLabels;
+	private Label[] killsLabels;
+	private Label[] deathsLabels;
+
 	public override void _Input(InputEvent @event)
 	{
 		base._Input(@event);
@@ -132,7 +143,43 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		playerNameTag.Visible = false;
 
 		pauseMenu.ResumeButtonClicked += OnResumeButtonClicked;
-		
+
+		ProgressBar seg1 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec1");
+		ProgressBar seg2 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec2");
+		ProgressBar seg3 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec3");
+		ProgressBar seg4 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec4");
+		ProgressBar seg5 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec5");
+		healthBarSegments = new ProgressBar[] { seg1, seg2, seg3, seg4, seg5 };
+		// set segment color to current color of the Fill StyleBox of sec1
+		StyleBoxFlat fillStyle = (StyleBoxFlat)seg1.GetThemeStylebox("fill");
+		segmentColors = fillStyle.BgColor;
+
+		xpBar = GetNode<ProgressBar>("UserInterface/XPBar/ProgressBar");
+		captureBar = GetNode<TextureProgressBar>("UserInterface/CaptureBar/TextureProgressBar");
+
+		captureBar.Visible = false;
+
+		xpBar.Value = score;
+
+		leaderboard = GetNode<GridContainer>(("UserInterface/Leaderboard/MarginContainer/ColorRect/GridContainer"));
+
+		playerNameLabels = new Label[4];
+		pointsLabels = new Label[4];
+		killsLabels = new Label[4];
+		deathsLabels = new Label[4];
+
+		for (int i = 0; i < 4; i++)
+		{
+			// skip header
+			int childIndex = 4 + (i * 4);
+			playerNameLabels[i] = leaderboard.GetChild(childIndex) as Label;
+			pointsLabels[i] = leaderboard.GetChild(childIndex + 1) as Label;
+			killsLabels[i] = leaderboard.GetChild(childIndex + 2) as Label;
+			deathsLabels[i] = leaderboard.GetChild(childIndex + 3) as Label;
+		}
+
+		// initialize leaderboard
+		UpdateLeaderboard();
 	}
 
 	private void SetAsNonLocalPlayer()
@@ -149,6 +196,51 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	private void SetPlayerNameTag()
 	{
 		playerNameTag.Text = GenericCore.Instance.connectedPeers[myNetId.OwnerId]["UserName"];
+	}
+
+	private void UpdateLeaderboard()
+	{
+		if (!myNetId.IsLocal || leaderboard == null)
+			return;
+
+		// collect all ready players
+		Godot.Collections.Array<Node> allPlayerNodes = GetTree().GetNodesInGroup("Enemies");
+		var allPlayers = new System.Collections.Generic.List<FPSController>();
+
+		foreach (var node in allPlayerNodes)
+		{
+			if (node is FPSController player && player.myNetId != null &&
+				GenericCore.Instance.connectedPeers.ContainsKey(player.myNetId.OwnerId))
+			{
+				allPlayers.Add(player);
+			}
+		}
+
+		// sort by OwnerId so every client sees the exact same order
+		allPlayers.Sort((a, b) => a.myNetId.OwnerId.CompareTo(b.myNetId.OwnerId));
+
+		// populate the 4 rows
+		for (int i = 0; i < 4; i++)
+		{
+			if (i < allPlayers.Count)
+			{
+				FPSController p = allPlayers[i];
+				long ownerId = p.myNetId.OwnerId;
+
+				playerNameLabels[i].Text = (string)GenericCore.Instance.connectedPeers[ownerId]["UserName"];
+				pointsLabels[i].Text = p.score.ToString("0");
+				killsLabels[i].Text = p.kills.ToString();
+				deathsLabels[i].Text = p.deaths.ToString();
+			}
+			else
+			{
+				// empty slot
+				playerNameLabels[i].Text = "-";
+				pointsLabels[i].Text = "-";
+				killsLabels[i].Text = "-";
+				deathsLabels[i].Text = "-";
+			}
+		}
 	}
 
 	// _Input > UI > _UnhandledInput. We use _UnhandledInput here since we dont want any mouse movement
@@ -341,6 +433,8 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				if(enemy is FPSController player && player.myNetId.OwnerId == senderId)
 				{
 					player.kills++;
+					// For testing score (XP) UI: temporary score inclusion to-be-edited later
+					score += 5;
 					GD.Print($"Player should have {player.kills} kills");
 					lookAtRef = player.hitBox;
 				}
@@ -362,6 +456,18 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		// Send Rpc's to both sender and receiver players to update their UI
 		RpcId(receiverId, MethodName.OnReceiverHitUpdateUI);
 		RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
+
+		if (GenericCore.Instance.IsServer)
+		{
+			Godot.Collections.Array<Node> allPlayerNodes = GetTree().GetNodesInGroup("Enemies");
+			foreach (var node in allPlayerNodes)
+			{
+				if (node is FPSController player)
+				{
+					player.Rpc(MethodName.RefreshLeaderboard);
+				}
+			}
+		}
 	}
 
 	private async void StartRespawnSequence()
@@ -391,7 +497,48 @@ public partial class FPSController : CharacterBody3D, IEnemy
 			
 		GD.Print("I got hit! Update UI here!");
 		GD.Print(health);
+
+		// health bar is separated into 5 segments of 20
+		switch (health)
+		{
+			case > 80:
+				healthBarSegments[4].Value = health - 80;
+				break;
+			case > 60:
+				healthBarSegments[3].Value = health - 60;
+				break;
+			case > 40:
+				healthBarSegments[2].Value = health - 40;
+				break;
+			case > 20:
+				healthBarSegments[1].Value = health - 20;
+				break;
+			case > 0:
+				healthBarSegments[0].Value = health;
+				break;
+			default:
+				foreach (var segment in healthBarSegments)
+				{
+					segment.Value = 0;
+				}
+				break;
+		}
+		// color lerp system based on curent health percentage
+		if(health > 0)
+		{
+			float ratio = health / 100.0f;
+			StyleBoxFlat fillStyle;
+			foreach (var segment in healthBarSegments)
+			{
+				fillStyle = segment.GetThemeStylebox("fill").Duplicate() as StyleBoxFlat;
+				// Lerp from Red (0%) to Green (100%)
+				fillStyle.BgColor = Colors.Red.Lerp(segmentColors, ratio);
+
+				segment.AddThemeStyleboxOverride("fill", fillStyle);
+			}
+		}
 		
+
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -402,12 +549,22 @@ public partial class FPSController : CharacterBody3D, IEnemy
 			GD.Print("I just killed something!");
 			GD.Print(kills);
 			killBell.Play();
+			xpBar.Value = score;
 		}
 		else
 		{
 			hitMarkerPing.Play();
 		}
-		
+
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void RefreshLeaderboard()
+	{
+		if (myNetId.IsLocal)
+		{
+			UpdateLeaderboard();
+		}
 	}
 
 	//---Single Player stuff--//

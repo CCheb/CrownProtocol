@@ -49,6 +49,7 @@ public partial class WeaponResource : Resource
     [Export] public float WeaponRecoverySpeed = 20.0f;
 
     [ExportGroup("Weapon Stats")]
+    [Export] public float damage = 25.0f;
     [Export] public float FireRate = 550.0f;
     [Export] public float desiredZoom = 50.0f;
     [Export] public int AmmoCount = 0;

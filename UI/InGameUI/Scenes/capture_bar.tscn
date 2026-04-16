@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bbinim2cwfgy8"]
+
+[ext_resource type="Texture2D" uid="uid://ccl616ecd24n8" path="res://UI/Assets/textures/capBackground.png" id="1_jikyo"]
+[ext_resource type="Texture2D" uid="uid://qhu1x8ksftjg" path="res://UI/Assets/textures/capForeground.png" id="2_3geua"]
+[ext_resource type="Texture2D" uid="uid://2tf30c486r46" path="res://UI/Assets/textures/capCrown.png" id="3_vaeyu"]
+
+[node name="CaptureBar" type="Control" unique_id=984391753]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1594.0
+offset_top = 752.0
+offset_right = 1594.0
+offset_bottom = 752.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=866283035]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.15200001
+anchor_bottom = 0.273
+offset_right = 0.15997314
+offset_bottom = 0.16000366
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 4
+texture_under = ExtResource("1_jikyo")
+texture_progress = ExtResource("2_3geua")
+tint_under = Color(0, 0, 0, 0.2)
+
+[node name="TextureRect" type="TextureRect" parent="TextureProgressBar" unique_id=1376965519]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18800001
+anchor_top = 0.17600001
+anchor_right = 0.81500006
+anchor_bottom = 0.81000006
+offset_left = 0.10399628
+offset_top = 0.0799942
+offset_right = 0.019989014
+offset_bottom = 0.049987793
+texture = ExtResource("3_vaeyu")

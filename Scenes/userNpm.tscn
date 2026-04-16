@@ -32,41 +32,44 @@ script = ExtResource("2_fu0en")
 
 [node name="Background" type="ColorRect" parent="." unique_id=110430580]
 layout_mode = 0
-offset_right = 288.0
-offset_bottom = 40.0
+offset_right = 485.0
+offset_bottom = 61.0
 color = Color(0.20332181, 0.20332184, 0.20332178, 1)
 
 [node name="UserName" type="Label" parent="Background" unique_id=1801369762]
 layout_mode = 0
-offset_right = 288.0
-offset_bottom = 40.0
+offset_left = 46.0
+offset_right = 484.0
+offset_bottom = 58.0
 theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("3_fu0en")
+theme_override_font_sizes/font_size = 46
 text = "John Doe"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ReadyStatus" type="ColorRect" parent="Background" unique_id=154326802]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 43.0
+offset_bottom = 62.0
 color = Color(1, 0, 0, 1)
 
 [node name="Ready" type="Button" parent="Background" unique_id=473845059]
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.1110001
+anchor_left = 1.019
 anchor_right = 1.3230001
-anchor_bottom = 0.77500004
-offset_left = 0.031982422
-offset_right = -0.024017334
+anchor_bottom = 1.0
+offset_left = -0.21502686
+offset_right = -0.024047852
 theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
 theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_fu0en")
+theme_override_font_sizes/font_size = 36
 toggle_mode = true
 text = "ready"
 

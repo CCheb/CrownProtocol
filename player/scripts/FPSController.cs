@@ -65,18 +65,18 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	public PlayerContext context;
 
 	// UI Additions
-	private ProgressBar[] healthBarSegments;
-	private Color segmentColors;
-	private ProgressBar xpBar;
-	private TextureProgressBar captureBar;
+	[Export] private ProgressBar[] healthBarSegments;
+	[Export] private Color segmentColors;
+	[Export] private ProgressBar xpBar;
+	[Export] private TextureProgressBar captureBar;
 	[Export] private int captureTime = 60;
 	private bool isCapturing = false;
-	private GridContainer leaderboard;
-	private Label[] playerNameLabels;
-	private Label[] pointsLabels;
-	private Label[] killsLabels;
-	private Label[] deathsLabels;
-	private AnimationPlayer hitFlashUI;
+	[Export] private GridContainer leaderboard;
+	[Export] private Label[] playerNameLabels;
+	[Export] private Label[] pointsLabels;
+	[Export] private Label[] killsLabels;
+	[Export] private Label[] deathsLabels;
+	[Export] private AnimationPlayer hitFlashUI;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -147,42 +147,14 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 		pauseMenu.ResumeButtonClicked += OnResumeButtonClicked;
 
-		ProgressBar seg1 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec1");
-		ProgressBar seg2 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec2");
-		ProgressBar seg3 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec3");
-		ProgressBar seg4 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec4");
-		ProgressBar seg5 = GetNode<ProgressBar>("UserInterface/HealthBar/Sec5");
-		healthBarSegments = new ProgressBar[] { seg1, seg2, seg3, seg4, seg5 };
 		// set segment color to current color of the Fill StyleBox of sec1
-		StyleBoxFlat fillStyle = (StyleBoxFlat)seg1.GetThemeStylebox("fill");
+		StyleBoxFlat fillStyle = (StyleBoxFlat)healthBarSegments[0].GetThemeStylebox("fill");
 		segmentColors = fillStyle.BgColor;
-
-		xpBar = GetNode<ProgressBar>("UserInterface/XpBar/ProgressBar");
-		captureBar = GetNode<TextureProgressBar>("UserInterface/CaptureBar/TextureProgressBar");
 
 		captureBar.Visible = false;
 		captureBar.MaxValue = captureTime;
 
 		xpBar.Value = score;
-
-		hitFlashUI = GetNode<AnimationPlayer>("UserInterface/HitScreen/AnimationPlayer");
-
-		leaderboard = GetNode<GridContainer>("UserInterface/Leaderboard/MarginContainer/ColorRect/GridContainer");
-
-		playerNameLabels = new Label[4];
-		pointsLabels = new Label[4];
-		killsLabels = new Label[4];
-		deathsLabels = new Label[4];
-
-		for (int i = 0; i < 4; i++)
-		{
-			// skip header
-			int childIndex = 4 + (i * 4);
-			playerNameLabels[i] = leaderboard.GetChild(childIndex) as Label;
-			pointsLabels[i] = leaderboard.GetChild(childIndex + 1) as Label;
-			killsLabels[i] = leaderboard.GetChild(childIndex + 2) as Label;
-			deathsLabels[i] = leaderboard.GetChild(childIndex + 3) as Label;
-		}
 
 		// initialize leaderboard
 		UpdateLeaderboard();
@@ -421,10 +393,10 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	// PLAYER INTERACTIONS 
 	public void Hit(float damageRecieved, long senderId, long receiverId)
-	{	
+	{
 		// Hit is handled by the server
 
-		if(deathConfirmed)
+		if (deathConfirmed)
 		{
 			return;
 		}
@@ -437,7 +409,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				if(enemy is FPSController player && player.myNetId.OwnerId == senderId)
 				{
 					player.kills++;
-					score += 5;
+					player.score += 5;
 					GD.Print($"Player should have {player.kills} kills");
 					lookAtRef = player.hitBox;
 				}
@@ -470,7 +442,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		}
 		else if (senderId != -1)
 		{
-			RpcId(senderId, MethodName.OnSenderHitUpdateUI, score, deathConfirmed);
+			RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
 		}
 
 		if (GenericCore.Instance.IsServer)
@@ -547,18 +519,23 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		{
 			case > 80:
 				healthBarSegments[4].Value = newHealth - 80;
+				GD.Print(healthBarSegments[4].Value);
 				break;
 			case > 60:
 				healthBarSegments[3].Value = newHealth - 60;
+				GD.Print(healthBarSegments[3].Value);
 				break;
 			case > 40:
 				healthBarSegments[2].Value = newHealth - 40;
+				GD.Print(healthBarSegments[2].Value);
 				break;
 			case > 20:
 				healthBarSegments[1].Value = newHealth - 20;
+				GD.Print(healthBarSegments[1].Value);
 				break;
 			case > 0:
 				healthBarSegments[0].Value = newHealth;
+				GD.Print(healthBarSegments[0].Value);
 				break;
 			default:
 				foreach (var segment in healthBarSegments)
@@ -585,14 +562,16 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	private void OnSenderHitUpdateUI(float newScore, bool deathConfirmed)
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void OnSenderHitUpdateUI(bool deathConfirmed)
 	{
 
 		if (deathConfirmed)
 		{
 			killBell?.Play();
-			xpBar.Value = newScore;
+			xpBar.Value = score;
+			GD.Print("XP value:" + xpBar.Value);
+			GD.Print("score:" + score);
 		}
 		else
 		{

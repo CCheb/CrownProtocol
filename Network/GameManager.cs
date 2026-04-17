@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class GameManager : Node3D
 {
@@ -23,6 +24,7 @@ public partial class GameManager : Node3D
 	{
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
    		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 		// Windows doesnt like node exports for some reason
 		playerSpawns = new Godot.Collections.Array<Marker3D>();
@@ -32,6 +34,7 @@ public partial class GameManager : Node3D
     	        playerSpawns.Add(marker);
     	}
 
+		
 		itemSpawns = new Godot.Collections.Array<PickupItemMarker>();
 		foreach (var node in GetTree().GetNodesInGroup("ItemSpawns"))
 		{
@@ -44,29 +47,29 @@ public partial class GameManager : Node3D
 
 		GD.Print($"Peer {Multiplayer.GetUniqueId()} GameManager READY");
 
+ 		await ToSignal(GetTree().CreateTimer(0.1), "timeout");
+
 		GenericCore.Instance.RpcId(1, "SceneReady");
 	}
 
-	public void ServerSpawnPlayers()
+	public async void ServerSpawnPlayers()
 	{			
-		int count = 0;
-		foreach(var peer in GenericCore.Instance.connectedPeers)
+		var peers = GenericCore.Instance.connectedPeers.Keys.ToList();
+
+		for (int i = 0; i < peers.Count; i++)
 		{
-			if(peer.Key != 1)
-			{
-				netCore.NetCreateObject(0, playerSpawns[count].GlobalPosition, playerSpawns[count].Quaternion, peer.Key);
-				// Fill up connectedPlayers here as we it encounters new players. 
-				connectedPlayers++;
-				count++;
-			}
-			else
-			{
-				Camera3D playerCamera = cameraScene.Instantiate<Camera3D>();
-				spectatorSpawn.AddChild(playerCamera);
-			}
-			
+		    long peerId = peers[i];
+
+		    if (peerId == 1)
+		        continue;
+
+		    var spawn = playerSpawns[i % playerSpawns.Count];
+
+		    netCore.NetCreateObject(0, spawn.GlobalPosition, spawn.Quaternion, peerId);
 		}
 	}
+
+	
 
 	public void ServerSpawnItems()
 	{

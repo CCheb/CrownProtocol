@@ -82,13 +82,15 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	{
 		base._Input(@event);
 		
+		/*
 		if (@event.IsActionPressed("pause") && myNetId.IsLocal)
 		{
-			//Input.MouseMode = Input.MouseModeEnum.Visible;
+			Input.MouseMode = Input.MouseModeEnum.Visible;
 			GD.Print($"client kills {kills}");
 			pauseMenu.UnHideMenu();
 			isInPauseMenu = true;
 		}
+		*/
 	}
 
     public override void _EnterTree()

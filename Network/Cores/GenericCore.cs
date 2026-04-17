@@ -355,7 +355,7 @@ public partial class GenericCore : Node
     }
 
     [Rpc(CallLocal = true,TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void BeginSpawning()
+    private async void BeginSpawning()
     {
         GD.Print($"Peer {Multiplayer.GetUniqueId()} BEGIN SPAWNING");
 
@@ -363,6 +363,9 @@ public partial class GenericCore : Node
         {
             var gm = GetTree().Root.GetNode<GameManager>("GameManager");
             gm.ServerSpawnItems();
+
+            await ToSignal(GetTree().CreateTimer(0.1), "timeout");
+
             gm.ServerSpawnPlayers();
         }
     }

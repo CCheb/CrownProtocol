@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dd2owg8bu8no5"]
 
-[ext_resource type="PackedScene" uid="uid://hhoe7wf5nrug" path="res://player/assets/items/smgPickup.tscn" id="1_fijna"]
+[ext_resource type="Script" uid="uid://cvtyrfq5fl33g" path="res://Network/GameManager.cs" id="1_1aa6q"]
+[ext_resource type="Script" uid="uid://dhp14ud86aqe7" path="res://Network/Cores/NetworkCore.cs" id="2_bl8gb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fijna"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -25,7 +26,19 @@ albedo_color = Color(0.23862621, 0.54849696, 0.99999994, 1)
 material = SubResource("StandardMaterial3D_fijna")
 size = Vector3(30, 1, 30)
 
-[node name="Node3D" type="Node3D" unique_id=346433669]
+[node name="GameManager" type="Node3D" unique_id=346433669 node_paths=PackedStringArray("netCore", "projectileSpawner")]
+script = ExtResource("1_1aa6q")
+netCore = NodePath("MultiplayerSpawner")
+projectileSpawner = NodePath("ProjectileSpawner")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1341843455 groups=["PlayerSpawn"]]
+_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4", "uid://bk4nplqfcnwr5", "uid://ckv1fvu075om8")
+spawn_path = NodePath("..")
+script = ExtResource("2_bl8gb")
+
+[node name="ProjectileSpawner" type="MultiplayerSpawner" parent="." unique_id=1941248056]
+_spawnable_scenes = PackedStringArray("uid://e5kh6jpm8qar", "uid://dyk8nokmfq10c")
+spawn_path = NodePath("..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2136379499]
 environment = SubResource("Environment_bl8gb")
@@ -43,7 +56,14 @@ shape = SubResource("BoxShape3D_w5k4t")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=1907624104]
 mesh = SubResource("BoxMesh_1aa6q")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=788566569]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.475, 2.495)
+[node name="Spawn1" type="Marker3D" parent="." unique_id=2041808180 groups=["PlayerSpawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.2157135)
 
-[node name="Node3D" parent="." unique_id=719107929 instance=ExtResource("1_fijna")]
+[node name="Spawn2" type="Marker3D" parent="." unique_id=1187701609 groups=["PlayerSpawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.741995)
+
+[node name="Spawn3" type="Marker3D" parent="." unique_id=1476746453 groups=["PlayerSpawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.901965, 0, -0.56518173)
+
+[node name="Spawn4" type="Marker3D" parent="." unique_id=89474938 groups=["PlayerSpawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.895982, 0, -0.56518173)

@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://dtijcfvkjt3mv"]
+
+[ext_resource type="Script" uid="uid://c8of8infi526n" path="res://player/scripts/etc/AnimationProfile.cs" id="1_namps"]
+[ext_resource type="PackedScene" uid="uid://c6fl2a02j5i0d" path="res://player/assets/weapons/shotgun/shotgun.tscn" id="1_qmihn"]
+[ext_resource type="Script" uid="uid://dfe0snu41fopf" path="res://player/scripts/etc/WeaponBurstProfile.cs" id="1_roxeo"]
+[ext_resource type="Script" uid="uid://cmymrn4gpv3y3" path="res://player/scripts/weapon/WeaponResource.cs" id="2_qmihn"]
+
+[sub_resource type="Resource" id="Resource_p4nqq"]
+script = ExtResource("1_namps")
+AnimationName = "Draw"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_tol86"]
+script = ExtResource("1_namps")
+AnimationName = "Fire"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_uru7s"]
+script = ExtResource("1_namps")
+AnimationName = "Reload"
+metadata/_custom_type_script = "uid://c8of8infi526n"
+
+[sub_resource type="Resource" id="Resource_namps"]
+script = ExtResource("1_roxeo")
+
+[resource]
+script = ExtResource("2_qmihn")
+WeaponName = "SHOTGUN"
+WeaponType = 2
+SecondaryWeaponAction = 5
+Status = 1
+ViewportPosition = Vector3(0, -0.245, -0.45)
+WeaponScene = ExtResource("1_qmihn")
+damage = 8.0
+FireRate = 100.0
+AmmoCount = 25
+AmmoCapacity = 25
+Fire = SubResource("Resource_tol86")
+Reload = SubResource("Resource_uru7s")
+Draw = SubResource("Resource_p4nqq")
+metadata/_custom_type_script = "uid://cmymrn4gpv3y3"

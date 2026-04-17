@@ -22,6 +22,7 @@ public partial class WeaponController : Node3D
         GD.Load<WeaponResource>("res://player/assets/weapons/DrewPistol/drewPistol.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/smg/smgResource.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/burstRifle/burstRifleResource.tres"),
+        GD.Load<WeaponResource>("res://player/assets/weapons/shotgun/shotgunResource.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/bazooka/bazookaResource.tres"),
         GD.Load<WeaponResource>("res://player/assets/weapons/sniper/sniperResource.tres")
     }; 
@@ -29,7 +30,7 @@ public partial class WeaponController : Node3D
     // This variable would be the most important to synchronize
     private int LastWeaponIndex = 0;
     [Export] public int CurrentWeaponIndex = 0;
-    private const int MAX_WEAPON_AMMOUNT = 5;
+    private const int MAX_WEAPON_AMMOUNT = 6;
     private WeaponBase CurrentWeapon;
     private Procedural procedural = new();
     private IWeaponAction CurrentPrimaryWeaponAction;

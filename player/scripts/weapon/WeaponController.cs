@@ -255,6 +255,7 @@ public partial class WeaponController : Node3D
         procedural.SetCurrentWeaponMovementProfile(CurrentWeaponMovementProfile);
     }
 
+
     public void OnWeaponPickedUp(int pickedWeapon)
     {
         GD.Print("Server sensed the pickup!");
@@ -271,6 +272,7 @@ public partial class WeaponController : Node3D
         }
     }
 
+    [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void AddAmmoTo(int weaponIndex)
     {
         if(!context.player.myNetId.IsLocal)

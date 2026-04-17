@@ -15,7 +15,7 @@ public partial class SemiAutoWeaponAction : IWeaponAction
 
     public void OnActionPressed()
     {
-        if (!CanFire || CurrentWeapon.IsReloading || CurrentWeapon.IsFiring)
+        if (!CanFire || CurrentWeapon.IsReloading || CurrentWeapon.IsFiring || weaponController.CheckCurrentWeaponAmmo() <= 0)
             return;
 
         weaponController.Rpc("BroadCastShooting", true);

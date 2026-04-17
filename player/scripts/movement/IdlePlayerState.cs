@@ -52,8 +52,6 @@ public partial class IdlePlayerState : PlayerMovementState
         PLAYER.speed = speed;
         PLAYER.acceleration = acceleration;
         PLAYER.deceleration = decelaration;
-
-        GD.Print("Entered idle state");
     }
 
     public override void Exit()
@@ -63,8 +61,6 @@ public partial class IdlePlayerState : PlayerMovementState
         if (PLAYER.myNetId.IsLocal)
             // Make sure to reset the speed scale
             ANIMATION.SpeedScale = 1.0f;
-
-        GD.Print("Exited idle state");
     }
     public override void PhysicsUpdate(double delta)
     {

@@ -55,8 +55,6 @@ public partial class WalkingPlayerState : PlayerMovementState
             }
         }
 
-        GD.Print("Entered Walking State!");
-
         PLAYER.speed = speed;
         PLAYER.acceleration = acceleration;
         PLAYER.deceleration = decelaration;

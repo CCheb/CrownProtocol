@@ -157,7 +157,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		StyleBoxFlat fillStyle = (StyleBoxFlat)seg1.GetThemeStylebox("fill");
 		segmentColors = fillStyle.BgColor;
 
-		xpBar = GetNode<ProgressBar>("UserInterface/XPBar/ProgressBar");
+		xpBar = GetNode<ProgressBar>("UserInterface/XpBar/ProgressBar");
 		captureBar = GetNode<TextureProgressBar>("UserInterface/CaptureBar/TextureProgressBar");
 
 		captureBar.Visible = false;
@@ -167,7 +167,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 		hitFlashUI = GetNode<AnimationPlayer>("UserInterface/HitScreen/AnimationPlayer");
 
-		leaderboard = GetNode<GridContainer>(("UserInterface/Leaderboard/MarginContainer/ColorRect/GridContainer"));
+		leaderboard = GetNode<GridContainer>("UserInterface/Leaderboard/MarginContainer/ColorRect/GridContainer");
 
 		playerNameLabels = new Label[4];
 		pointsLabels = new Label[4];
@@ -426,13 +426,11 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 		if(deathConfirmed)
 		{
-			GD.Print("Player is Dead! Stop shooting at it bro");
 			return;
 		}
 
 		if (health - damageRecieved <= 0)
 		{
-			GD.Print("Player just died! Send them a UI signal");
 		
 			foreach(var enemy in GetTree().GetNodesInGroup("Enemies"))
 			{
@@ -455,7 +453,6 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		}
 		else
 		{
-			GD.Print("Player just got hit! Send them a UI signal");
 			health -= damageRecieved;
 		}	
 
@@ -522,7 +519,6 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 		if (deathConfirmed)
 		{
-			GD.Print("I just died!");
 			// Maybe start timer here and show death screen
 			hitFlashUI.Play("die");
 		}
@@ -581,8 +577,6 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	{
 		if (deathConfirmed)
 		{
-			GD.Print("I just killed something!");
-			GD.Print(kills);
 			killBell.Play();
 			xpBar.Value = score;
 		}

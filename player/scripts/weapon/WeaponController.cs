@@ -332,6 +332,7 @@ public partial class WeaponController : Node3D
                 context.player.characterAnimations.Set("parameters/conditions/runShoot", false);
                 break;
         }
+
     }
 
    

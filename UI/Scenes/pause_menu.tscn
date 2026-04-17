@@ -4,6 +4,8 @@
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="1_n87rw"]
 [ext_resource type="PackedScene" uid="uid://w1xu01fl07vm" path="res://UI/Scenes/options_tab.tscn" id="3_jnqna"]
 [ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="4_7yu7q"]
+[ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="5_o1lsb"]
+[ext_resource type="Script" uid="uid://chbtmwk6v6vl7" path="res://UI/Scripts/ControlsUi.cs" id="5_rseou"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_myx47"]
 
@@ -39,6 +41,30 @@ border_color = Color(0.627451, 0, 0, 1)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8nfxn"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uwbqb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rseou"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lde00"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_apsk3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_va782"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsn0o"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
 
 [node name="PauseMenu" type="Control" unique_id=401518576 node_paths=PackedStringArray("optionsUI", "confirmScreen", "Beep")]
 layout_mode = 3
@@ -286,9 +312,157 @@ text = "no"
 stream = ExtResource("4_7yu7q")
 volume_db = -5.0
 
+[node name="Controls" type="ColorRect" parent="." unique_id=1517252801]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 159.0
+offset_top = 126.0
+offset_right = -161.0
+offset_bottom = -154.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.43137255, 0, 0, 0.74509805)
+script = ExtResource("5_rseou")
+
+[node name="ControlsTitle" type="Label" parent="Controls" unique_id=831882973]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -308.0
+offset_right = 308.0
+offset_bottom = 135.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 76
+text = "CONTROLS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="Controls/ControlsTitle" unique_id=878172076]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.55700004
+anchor_top = 0.874
+anchor_right = 1.5680001
+anchor_bottom = 1.0
+offset_left = -0.21298218
+offset_top = 0.009994507
+offset_right = -0.21307373
+offset_bottom = -3.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rseou")
+
+[node name="MarginContainer" type="MarginContainer" parent="Controls" unique_id=2017326002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 175
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls/MarginContainer" unique_id=1615548582]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="Controls/MarginContainer/VBoxContainer" unique_id=528214719]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 50
+text = "WASD - MOVE UP/DOWN/LEFT/RIGHT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Controls/MarginContainer/VBoxContainer" unique_id=621749290]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 50
+text = "SPACEBAR - JUMP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="Controls/MarginContainer/VBoxContainer" unique_id=830811406]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 50
+text = "LEFT CLICK - SHOOT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="Controls/MarginContainer/VBoxContainer" unique_id=1105287445]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 50
+text = "ESC - PAUSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="Controls/MarginContainer/VBoxContainer" unique_id=311955845]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 50
+text = "HOLD TAB - LEADERBOARD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="Controls/MarginContainer/VBoxContainer" unique_id=1787497077]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_o1lsb")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="Controls/MarginContainer/VBoxContainer" unique_id=207486486]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("1_n87rw")
+theme_override_font_sizes/font_size = 75
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lde00")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_apsk3")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_va782")
+text = "back"
+
+[node name="Panel" type="Panel" parent="Controls/MarginContainer/VBoxContainer/BackButton" unique_id=521328067]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053000003
+anchor_top = 0.86600006
+anchor_right = 0.89000005
+anchor_bottom = 1.0
+offset_left = 0.05099964
+offset_top = -0.012001038
+offset_right = -0.03201294
+offset_bottom = 3.6920013
+theme_override_styles/panel = SubResource("StyleBoxFlat_gsn0o")
+
 [connection signal="pressed" from="PanelContainer/Foreground/MarginContainer/VBoxContainer/ContinueButton" to="." method="OnContinuePressed"]
 [connection signal="pressed" from="PanelContainer/Foreground/MarginContainer/VBoxContainer/OptionsButton" to="." method="OnOptionsPressed"]
-[connection signal="pressed" from="PanelContainer/Foreground/MarginContainer/VBoxContainer/ControlsButton" to="." method="OnControlsPressed"]
+[connection signal="pressed" from="PanelContainer/Foreground/MarginContainer/VBoxContainer/ControlsButton" to="Controls" method="OnBackPressed"]
 [connection signal="pressed" from="PanelContainer/Foreground/MarginContainer/VBoxContainer/QuitButton" to="." method="OnQuitPressed"]
 [connection signal="pressed" from="ConfirmQuit/MarginContainer/VBoxContainer/HBoxContainer/YesButton" to="." method="OnConfirmPressed"]
 [connection signal="pressed" from="ConfirmQuit/MarginContainer/VBoxContainer/HBoxContainer/NoButton" to="." method="OnQuitPressed"]
+[connection signal="pressed" from="Controls/MarginContainer/VBoxContainer/BackButton" to="Controls" method="OnBackPressed"]

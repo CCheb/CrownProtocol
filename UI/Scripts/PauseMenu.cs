@@ -4,14 +4,19 @@ using System.ComponentModel;
 
 public partial class PauseMenu : Control
 {
-	[Export]
+
+	[Signal] public delegate void ResumeButtonClickedEventHandler();
+
 	private Control optionsUI;
-	[Export] private ColorRect confirmScreen;
-	[Export] public AudioStreamPlayer Beep;
+	private ColorRect confirmScreen;
+	private AudioStreamPlayer Beep;
 
 	public override void _Ready()
 	{
 		base._Ready();
+		optionsUI = GetNode<Control>("OptionsTab");
+		confirmScreen = GetNode<ColorRect>("ConfirmQuit");
+		Beep = GetNode<AudioStreamPlayer>("Beep");
 		optionsUI.Visible = false;
 		confirmScreen.Visible = false;
 		Visible = false;
@@ -41,8 +46,8 @@ public partial class PauseMenu : Control
 	{
 		Beep.Play();
 		Visible = false;
-		GetTree().Paused = false;
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+		EmitSignalResumeButtonClicked();
 	}
 
 	public void OnOptionsPressed()
@@ -67,8 +72,9 @@ public partial class PauseMenu : Control
 	public void OnConfirmPressed()
 	{
 		Beep.Play();
-		OS.Execute(OS.GetExecutablePath(), new string[] { });
-		GetTree().Quit();
+		// OS.Execute(OS.GetExecutablePath(), new string[] { });
+		// GetTree().Quit();
+		GenericCore.Instance.DisconnectFromGame();
 	}
 
 	public void OnBackPressed()

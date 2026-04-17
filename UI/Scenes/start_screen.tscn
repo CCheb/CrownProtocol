@@ -9,7 +9,7 @@
 [ext_resource type="FontFile" uid="uid://daqjfb3q5j1qh" path="res://UI/Assets/fonts/OrionPaxBold-a0D5.ttf" id="8_dabub"]
 [ext_resource type="PackedScene" uid="uid://w1xu01fl07vm" path="res://UI/Scenes/options_tab.tscn" id="8_wub3w"]
 [ext_resource type="FontFile" uid="uid://bedh45c0r3r2j" path="res://UI/Assets/fonts/OrionPax-wRv2.ttf" id="9_546pw"]
-[ext_resource type="PackedScene" uid="uid://die5ktyshj6pi" path="res://UI/Scenes/tutorial_tab.tscn" id="9_qc4xf"]
+[ext_resource type="Script" uid="uid://chbtmwk6v6vl7" path="res://UI/Scripts/ControlsUi.cs" id="9_lumgf"]
 [ext_resource type="AudioStream" uid="uid://b5mm2tqwgx8qu" path="res://UI/Assets/audio/laser.mp3" id="11_dabub"]
 [ext_resource type="AudioStream" uid="uid://c6qr58kainqmh" path="res://UI/Assets/audio/startScreenMusic.mp3" id="12_546pw"]
 [ext_resource type="AudioStream" uid="uid://ch263qap02b1k" path="res://UI/Assets/audio/beep.mp3" id="13_8kske"]
@@ -307,6 +307,30 @@ _data = {
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wub3w"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7pn03"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2n0vj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_34ij7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cfgwc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbay5"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.627451, 0, 0, 1)
+
 [node name="StartScreen" type="CanvasLayer" unique_id=947222301]
 
 [node name="Background" type="Node3D" parent="." unique_id=1297530205]
@@ -391,7 +415,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_q1bl8")
 optionsUI = NodePath("../OptionsTab")
-tutorialUI = NodePath("../TutorialTab")
+tutorialUI = NodePath("")
 CreditsUI = NodePath("CreditsTab")
 ServerUI = NodePath("../ServerBrowser")
 FadeScreen = NodePath("FadeScreen")
@@ -479,7 +503,7 @@ theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = SubResource("StyleBoxEmpty_7pn03")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_mde0y")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_wy8gh")
-text = " how to play "
+text = " controls "
 
 [node name="Panel" type="Panel" parent="Control/MenuBox/VBoxContainer/TutorialButton" unique_id=188848165]
 layout_mode = 1
@@ -831,10 +855,154 @@ theme_override_font_sizes/font_size = 22
 text = "*resource (author, website name)*"
 horizontal_alignment = 1
 
-[node name="OptionsTab" parent="." unique_id=2084655736 instance=ExtResource("8_wub3w")]
+[node name="Controls" type="ColorRect" parent="Control" unique_id=2059902611]
 visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 159.0
+offset_top = 126.0
+offset_right = -161.0
+offset_bottom = -154.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.43137255, 0, 0, 0.74509805)
+script = ExtResource("9_lumgf")
 
-[node name="TutorialTab" parent="." unique_id=1991293859 instance=ExtResource("9_qc4xf")]
+[node name="ControlsTitle" type="Label" parent="Control/Controls" unique_id=38111583]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -308.0
+offset_right = 308.0
+offset_bottom = 135.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 76
+text = "CONTROLS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="Control/Controls/ControlsTitle" unique_id=1116108815]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.55700004
+anchor_top = 0.874
+anchor_right = 1.5680001
+anchor_bottom = 1.0
+offset_left = -0.21298218
+offset_top = 0.009994507
+offset_right = -0.21307373
+offset_bottom = -3.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7pn03")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Controls" unique_id=890693192]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 175
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Controls/MarginContainer" unique_id=138846967]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=1037305399]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 50
+text = "WASD - MOVE UP/DOWN/LEFT/RIGHT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=1818914813]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 50
+text = "SPACEBAR - JUMP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=1959342745]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 50
+text = "LEFT CLICK - SHOOT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=1292512489]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 50
+text = "ESC - PAUSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=1632199840]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 50
+text = "HOLD TAB - LEADERBOARD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=1106635100]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("8_dabub")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="Control/Controls/MarginContainer/VBoxContainer" unique_id=400372932]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7529412, 0.70980394, 1)
+theme_override_colors/font_outline_color = Color(0.627451, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("9_546pw")
+theme_override_font_sizes/font_size = 75
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2n0vj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_34ij7")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_cfgwc")
+text = "back"
+
+[node name="Panel" type="Panel" parent="Control/Controls/MarginContainer/VBoxContainer/BackButton" unique_id=1152567158]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053000003
+anchor_top = 0.86600006
+anchor_right = 0.89000005
+anchor_bottom = 1.0
+offset_left = 0.05099964
+offset_top = -0.012001038
+offset_right = -0.03201294
+offset_bottom = 3.6920013
+theme_override_styles/panel = SubResource("StyleBoxFlat_hbay5")
+
+[node name="OptionsTab" parent="." unique_id=2084655736 instance=ExtResource("8_wub3w")]
 visible = false
 
 [node name="Laser" type="AudioStreamPlayer" parent="." unique_id=1028215306]
@@ -856,12 +1024,13 @@ volume_db = -5.0
 visible = false
 
 [connection signal="pressed" from="Control/MenuBox/VBoxContainer/PlayButton" to="Control" method="OnPlayPressed"]
-[connection signal="pressed" from="Control/MenuBox/VBoxContainer/TutorialButton" to="Control" method="OnTutorialPressed"]
+[connection signal="pressed" from="Control/MenuBox/VBoxContainer/TutorialButton" to="Control/Controls" method="OnBackPressed"]
 [connection signal="pressed" from="Control/MenuBox/VBoxContainer/OptionsButton" to="Control" method="OnOptionsPressed"]
 [connection signal="pressed" from="Control/MenuBox/VBoxContainer/QuitButton" to="Control" method="OnQuitPressed"]
 [connection signal="pressed" from="Control/MenuBox/BackButton" to="Control" method="OnStartPressed"]
 [connection signal="pressed" from="Control/MenuBox/CreditsButton" to="Control" method="OnCreditsPressed"]
 [connection signal="pressed" from="Control/StartButton" to="Control" method="OnStartPressed"]
 [connection signal="pressed" from="Control/CreditsTab/ColorRect/VBoxContainer/Button" to="Control" method="OnCreditsPressed"]
+[connection signal="pressed" from="Control/Controls/MarginContainer/VBoxContainer/BackButton" to="Control/Controls" method="OnBackPressed"]
 
 [editable path="Control/FadeScreen"]

@@ -67,7 +67,7 @@ public partial class EnemyProjectile : CharacterBody3D
         {
             if (current is FPSController player)
             {
-                player.Hit(damage, ownerId, player.GetMultiplayerAuthority());
+                player.HitByEnemy(damage, player.GetMultiplayerAuthority());
                 break;
             }
 
@@ -80,7 +80,7 @@ public partial class EnemyProjectile : CharacterBody3D
     {
         if (!GenericCore.Instance.IsServer)
             return;
-            
+
         GenericCore.Instance.Rpc(nameof(GenericCore.DestroyBulletVisualGlobal), bulletId);
         QueueFree();
     }

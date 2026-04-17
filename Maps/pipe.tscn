@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://oy30iowjpknk"]
 
+[ext_resource type="ArrayMesh" uid="uid://cbpl758um7pvn" path="res://Maps/Assets/pipe.mesh" id="1_3i2y8"]
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_3i2y8"]
 height = 3.0019531
 radius = 0.22705078
@@ -10,3 +12,7 @@ transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2142297686]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4970703, 0)
 shape = SubResource("CylinderShape3D_3i2y8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=658774699]
+transform = Transform3D(-1, 4.5298742e-07, 0, -1.509958e-07, -3, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("1_3i2y8")

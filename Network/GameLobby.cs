@@ -102,10 +102,10 @@ public partial class GameLobby : Control
 				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
 				break;
 			case 1:
-				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
+				GenericCore.Instance.levelPath = new string($"res://Scenes/desertLevel.tscn");
 				break;
 			case 2:
-				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
+				GenericCore.Instance.levelPath = new string($"res://Scenes/factoryLevel.tscn");
 				break;
 
 		}

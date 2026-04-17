@@ -478,7 +478,6 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		}
 		else
 		{
-			GD.Print(health);
 			health -= damageRecieved;
 		}	
 		if (receiverId == Multiplayer.GetUniqueId())

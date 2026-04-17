@@ -8,8 +8,8 @@ public partial class EnemyProjectile : CharacterBody3D
     [Export] public float lifetime = 5f;
     private float lifeTimer = 0f;
     private NetworkCore networkCore;
-    [Export] public NetID netId;
     [Export] public long ownerId;
+    public int bulletId;
     public override void _Ready()
     {
         if (!GenericCore.Instance.IsServer)
@@ -28,36 +28,35 @@ public partial class EnemyProjectile : CharacterBody3D
 
    public override void _PhysicsProcess(double delta)
     {
-        if (!GenericCore.Instance.IsServer)
-            return;
-
-        // lifetime
-        lifeTimer += (float)delta;
-        if (lifeTimer >= lifetime)
-        {
-            DestroySelf();
-            return;
-        }
-
         Vector3 motion = -GlobalTransform.Basis.Z * speed * (float)delta;
-
-        var collision = MoveAndCollide(motion);
-
-        if (collision != null)
+        if (GenericCore.Instance.IsServer)
         {
-            var collider = collision.GetCollider();
-
-            if (collider is Node node)
+            // lifetime
+            lifeTimer += (float)delta;
+            if (lifeTimer >= lifetime)
             {
-                HandleHit(node);
-            }
-            else
-            {
-                GD.Print("Hit something non-node: ", collider);
                 DestroySelf();
+                return;
             }
 
-            return;
+            var collision = MoveAndCollide(motion);
+
+            if (collision != null)
+            {
+                var collider = collision.GetCollider();
+
+                if (collider is Node node)
+                {
+                    HandleHit(node);
+                }
+                else
+                {
+                    GD.Print("Hit something non-node: ", collider);
+                    DestroySelf();
+                }
+
+                return;
+            }
         }
     }
     private void HandleHit(Node node)
@@ -68,13 +67,12 @@ public partial class EnemyProjectile : CharacterBody3D
         {
             if (current is FPSController player)
             {
-                player.Hit(damage, player.GetMultiplayerAuthority(), ownerId);
+                player.Hit(damage, ownerId, player.GetMultiplayerAuthority());
                 break;
             }
 
             current = current.GetParent();
         }
-
         DestroySelf();
     }
 
@@ -82,10 +80,8 @@ public partial class EnemyProjectile : CharacterBody3D
     {
         if (!GenericCore.Instance.IsServer)
             return;
-
-        if (netId != null)
-        {
-            networkCore.NetDestroyObject(netId);
-        }
+            
+        GenericCore.Instance.Rpc(nameof(GenericCore.DestroyBulletVisualGlobal), bulletId);
+        QueueFree();
     }
 }

@@ -36,7 +36,8 @@ public partial class GenericCore : Node
         { "UserName", "John Doe"}
     };
 
-    public Dictionary<int, NetID> netObjects = new();  // Server will be only one to see netObjects
+    public Dictionary<int, NetID> netObjects = new();
+    public Dictionary<int, EnemyProjectileVisual> activeVisuals = new();
     private Array<Node> nodesForErase = new Array<Node>();
 
     public static GenericCore Instance { get; private set; }
@@ -364,6 +365,16 @@ public partial class GenericCore : Node
             var gm = GetTree().Root.GetNode<GameManager>("GameManager");
             gm.ServerSpawnItems();
             gm.ServerSpawnPlayers();
+        }
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    public void DestroyBulletVisualGlobal(int bulletId)
+    {
+        if (activeVisuals.TryGetValue(bulletId, out var visual))
+        {
+            visual.QueueFree();
+            activeVisuals.Remove(bulletId);
         }
     }
 }

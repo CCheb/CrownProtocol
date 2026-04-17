@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://ckv1fvu075om8"]
 
 [ext_resource type="Script" uid="uid://2n0widvqfe4q" path="res://Enemies/projectiles/EnemyProjectile.cs" id="1_qd6ym"]
-[ext_resource type="Script" uid="uid://b50ifcyoi47w5" path="res://Network/Cores/NetID.cs" id="2_m5ytw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_37a3v"]
 size = Vector3(0.13671112, 0.075424194, 0.11071777)
@@ -12,18 +11,10 @@ albedo_color = Color(0, 18.892157, 18.892157, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qd6ym"]
 material = SubResource("StandardMaterial3D_37a3v")
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_5ij5r"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-
 [node name="EnemyProjectile" type="CharacterBody3D" unique_id=269052796 node_paths=PackedStringArray("netId")]
 collision_mask = 5
 script = ExtResource("1_qd6ym")
-netId = NodePath("MultiplayerSynchronizer")
+netId = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2136086752]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0013237, -0.001914978, 0.0033569336)
@@ -32,7 +23,3 @@ shape = SubResource("BoxShape3D_37a3v")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=316716000]
 transform = Transform3D(0.12515916, 0, 0, 0, 0.038102813, 0, 0, 0, 0.11472292, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_qd6ym")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=558871284]
-replication_config = SubResource("SceneReplicationConfig_5ij5r")
-script = ExtResource("2_m5ytw")

@@ -457,8 +457,22 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		}	
 
 		// Send Rpc's to both sender and receiver players to update their UI
-		RpcId(receiverId, MethodName.OnReceiverHitUpdateUI);
-		RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
+		if (receiverId == Multiplayer.GetUniqueId())
+		{
+			OnReceiverHitUpdateUI();
+		}
+		else
+		{
+			RpcId(receiverId, MethodName.OnReceiverHitUpdateUI);
+		}
+		if (senderId == Multiplayer.GetUniqueId())
+		{
+			OnSenderHitUpdateUI(deathConfirmed);
+		}
+		else if (senderId != -1)
+		{
+			RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
+		}
 
 		if (GenericCore.Instance.IsServer)
 		{
@@ -511,7 +525,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	private void OnReceiverHitUpdateUI()
 	{
 		if(!myNetId.IsLocal)
@@ -572,17 +586,20 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	private void OnSenderHitUpdateUI(bool deathConfirmed)
 	{
+		if (!myNetId.IsLocal)
+        	return;
+
 		if (deathConfirmed)
 		{
-			killBell.Play();
+			killBell?.Play();
 			xpBar.Value = score;
 		}
 		else
 		{
-			hitMarkerPing.Play();
+			hitMarkerPing?.Play();
 		}
 
 	}

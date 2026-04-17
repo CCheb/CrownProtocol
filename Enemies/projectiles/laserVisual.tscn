@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c4so3i4w01iu4"]
+
+[ext_resource type="Script" uid="uid://vnjsb30moiu4" path="res://Enemies/projectiles/EnemyProjectileVisual.cs" id="1_1mfdv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37a3v"]
+albedo_color = Color(0, 18.892157, 18.892157, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qd6ym"]
+material = SubResource("StandardMaterial3D_37a3v")
+
+[node name="EnemyProjectile" type="Node3D" unique_id=1270917136]
+script = ExtResource("1_1mfdv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=316716000]
+transform = Transform3D(0.12515916, 0, 0, 0, 0.038102813, 0, 0, 0, 0.11472292, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_qd6ym")

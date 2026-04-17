@@ -41,13 +41,14 @@ public partial class NetworkCore : MultiplayerSpawner
 
         FindRootNodeType(ref rootNode, initialPosition, rotation);
         Spawn(rootNode);
-        FindRootNodeNetID(rootNode, owner);
 
-        if(rootNode is EnemyProjectile projectile)
+        if (rootNode is EnemyProjectile projectile)
         {
             projectile.ownerId = owner;
             return;
         }
+
+        FindRootNodeNetID(rootNode, owner);
         if (rootNode is FPSController || rootNode is UserNpm)
         {
             GD.Print("About to emit PlayerJoined signal");

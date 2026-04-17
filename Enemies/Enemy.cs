@@ -1,6 +1,5 @@
 using Godot;
 using System;
-
 public partial class Enemy : CharacterBody3D
 {
     [Export] public float maxHealth = 100f;
@@ -10,6 +9,7 @@ public partial class Enemy : CharacterBody3D
     [Export] public Node3D visualRoot;
     [Export] public Node3D projectileSpawn;
     [Export] public PackedScene projectileScene;
+    [Export] public PackedScene projectileVisual;
     [Export] public AnimationPlayer animPlayer;
     private NetworkCore networkCore;
     [Export] public NetID netId;
@@ -19,7 +19,6 @@ public partial class Enemy : CharacterBody3D
     private FPSController target;
     private NodePath targetPath = new NodePath();
     private bool isInitialized = false;
-
     public override void _Ready()
     {
         if (!GenericCore.Instance.IsServer)
@@ -179,12 +178,33 @@ public partial class Enemy : CharacterBody3D
             ? projectileSpawn.GlobalPosition
             : GlobalPosition;
 
-        Vector3 dir = (target.GlobalPosition - spawnPos).Normalized();
+        Vector3 targetPos = target.GlobalPosition + new Vector3(0, 1.5f, 0);
+        Vector3 dir = (targetPos - spawnPos).Normalized();
         Basis basis = Basis.LookingAt(dir, Vector3.Up);
         Quaternion rotation = basis.GetRotationQuaternion();
-        networkCore.NetCreateObject(3, spawnPos, rotation, owner: netId.OwnerId);
+        var projectile = projectileScene.Instantiate<EnemyProjectile>();
+
+        GetTree().CurrentScene.AddChild(projectile);
+        int bulletId = (int)GetInstanceId();
+        projectile.GlobalTransform = new Transform3D(basis, spawnPos);
+        projectile.ownerId = 1;
+        projectile.bulletId = bulletId;
+        Rpc(nameof(SpawnBulletVisual), spawnPos, dir, bulletId);
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void SpawnBulletVisual(Vector3 pos, Vector3 dir, int bulletId)
+    {
+        var visual = projectileVisual.Instantiate<EnemyProjectileVisual>();
+
+        GetTree().CurrentScene.AddChild(visual);
+
+        visual.GlobalPosition = pos;
+        visual.direction = dir;
+        visual.bulletId = bulletId;
+
+        GenericCore.Instance.activeVisuals[bulletId] = visual;
+    }
     public void TakeDamage(float amount)
     {
         if (!GenericCore.Instance.IsServer)

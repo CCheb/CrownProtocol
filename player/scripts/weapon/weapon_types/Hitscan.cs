@@ -109,8 +109,8 @@ public partial class Hitscan : WeaponBase
 
             else
             {
-                var gameManager = GetTree().CurrentScene as GameManager;
-                gameManager.SpawnDecal(WeaponDecal, (Vector3)collisionResult["normal"], (Vector3)collisionResult["position"]);
+                //var gameManager = GetTree().CurrentScene as GameManager;
+                //gameManager.SpawnDecal(WeaponDecal, (Vector3)collisionResult["normal"], (Vector3)collisionResult["position"]);
             }
         }
     }

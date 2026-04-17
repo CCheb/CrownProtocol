@@ -40,6 +40,9 @@ public partial class Shotgun : WeaponBase
     // Function gets called at very specific moments during the firing animation
     public void EjectShell()
     {
+        if (!weaponController.context.player.myNetId.IsLocal)
+            return;
+
         ShellEjection Shell = ShellCasingScene.Instantiate<ShellEjection>();
         GetTree().CurrentScene.AddChild(Shell);
         Shell.GlobalTransform = ShellEjectionMarker.GlobalTransform;
@@ -86,10 +89,11 @@ public partial class Shotgun : WeaponBase
 
     private void UpdateAmmo()
     {
+        weaponController.UpdateCurrentWeaponAmmo();
         return;
     }
 
-    private (Vector3, Vector3) ClientCalculateRay(float length = 1000.0f)
+    private (Vector3, Vector3) ClientCalculateRay(float length = 50.0f)
     {
         Camera3D camera = weaponController.context.cameraController.Camera;
 		
@@ -104,13 +108,22 @@ public partial class Shotgun : WeaponBase
     private void RequestFire(Vector3 originPoint, Vector3 endPoint)
     {   
         //TODO: Dont hard code the shotcount
-        for(int i = 0; i < 12; i++)
+        for(int i = 0; i < 6; i++)
         {
             Godot.Collections.Dictionary collisionResult = ServerCalculateRay(originPoint, endPoint);
             
             if(collisionResult.Count != 0)
             {   
                 GD.Print($"Pellet hit at: {collisionResult["position"]}");
+
+                if((Node)collisionResult["collider"] is IEnemy enemy)
+                {
+                    if(enemy is FPSController player)
+                        player.Hit(weaponController.GetCurrentWeaponsDamage(), Multiplayer.GetRemoteSenderId(), player.myNetId.OwnerId);
+                    else
+                        enemy.Hit(weaponController.GetCurrentWeaponsDamage());
+                }
+
                 //SpawnDecal((Vector3)collisionResult["position"]);
             }
         }

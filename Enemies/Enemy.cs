@@ -60,7 +60,8 @@ public partial class Enemy : CharacterBody3D
     {
         if (!isInitialized || !GenericCore.Instance.IsServer)
             return;
-
+        if(isDead)
+            return;
         if (target == null && !targetPath.IsEmpty && HasNode(targetPath))
         {
             target = GetNode<FPSController>(targetPath);

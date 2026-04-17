@@ -20,7 +20,7 @@ script = ExtResource("1_nmhbs")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_2rays"]
+[sub_resource type="Resource" id="Resource_namps"]
 script = ExtResource("1_f0qgx")
 
 [resource]

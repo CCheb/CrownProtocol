@@ -93,7 +93,7 @@ public partial class Shotgun : WeaponBase
         return;
     }
 
-    private (Vector3, Vector3) ClientCalculateRay(float length = 50.0f)
+    private (Vector3, Vector3) ClientCalculateRay(float length = 1000.0f)
     {
         Camera3D camera = weaponController.context.cameraController.Camera;
 		

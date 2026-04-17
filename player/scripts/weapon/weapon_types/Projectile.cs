@@ -138,6 +138,7 @@ public partial class Projectile : WeaponBase
 
     private void UpdateAmmo()
     {
+        weaponController.UpdateCurrentWeaponAmmo();
         return;
     }
 

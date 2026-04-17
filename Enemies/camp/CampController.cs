@@ -12,22 +12,25 @@ public partial class CampController : Area3D
     [Export] public Godot.Collections.Array<Node3D> spawnPoints;
     private NetworkCore networkCore;
     public List<Enemy> activeEnemies = new List<Enemy>();
-
+    
     public FPSController currentTarget;
 
-    public override void _Ready()
+    public override async void _Ready()
     {
-        if (GenericCore.Instance.IsServer)
-        {
-            networkCore = GetTree().Root.GetNode<NetworkCore>("GameManager/MultiplayerSpawner");
+        if (!GenericCore.Instance.IsServer)
+            return;
 
-            if (networkCore == null)
-            {
-                GD.PrintErr("PlayerSpawner (NetworkCore) not found! For Enemy Spawning");
-            }
-            networkCore.PlayerJoined += OnObjectSpawned;
-            SpawnCamp();
+        networkCore = GetTree().GetFirstNodeInGroup("PlayerSpawn") as NetworkCore;
+
+        if (networkCore == null)
+        {
+            GD.PrintErr("NetworkCore NOT FOUND in CampController!");
+            return;
         }
+
+        networkCore.ObjectSpawned += OnObjectSpawned;
+        await ToSignal(GetTree().CreateTimer(GD.RandRange(0.1f, 1.0f)), "timeout");
+        SpawnCamp();
     }
     public override void _PhysicsProcess(double delta)
     {
@@ -67,21 +70,18 @@ public partial class CampController : Area3D
     {
         if (!GenericCore.Instance.IsServer)
             return;
+        if (activeEnemies.Count > 0)
+            return;
         if (networkCore == null)
         {
             GD.PrintErr("NetworkCore is null!");
             return;
         }
-        activeEnemies.Clear();
-
         for (int i = 0; i < spawnPoints.Count; i++)
         {
             var point = spawnPoints[i];
 
-            int index = 2;
-
-            networkCore.NetCreateObject(index, point.GlobalPosition, Quaternion.Identity);
-            GD.Print(spawnPoints.Count, " SPAWN POS: ", point.GlobalPosition);
+            networkCore.NetCreateObject(2, point.GlobalPosition, Quaternion.Identity, camp: this);
         }
     }
 
@@ -126,7 +126,7 @@ public partial class CampController : Area3D
 
     public void SpawnDrop()
     {
-        // spawn reward object
+        // spawn drop
     }
 
     public void _on_body_entered(Node3D body)
@@ -139,13 +139,13 @@ public partial class CampController : Area3D
             SetTarget(player);
         }
     }
-    private void OnObjectSpawned(Node node)
+    private void OnObjectSpawned(Enemy node)
     {
         if (node is Enemy enemy)
         {
-            if (enemy.camp == null)
+            if (enemy.camp == this)
             {
-                enemy.Initialize(this);
+                enemy.Initialize();
                 activeEnemies.Add(enemy);
             }
         }

@@ -3,16 +3,13 @@ using System;
 
 public partial class EnemyProjectile : CharacterBody3D
 {
-    // ---------------- SETTINGS ----------------
     [Export] public float speed = 20f;
-    [Export] public float damage = 10f;
+    [Export] public float damage = 5f;
     [Export] public float lifetime = 5f;
-
-    // ---------------- STATE ----------------
     private float lifeTimer = 0f;
     private NetworkCore networkCore;
     [Export] public NetID netId;
-    // ---------------- READY ----------------
+    [Export] public long ownerId;
     public override void _Ready()
     {
         if (!GenericCore.Instance.IsServer)
@@ -21,8 +18,7 @@ public partial class EnemyProjectile : CharacterBody3D
         }
         if (GenericCore.Instance.IsServer)
         {
-            networkCore = GetTree().Root.GetNode<NetworkCore>("GameManager/MultiplayerSpawner");
-
+            networkCore = GetTree().GetFirstNodeInGroup("PlayerSpawn") as NetworkCore;
             if (networkCore == null)
             {
                 GD.PrintErr("NetworkCore not found in projectile!");
@@ -30,18 +26,12 @@ public partial class EnemyProjectile : CharacterBody3D
         }
     }
 
-    // ---------------- MAIN LOOP ----------------
-    public override void _PhysicsProcess(double delta)
+   public override void _PhysicsProcess(double delta)
     {
         if (!GenericCore.Instance.IsServer)
             return;
 
-        // 🔥 Forward direction from rotation
-        Vector3 forward = -GlobalTransform.Basis.Z;
-
-        Velocity = forward * speed;
-        MoveAndSlide();
-
+        // lifetime
         lifeTimer += (float)delta;
         if (lifeTimer >= lifetime)
         {
@@ -49,79 +39,53 @@ public partial class EnemyProjectile : CharacterBody3D
             return;
         }
 
-        for (int i = 0; i < GetSlideCollisionCount(); i++)
+        Vector3 motion = -GlobalTransform.Basis.Z * speed * (float)delta;
+
+        var collision = MoveAndCollide(motion);
+
+        if (collision != null)
         {
-            var collision = GetSlideCollision(i);
-            var collider = collision.GetCollider() as Node;
+            var collider = collision.GetCollider();
 
-            if (collider == null)
-                continue;
+            if (collider is Node node)
+            {
+                HandleHit(node);
+            }
+            else
+            {
+                GD.Print("Hit something non-node: ", collider);
+                DestroySelf();
+            }
 
-            HandleHit(collider);
             return;
         }
     }
-
-    // ---------------- HIT LOGIC ----------------
-    private void HandleHit(Node collider)
+    private void HandleHit(Node node)
     {
-        Node current = collider;
+        Node current = node;
 
         while (current != null)
         {
-            // 🔥 HIT PLAYER
             if (current is FPSController player)
             {
-                DealDamage(player);
-                DestroySelf();
-                return;
+                player.Hit(damage, player.GetMultiplayerAuthority(), ownerId);
+                break;
             }
 
             current = current.GetParent();
         }
 
-        // Hit something else → destroy
         DestroySelf();
     }
 
-    // ---------------- DAMAGE ----------------
-    private void DealDamage(FPSController player)
+   private void DestroySelf()
     {
         if (!GenericCore.Instance.IsServer)
             return;
-
-        if (!IsInstanceValid(player))
-            return;
-
-        // 🔥 CALL PLAYER DAMAGE (YOU NEED THIS FUNCTION)
-        if (player.HasMethod("TakeDamage"))
-        {
-            player.Call("TakeDamage", damage);
-        }
-        else
-        {
-            GD.Print("⚠ Player missing TakeDamage()");
-        }
-    }
-
-    private void DestroySelf()
-    {
-        if (!GenericCore.Instance.IsServer)
-            return;
-
-        if (networkCore == null)
-        {
-            GD.PrintErr("No NetworkCore on projectile!");
-            return;
-        }
 
         if (netId != null)
         {
             networkCore.NetDestroyObject(netId);
-        }
-        else
-        {
-            GD.PrintErr("Projectile missing NetID!");
         }
     }
 }

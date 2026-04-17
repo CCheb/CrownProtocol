@@ -5,7 +5,8 @@ public partial class NetworkCore : MultiplayerSpawner
 {
     [Signal]
     public delegate void PlayerJoinedEventHandler(Node node);
-
+    [Signal]
+    public delegate void ObjectSpawnedEventHandler(Enemy Node);
     [Export] 
     public bool SpawnInexZeroOnConnect;
 
@@ -31,7 +32,7 @@ public partial class NetworkCore : MultiplayerSpawner
         }
     }
 
-    public void NetCreateObject(int index, Vector3 initialPosition, Quaternion rotation, long owner = -1L)
+    public void NetCreateObject(int index, Vector3 initialPosition, Quaternion rotation, long owner = -1L, CampController camp = null)
     {
         if (!Multiplayer.IsServer())
             return;
@@ -42,10 +43,23 @@ public partial class NetworkCore : MultiplayerSpawner
         Spawn(rootNode);
         FindRootNodeNetID(rootNode, owner);
 
-
-        GD.Print("About to emit PlayerJoined signal");
-        //EmitSignalPlayerJoined(rootNode); 
-        EmitSignal(SignalName.PlayerJoined, rootNode);
+        if(rootNode is EnemyProjectile projectile)
+        {
+            projectile.ownerId = owner;
+            return;
+        }
+        if (rootNode is FPSController || rootNode is UserNpm)
+        {
+            GD.Print("About to emit PlayerJoined signal");
+            //EmitSignalPlayerJoined(rootNode); 
+            EmitSignal(SignalName.PlayerJoined, rootNode);
+        }
+        if(rootNode is Enemy enemy)
+        {
+            if(camp != null)
+                enemy.camp = camp;
+            EmitSignal(SignalName.ObjectSpawned, enemy);
+        }
     }
 
     private Node GetNodeFromAutoList(int index)
@@ -87,12 +101,16 @@ public partial class NetworkCore : MultiplayerSpawner
         {
             if (child is NetID netId)
             {
+                if (GenericCore.Instance.IsServer)
+                {
+                    netId.netObjectID = GenericCore.Instance.GetNextNetId();
+                }
+
                 netId.Rpc("Initialize", owner);
+
                 netId.myNetworkCore = this;
-                
-                // Server only
                 GenericCore.Instance.RegisterObject(netId);
-            } 
+            }
         }
     }
     

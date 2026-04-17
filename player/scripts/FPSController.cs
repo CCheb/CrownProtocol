@@ -437,7 +437,6 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				if(enemy is FPSController player && player.myNetId.OwnerId == senderId)
 				{
 					player.kills++;
-					// For testing score (XP) UI: temporary score inclusion to-be-edited later
 					score += 5;
 					GD.Print($"Player should have {player.kills} kills");
 					lookAtRef = player.hitBox;

@@ -252,9 +252,8 @@ public partial class GenericCore : Node
 
     public void RegisterObject(NetID netId)
     {
-        // Server is the peer that can see all the valid netObjects
-        netId.netObjectID = (uint)Instance.netObjects.Count;
-        Instance.netObjects.Add(Instance.netObjects.Count, netId);
+        netId.netObjectID = GetNextNetId();
+        Instance.netObjects.Add((int)netId.netObjectID, netId);
     }
     
     // Sends a message to all connectedPeers that a client disconnected
@@ -375,6 +374,14 @@ public partial class GenericCore : Node
         {
             visual.QueueFree();
             activeVisuals.Remove(bulletId);
+        }
+    }
+
+    public void UnregisterObject(NetID netId)
+    {
+        if (netObjects.ContainsKey((int)netId.netObjectID))
+        {
+            netObjects.Remove((int)netId.netObjectID);
         }
     }
 }

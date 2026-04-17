@@ -776,7 +776,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8kske")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/CreditsTab/ColorRect/VBoxContainer" unique_id=290572159]
 layout_mode = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 35
 alignment = 1
 
 [node name="Label6" type="Label" parent="Control/CreditsTab/ColorRect/VBoxContainer/HBoxContainer" unique_id=387380295]
@@ -798,9 +798,9 @@ theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("9_546pw")
 theme_override_font_sizes/font_size = 26
 text = "Player Model : 3D Robot (Shtiffer, turbosquid)
--<OTHER RESOURCE HERE>
--<OTHER RESOURCE HERE>
--<OTHER RESOURCE HERE>
+Enemy Models : walking_robot (iamsunroy, sketchfab)
+  mechanical assassin PBR (Chaitanya K, sketchfab)
+  robot MR-V01 (mastirit, sketchfab)
 "
 
 [node name="Button" type="Button" parent="Control/CreditsTab/ColorRect/VBoxContainer" unique_id=597516182]

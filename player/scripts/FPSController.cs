@@ -65,10 +65,10 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	public PlayerContext context;
 
 	// UI Additions
-	[Export] private ProgressBar[] healthBarSegments;
+	[Export] public ProgressBar healthBar;
 	[Export] private Color segmentColors;
-	[Export] private ProgressBar xpBar;
-	[Export] private TextureProgressBar captureBar;
+	[Export] public ProgressBar xpBar;
+	[Export] public TextureProgressBar captureBar;
 	[Export] private int captureTime = 60;
 	private bool isCapturing = false;
 	[Export] private GridContainer leaderboard;
@@ -148,11 +148,13 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		pauseMenu.ResumeButtonClicked += OnResumeButtonClicked;
 
 		// set segment color to current color of the Fill StyleBox of sec1
-		StyleBoxFlat fillStyle = (StyleBoxFlat)healthBarSegments[0].GetThemeStylebox("fill");
+		StyleBoxFlat fillStyle = (StyleBoxFlat)healthBar.GetThemeStylebox("fill");
 		segmentColors = fillStyle.BgColor;
 
 		captureBar.Visible = false;
 		captureBar.MaxValue = captureTime;
+
+		healthBar.Value = health;
 
 		xpBar.Value = score;
 
@@ -553,52 +555,22 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		GD.Print("I got hit! Update UI here!");
 		GD.Print(newHealth);
 
-		if(!hitFlashUI.IsPlaying())
+		if (!hitFlashUI.IsPlaying())
 			hitFlashUI.Play("hit");
 
-		// health bar is separated into 5 segments of 20
-		switch (newHealth)
-		{
-			case > 80:
-				healthBarSegments[4].Value = newHealth - 80;
-				GD.Print(healthBarSegments[4].Value);
-				break;
-			case > 60:
-				healthBarSegments[3].Value = newHealth - 60;
-				GD.Print(healthBarSegments[3].Value);
-				break;
-			case > 40:
-				healthBarSegments[2].Value = newHealth - 40;
-				GD.Print(healthBarSegments[2].Value);
-				break;
-			case > 20:
-				healthBarSegments[1].Value = newHealth - 20;
-				GD.Print(healthBarSegments[1].Value);
-				break;
-			case > 0:
-				healthBarSegments[0].Value = newHealth;
-				GD.Print(healthBarSegments[0].Value);
-				break;
-			default:
-				foreach (var segment in healthBarSegments)
-				{
-					segment.Value = 0;
-				}
-				break;
-		}
+		healthBar.Value = newHealth;
+		GD.Print("NEW HEALTH BAR VALUE: " + healthBar.Value);
+		
 		// color lerp system based on curent health percentage
 		if(newHealth > 0)
 		{
 			float ratio = newHealth / 100.0f;
 			StyleBoxFlat fillStyle;
-			foreach (var segment in healthBarSegments)
-			{
-				fillStyle = segment.GetThemeStylebox("fill").Duplicate() as StyleBoxFlat;
-				// Lerp from Red (0%) to Green (100%)
-				fillStyle.BgColor = Colors.Red.Lerp(segmentColors, ratio);
+			fillStyle = healthBar.GetThemeStylebox("fill").Duplicate() as StyleBoxFlat;
+			// Lerp from Red (0%) to Green (100%)
+			fillStyle.BgColor = Colors.Red.Lerp(segmentColors, ratio);
 
-				segment.AddThemeStyleboxOverride("fill", fillStyle);
-			}
+			healthBar.AddThemeStyleboxOverride("fill", fillStyle);
 		}
 		
 

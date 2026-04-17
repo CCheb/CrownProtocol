@@ -69,11 +69,14 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	private Color segmentColors;
 	private ProgressBar xpBar;
 	private TextureProgressBar captureBar;
+	[Export] private int captureTime = 60;
+	private bool isCapturing = false;
 	private GridContainer leaderboard;
 	private Label[] playerNameLabels;
 	private Label[] pointsLabels;
 	private Label[] killsLabels;
 	private Label[] deathsLabels;
+	private AnimationPlayer hitFlashUI;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -158,8 +161,11 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		captureBar = GetNode<TextureProgressBar>("UserInterface/CaptureBar/TextureProgressBar");
 
 		captureBar.Visible = false;
+		captureBar.MaxValue = captureTime;
 
 		xpBar.Value = score;
+
+		hitFlashUI = GetNode<AnimationPlayer>("UserInterface/HitScreen/AnimationPlayer");
 
 		leaderboard = GetNode<GridContainer>(("UserInterface/Leaderboard/MarginContainer/ColorRect/GridContainer"));
 
@@ -483,20 +489,49 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		GlobalTransform = randomSpawn.GlobalTransform;
 	}
 
+	// Timer
+	private async void Capture()
+	{
+		if (!isCapturing || !myNetId.IsLocal) return;
+		if(captureBar.Visible == false) captureBar.Visible = true;
+		await ToSignal(GetTree().CreateTimer(1), "timeout");
+		// lerp capture bar up 1
+		captureBar.Value = Mathf.Lerp(captureBar.Value, captureBar.Value + 1, 0.8f);
+		if (captureBar.Value >= captureBar.MaxValue)
+		{
+			GD.Print("I WIN!");
+
+			// TODO:
+			// send win signal to server
+			// server handles end logic and sends winner to all clients
+			// clients show end game screen with winning player and disables player movement
+			// buttons to continue or leave game show and function accordingly
+
+			return;
+		}
+		// recursive call to keep checking isCapturing each second
+		Capture();
+
+	}
+
 	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	private void OnReceiverHitUpdateUI()
 	{
 		if(!myNetId.IsLocal)
 			return;
 
-		if (deathConfirmed) 
+		if (deathConfirmed)
 		{
 			GD.Print("I just died!");
 			// Maybe start timer here and show death screen
+			hitFlashUI.Play("die");
 		}
 			
 		GD.Print("I got hit! Update UI here!");
 		GD.Print(health);
+
+		if(!hitFlashUI.IsPlaying())
+			hitFlashUI.Play("hit");
 
 		// health bar is separated into 5 segments of 20
 		switch (health)

@@ -16,7 +16,7 @@ decalSpawner = NodePath("DecalSpawner")
 cameraScene = ExtResource("2_kvrln")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
-_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4")
+_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4", "uid://6lapwy0pl14a", "uid://ckv1fvu075om8")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("3_px67y")
 

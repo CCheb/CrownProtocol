@@ -45,8 +45,8 @@ public partial class GenericCore : Node
     public bool PeerConnected;
     public bool IsGenericCoreConnected;
     public bool isFirstClientToJoin = false;
+    private static uint nextNetId = 1;
 
-   
     public override void _Ready()
     {
         base._Ready();
@@ -78,6 +78,10 @@ public partial class GenericCore : Node
         }
     }
 
+    public uint GetNextNetId()
+    {
+        return nextNetId++;
+    }
     private void SetInstance()
     {
         Instance ??= this;

@@ -4,7 +4,7 @@
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_dpfv7"]
 height = 1.4445801
-radius = 11.400879
+radius = 17.8125
 
 [node name="Camp" type="Area3D" unique_id=1531066013 node_paths=PackedStringArray("spawnPoints")]
 script = ExtResource("1_dpfv7")

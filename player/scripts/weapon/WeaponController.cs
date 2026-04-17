@@ -92,19 +92,6 @@ public partial class WeaponController : Node3D
 			InputEventMouseMotion MouseEvent = (InputEventMouseMotion)@event;
             procedural.SetMouseMovementDelta(MouseEvent);
 		}
-
-        // In _Input, the event actions are not polled and are only triggered once everytime the key is pressed 
-        if(@event.IsActionPressed("primary_action"))
-            CurrentPrimaryWeaponAction?.OnActionPressed();
-        
-        if(@event.IsActionReleased("primary_action"))
-            CurrentPrimaryWeaponAction?.OnActionReleased();
-    
-        if(@event.IsActionPressed("secondary_action"))
-            CurrentSecondaryWeaponAction?.OnActionPressed();
-        
-        if(@event.IsActionReleased("secondary_action"))
-            CurrentSecondaryWeaponAction?.OnActionReleased();
         
         // WeaponAction only cares on when the current weapon should shoot.
         if(@event.IsActionPressed("reload"))
@@ -236,6 +223,20 @@ public partial class WeaponController : Node3D
 
         if (!context.player.myNetId.IsLocal)
             return;
+        
+        // In _Input, the event actions are not polled and are only triggered once everytime the key is pressed 
+        if(Input.IsActionJustPressed("primary_action"))
+            CurrentPrimaryWeaponAction?.OnActionPressed();
+        
+        if(Input.IsActionJustReleased("primary_action"))
+            CurrentPrimaryWeaponAction?.OnActionReleased();
+
+        if(Input.IsActionJustPressed("secondary_action"))
+            CurrentSecondaryWeaponAction?.OnActionPressed();
+        
+        if(Input.IsActionJustReleased("secondary_action"))
+            CurrentSecondaryWeaponAction?.OnActionReleased();
+
 
         CurrentPrimaryWeaponAction?.Update(delta);
         CurrentSecondaryWeaponAction?.Update(delta);

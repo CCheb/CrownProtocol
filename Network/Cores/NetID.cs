@@ -15,6 +15,7 @@ public partial class NetID : MultiplayerSynchronizer
     {
         // For clients it will be that big int id
         OwnerId = peerIdOwner;
+
         if (peerIdOwner == 1)
             IsServer = true;
         if (Multiplayer.GetUniqueId() == OwnerId)

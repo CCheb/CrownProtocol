@@ -458,6 +458,48 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		}
 	}
 
+	public void HitByEnemy(float damageRecieved, long receiverId)
+	{
+		if(deathConfirmed)
+		{
+			return;
+		}
+
+		if (health - damageRecieved <= 0)
+		{			
+			// Server sets these variables and MultiplayerSynchronizer handles the rest
+			health = 0.0f;
+			deaths++;
+			deathConfirmed = true;	
+
+			StartRespawnSequence();
+		}
+		else
+		{
+			GD.Print(health);
+			health -= damageRecieved;
+		}	
+		if (receiverId == Multiplayer.GetUniqueId())
+		{
+			OnReceiverHitUpdateUI(health, deathConfirmed);
+		}
+		else
+		{
+			RpcId(receiverId, MethodName.OnReceiverHitUpdateUI, health, deathConfirmed);
+		}
+		if (GenericCore.Instance.IsServer)
+		{
+			Godot.Collections.Array<Node> allPlayerNodes = GetTree().GetNodesInGroup("Enemies");
+			foreach (var node in allPlayerNodes)
+			{
+				if (node is FPSController player)
+				{
+					player.Rpc(MethodName.RefreshLeaderboard);
+				}
+			}
+		}
+	}
+
 	private async void StartRespawnSequence()
 	{
 		await ToSignal(GetTree().CreateTimer(5), "timeout");

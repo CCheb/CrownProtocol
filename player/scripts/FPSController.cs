@@ -458,19 +458,19 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		// Send Rpc's to both sender and receiver players to update their UI
 		if (receiverId == Multiplayer.GetUniqueId())
 		{
-			OnReceiverHitUpdateUI();
+			//OnReceiverHitUpdateUI();
 		}
 		else
 		{
-			RpcId(receiverId, MethodName.OnReceiverHitUpdateUI);
+			RpcId(receiverId, MethodName.OnReceiverHitUpdateUI, health, deathConfirmed);
 		}
 		if (senderId == Multiplayer.GetUniqueId())
 		{
-			OnSenderHitUpdateUI(deathConfirmed);
+			//OnSenderHitUpdateUI(deathConfirmed);
 		}
 		else if (senderId != -1)
 		{
-			RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
+			RpcId(senderId, MethodName.OnSenderHitUpdateUI, score, deathConfirmed);
 		}
 
 		if (GenericCore.Instance.IsServer)
@@ -524,41 +524,41 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	private void OnReceiverHitUpdateUI()
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void OnReceiverHitUpdateUI(float newHealth, bool deathCon)
 	{
 		if(!myNetId.IsLocal)
 			return;
 
-		if (deathConfirmed)
+		if (deathCon)
 		{
 			// Maybe start timer here and show death screen
 			hitFlashUI.Play("die");
 		}
 			
 		GD.Print("I got hit! Update UI here!");
-		GD.Print(health);
+		GD.Print(newHealth);
 
 		if(!hitFlashUI.IsPlaying())
 			hitFlashUI.Play("hit");
 
 		// health bar is separated into 5 segments of 20
-		switch (health)
+		switch (newHealth)
 		{
 			case > 80:
-				healthBarSegments[4].Value = health - 80;
+				healthBarSegments[4].Value = newHealth - 80;
 				break;
 			case > 60:
-				healthBarSegments[3].Value = health - 60;
+				healthBarSegments[3].Value = newHealth - 60;
 				break;
 			case > 40:
-				healthBarSegments[2].Value = health - 40;
+				healthBarSegments[2].Value = newHealth - 40;
 				break;
 			case > 20:
-				healthBarSegments[1].Value = health - 20;
+				healthBarSegments[1].Value = newHealth - 20;
 				break;
 			case > 0:
-				healthBarSegments[0].Value = health;
+				healthBarSegments[0].Value = newHealth;
 				break;
 			default:
 				foreach (var segment in healthBarSegments)
@@ -568,9 +568,9 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				break;
 		}
 		// color lerp system based on curent health percentage
-		if(health > 0)
+		if(newHealth > 0)
 		{
-			float ratio = health / 100.0f;
+			float ratio = newHealth / 100.0f;
 			StyleBoxFlat fillStyle;
 			foreach (var segment in healthBarSegments)
 			{
@@ -585,16 +585,14 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	private void OnSenderHitUpdateUI(bool deathConfirmed)
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void OnSenderHitUpdateUI(float newScore, bool deathConfirmed)
 	{
-		if (!myNetId.IsLocal)
-        	return;
 
 		if (deathConfirmed)
 		{
 			killBell?.Play();
-			xpBar.Value = score;
+			xpBar.Value = newScore;
 		}
 		else
 		{

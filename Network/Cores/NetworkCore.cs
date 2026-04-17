@@ -123,6 +123,9 @@ public partial class NetworkCore : MultiplayerSpawner
     // Destroys all netObjects that were owned by the peer
     private void NetDestroyObject(long peerId)
     {
+        if (!Multiplayer.IsServer())
+        return;
+
         // Make server only?
         Godot.Collections.Array<int> badObjs = FindBadObjectsWith(peerId);
 

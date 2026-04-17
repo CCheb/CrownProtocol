@@ -11,6 +11,7 @@ public partial class Enemy : CharacterBody3D
     [Export] public PackedScene projectileScene;
     [Export] public PackedScene projectileVisual;
     [Export] public AnimationPlayer animPlayer;
+    [Export] public GpuParticles3D emitter;
     private NetworkCore networkCore;
     [Export] public NetID netId;
     public CampController camp = null;
@@ -19,6 +20,7 @@ public partial class Enemy : CharacterBody3D
     private FPSController target;
     private NodePath targetPath = new NodePath();
     private bool isInitialized = false;
+    public bool isDead = false;
     public override void _Ready()
     {
         if (!GenericCore.Instance.IsServer)
@@ -205,27 +207,35 @@ public partial class Enemy : CharacterBody3D
 
         GenericCore.Instance.activeVisuals[bulletId] = visual;
     }
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, long attackerId)
     {
         if (!GenericCore.Instance.IsServer)
             return;
 
+        Rpc(nameof(PlayEmitter));
         currentHealth -= amount;
 
-        PlayAnim("Hit");
-
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !isDead)
         {
-            Die();
+            isDead = true;
+            Die(attackerId);
         }
     }
 
-    private async void Die()
+    private async void Die(long attackerId)
     {
         if (!GenericCore.Instance.IsServer)
             return;
+        
+        foreach (var node in GetTree().GetNodesInGroup("Enemies"))
+        {
+            if (node is FPSController player && player.myNetId.OwnerId == attackerId)
+            {
+                player.score += pointValue;
+            }
+        }
 
-        PlayAnim("Death");
+        PlayAnim("Die");
 
         await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
@@ -233,7 +243,7 @@ public partial class Enemy : CharacterBody3D
         {
             camp.OnEnemyDied(this);
         }
-
+        
         DestroySelf();
     }
 
@@ -250,7 +260,7 @@ public partial class Enemy : CharacterBody3D
 
         if (netId != null)
         {
-            networkCore.NetDestroyObject(netId);
+            NetUtils.SafeDestroy(networkCore, netId);
         }
         else
         {
@@ -278,6 +288,11 @@ public partial class Enemy : CharacterBody3D
         animPlayer.Play(name);
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void PlayEmitter()
+    {
+        emitter.Emitting = true;
+    }
     private void OnAnimationFinished(StringName animName)
     {
         if (animName == "Ranged")

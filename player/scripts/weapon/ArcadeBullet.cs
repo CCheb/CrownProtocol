@@ -41,7 +41,8 @@ public partial class ArcadeBullet : CharacterBody3D, IBullet
 	{
 		if(body is FPSController player)
 			player.Hit(damage, ownerId, player.myNetId.OwnerId);
-
+		if(body is Enemy enemy)
+			enemy.TakeDamage(damage, ownerId);
 		QueueFree();
 	}
 

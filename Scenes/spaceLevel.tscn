@@ -3,19 +3,20 @@
 [ext_resource type="Script" uid="uid://cvtyrfq5fl33g" path="res://Network/GameManager.cs" id="1_6phgx"]
 [ext_resource type="Script" uid="uid://dhp14ud86aqe7" path="res://Network/Cores/NetworkCore.cs" id="1_tumq0"]
 [ext_resource type="PackedScene" uid="uid://m2qog1d32hi4" path="res://Scenes/networkCamera.tscn" id="2_81xng"]
-[ext_resource type="PackedScene" uid="uid://cvkx4oslqntvk" path="res://Maps/level.tscn" id="4_81xng"]
+[ext_resource type="PackedScene" uid="uid://cvkx4oslqntvk" path="res://Maps/space_map.tscn" id="4_81xng"]
 [ext_resource type="PackedScene" uid="uid://d3crcq2oaiwca" path="res://player/assets/items/pickupItemMarker.tscn" id="5_wqkje"]
 
-[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "itemSpawner", "projectileSpawner")]
+[node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "itemSpawner", "projectileSpawner", "decalSpawner")]
 script = ExtResource("1_6phgx")
 spectatorSpawn = NodePath("SpectatorSpawn")
 netCore = NodePath("MultiplayerSpawner")
 itemSpawner = NodePath("ItemSpawner")
 projectileSpawner = NodePath("ProjectileSpawner")
+decalSpawner = NodePath("DecalSpawner")
 cameraScene = ExtResource("2_81xng")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=893264393 groups=["PlayerSpawn"]]
-_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4")
+_spawnable_scenes = PackedStringArray("uid://b1derc5wqq21i", "uid://m2qog1d32hi4", "uid://bk4nplqfcnwr5", "uid://ckv1fvu075om8")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
 
@@ -29,7 +30,7 @@ spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
 
 [node name="DecalSpawner" type="MultiplayerSpawner" parent="." unique_id=1318929807]
-_spawnable_scenes = PackedStringArray("uid://nr16qgoyv6g5", "uid://bv513bcbnd8iq")
+_spawnable_scenes = PackedStringArray("uid://nr16qgoyv6g5")
 spawn_path = NodePath("..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=936373086]

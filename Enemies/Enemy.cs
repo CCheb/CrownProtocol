@@ -3,47 +3,34 @@ using System;
 
 public partial class Enemy : CharacterBody3D
 {
-    // ---------------- STATS ----------------
     [Export] public float maxHealth = 100f;
     [Export] public float attackCooldown = 2f;
     [Export] public float attackRange = 25f;
     [Export] public int pointValue = 10;
-
-    // ---------------- NODES ----------------
-    [Export] public Node3D visualRoot; // rotate this, not whole body
+    [Export] public Node3D visualRoot;
     [Export] public Node3D projectileSpawn;
     [Export] public PackedScene projectileScene;
     [Export] public AnimationPlayer animPlayer;
     private NetworkCore networkCore;
     [Export] public NetID netId;
-
-    // ---------------- CAMP ----------------
-    public CampController camp;
-
-    // ---------------- STATE ----------------
+    public CampController camp = null;
     private float currentHealth;
     private float attackTimer = 0f;
-
     private FPSController target;
     private NodePath targetPath = new NodePath();
-
     private bool isInitialized = false;
 
-    // ---------------- READY ----------------
     public override void _Ready()
     {
-        // Only server runs logic
         if (!GenericCore.Instance.IsServer)
-        {
-            SetPhysicsProcess(false);
-        }
+            return;
         if (animPlayer != null)
         {
             animPlayer.AnimationFinished += OnAnimationFinished;
         }
         if (GenericCore.Instance.IsServer)
         {
-            networkCore = GetTree().Root.GetNode<NetworkCore>("GameManager/MultiplayerSpawner");
+            networkCore = GetTree().GetFirstNodeInGroup("PlayerSpawn") as NetworkCore;
 
             if (networkCore == null)
             {
@@ -52,86 +39,75 @@ public partial class Enemy : CharacterBody3D
         }
     }
 
-    // ---------------- INIT ----------------
-    public void Initialize(CampController campRef)
+    public void Initialize()
     {
-        camp = campRef;
+        if (!GenericCore.Instance.IsServer)
+            return;
+        PlayAnim("Idle");
 
         currentHealth = maxHealth;
         attackTimer = 0f;
-
+        attackCooldown += (float)GD.RandRange(0f, 1f);
         target = null;
         targetPath = new NodePath();
 
         isInitialized = true;
 
-        PlayAnim("Idle");
     }
 
-    // ---------------- MAIN LOOP ----------------
     public override void _PhysicsProcess(double delta)
     {
         if (!isInitialized || !GenericCore.Instance.IsServer)
             return;
 
-        // Rebuild target if needed
         if (target == null && !targetPath.IsEmpty && HasNode(targetPath))
         {
             target = GetNode<FPSController>(targetPath);
         }
-
-        // Validate target
-        if (target == null || !IsInstanceValid(target))
+        if(target == null)
+            return;
+        if (!IsInstanceValid(target))
         {
             ClearTarget();
             return;
         }
-
         float distance = GlobalPosition.DistanceTo(target.GlobalPosition);
-
-        // Lose aggro
         if (distance > attackRange)
         {
             ClearTarget();
             return;
         }
-
-        // Face target
         FaceTarget(target.GlobalPosition);
-
-        // Attack loop
         attackTimer += (float)delta;
-
         if (attackTimer >= attackCooldown)
         {
             attackTimer = 0f;
-            ShootProjectile();
+            PlayAnim("Ranged");
         }
     }
-
-    // ---------------- TARGETING ----------------
     public void SetTarget(FPSController player)
     {
+        if (!GenericCore.Instance.IsServer)
+            return;
         if (player == null || !IsInstanceValid(player))
             return;
-
+        
         target = player;
         targetPath = player.GetPath();
         attackTimer = 0f;
 
         PlayAnim("Ranged");
     }
-
     public void ClearTarget()
     {
+        if (!GenericCore.Instance.IsServer)
+            return;
         target = null;
         targetPath = new NodePath();
         attackTimer = 0f;
 
         PlayAnim("Idle");
     }
-
-    // Called by Area3D
     public void OnBodyEntered(Node3D body)
     {
         if (!GenericCore.Instance.IsServer)
@@ -153,6 +129,8 @@ public partial class Enemy : CharacterBody3D
 
     public void PlayerSpotted(FPSController player)
     {
+        if (!GenericCore.Instance.IsServer)
+            return;
         if (player == null || !IsInstanceValid(player))
             return;
 
@@ -160,32 +138,35 @@ public partial class Enemy : CharacterBody3D
             return;
 
         SetTarget(player);
-
-        // 🔥 SHARE AGGRO WITH CAMP
         if (camp != null)
         {
             camp.SetTarget(player);
         }
     }
-
-    // ---------------- ROTATION ----------------
     private void FaceTarget(Vector3 targetPos)
     {
+        if (!GenericCore.Instance.IsServer)
+            return;
+
         targetPos.Y = GlobalPosition.Y;
 
+        Vector3 dir = (targetPos - GlobalPosition).Normalized();
+        float angle = Mathf.Atan2(dir.X, dir.Z);
+
+        Rpc(nameof(SetRotationClient), angle);
+    }
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void SetRotationClient(float angle)
+    {
         if (visualRoot != null)
         {
-            visualRoot.LookAt(targetPos, Vector3.Up);
-            visualRoot.RotateY(Mathf.Pi); // fix flipped model
+            visualRoot.Rotation = new Vector3(0, angle, 0);
         }
         else
         {
-            LookAt(targetPos, Vector3.Up);
-            RotateY(Mathf.Pi);
+            Rotation = new Vector3(0, angle + Mathf.Pi, 0);
         }
     }
-
-    // ---------------- COMBAT ----------------
     private void ShootProjectile()
     {
         if (!GenericCore.Instance.IsServer)
@@ -199,17 +180,11 @@ public partial class Enemy : CharacterBody3D
             : GlobalPosition;
 
         Vector3 dir = (target.GlobalPosition - spawnPos).Normalized();
-
-        // 🔥 Convert direction → rotation
         Basis basis = Basis.LookingAt(dir, Vector3.Up);
         Quaternion rotation = basis.GetRotationQuaternion();
-
-        networkCore.NetCreateObject(3, spawnPos, rotation);
-
-        PlayAnim("Ranged");
+        networkCore.NetCreateObject(3, spawnPos, rotation, owner: netId.OwnerId);
     }
 
-    // ---------------- DAMAGE ----------------
     public void TakeDamage(float amount)
     {
         if (!GenericCore.Instance.IsServer)
@@ -263,7 +238,6 @@ public partial class Enemy : CharacterBody3D
         }
     }
 
-    // ---------------- ANIMATION ----------------
     private void PlayAnim(string name)
     {
         if (GenericCore.Instance.IsServer)

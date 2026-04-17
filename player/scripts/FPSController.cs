@@ -399,56 +399,66 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	public void Hit(float damageRecieved, long senderId, long receiverId)
 	{
 		// Hit is handled by the server
-
 		if (deathConfirmed)
 		{
 			return;
 		}
 
+		// Capture the NEW values we are about to set (so we can send them immediately)
+		float killerNewScore = 0f;
+		int killerNewKills = 0;
+		int victimNewDeaths = deaths;   // will be updated only on kill
+
 		if (health - damageRecieved <= 0)
 		{
-		
-			foreach(var enemy in GetTree().GetNodesInGroup("Enemies"))
+			foreach (var enemy in GetTree().GetNodesInGroup("Enemies"))
 			{
-				if(enemy is FPSController player && player.myNetId.OwnerId == senderId)
+				if (enemy is FPSController player && player.myNetId.OwnerId == senderId)
 				{
 					player.kills++;
 					player.score += 5;
+
+					killerNewScore = player.score;
+					killerNewKills = player.kills;
+
 					GD.Print($"Player should have {player.kills} kills");
 					lookAtRef = player.hitBox;
 				}
 			}
-			
+
 			// Server sets these variables and MultiplayerSynchronizer handles the rest
 			health = 0.0f;
 			deaths++;
-			deathConfirmed = true;	
+			victimNewDeaths = deaths;
+			deathConfirmed = true;
 
 			StartRespawnSequence();
 		}
 		else
 		{
 			health -= damageRecieved;
-		}	
+		}
 
-		// Send Rpc's to both sender and receiver players to update their UI
+		// === FIXED: Always handle local player + remote via RPC with new values ===
 		if (receiverId == Multiplayer.GetUniqueId())
 		{
-			//OnReceiverHitUpdateUI();
+			OnReceiverHitUpdateUI(health, deathConfirmed, victimNewDeaths);
 		}
 		else
 		{
-			RpcId(receiverId, MethodName.OnReceiverHitUpdateUI, health, deathConfirmed);
+			RpcId(receiverId, MethodName.OnReceiverHitUpdateUI, health, deathConfirmed, victimNewDeaths);
 		}
+
 		if (senderId == Multiplayer.GetUniqueId())
 		{
-			//OnSenderHitUpdateUI(deathConfirmed);
+			OnSenderHitUpdateUI(deathConfirmed, killerNewScore, killerNewKills);
 		}
 		else if (senderId != -1)
 		{
-			RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed);
+			RpcId(senderId, MethodName.OnSenderHitUpdateUI, deathConfirmed, killerNewScore, killerNewKills);
 		}
 
+		// Refresh all clients (kept for the other two players who weren't directly involved)
 		if (GenericCore.Instance.IsServer)
 		{
 			Godot.Collections.Array<Node> allPlayerNodes = GetTree().GetNodesInGroup("Enemies");
@@ -542,17 +552,18 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	private void OnReceiverHitUpdateUI(float newHealth, bool deathCon)
+	private void OnReceiverHitUpdateUI(float newHealth, bool deathCon, int newDeaths = 0)
 	{
-		if(!myNetId.IsLocal)
+		if (!myNetId.IsLocal)
 			return;
 
 		if (deathCon)
 		{
 			// Maybe start timer here and show death screen
 			hitFlashUI.Play("die");
+			deaths = newDeaths;   // force the value immediately
 		}
-			
+
 		GD.Print("I got hit! Update UI here!");
 		GD.Print(newHealth);
 
@@ -561,38 +572,41 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 		healthBar.Value = newHealth;
 		GD.Print("NEW HEALTH BAR VALUE: " + healthBar.Value);
-		
-		// color lerp system based on curent health percentage
-		if(newHealth > 0)
+
+		// color lerp system based on current health percentage
+		if (newHealth > 0)
 		{
 			float ratio = newHealth / 100.0f;
-			StyleBoxFlat fillStyle;
-			fillStyle = healthBar.GetThemeStylebox("fill").Duplicate() as StyleBoxFlat;
-			// Lerp from Red (0%) to Green (100%)
+			StyleBoxFlat fillStyle = healthBar.GetThemeStylebox("fill").Duplicate() as StyleBoxFlat;
 			fillStyle.BgColor = Colors.Red.Lerp(segmentColors, ratio);
-
 			healthBar.AddThemeStyleboxOverride("fill", fillStyle);
 		}
-		
 
+		UpdateLeaderboard();   // immediate leaderboard refresh for the victim
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	private void OnSenderHitUpdateUI(bool deathConfirmed)
+	private void OnSenderHitUpdateUI(bool deathConfirmed, float newScore = 0f, int newKills = 0)
 	{
-
 		if (deathConfirmed)
 		{
 			killBell?.Play();
-			xpBar.Value = score;
+
+			// Force the values immediately on this client (fixes XP bar + score staying 0)
+			score = newScore;
+			kills = newKills;
+
+			xpBar.Value = newScore;
+
 			GD.Print("XP value:" + xpBar.Value);
 			GD.Print("score:" + score);
+
+			UpdateLeaderboard();   // immediate leaderboard refresh for the killer
 		}
 		else
 		{
 			hitMarkerPing?.Play();
 		}
-
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

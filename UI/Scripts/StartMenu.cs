@@ -7,8 +7,6 @@ public partial class StartMenu : Control
     [Export]
     private Control optionsUI;
     [Export]
-    private Control tutorialUI;
-    [Export]
     private Control CreditsUI;
     [Export]
     private Control ServerUI;
@@ -30,7 +28,6 @@ public partial class StartMenu : Control
         base._Ready();
         ServerUI = GetNode<ServerBrowser>("../ServerBrowser");
         optionsUI.Visible = false;
-        tutorialUI.Visible = false;
         CreditsUI.Visible = false;
         ServerUI.Visible = false;
         // constrain mouse
@@ -109,11 +106,7 @@ public partial class StartMenu : Control
         Beep.Play();
         optionsUI.Visible = true;
     }
-    public void OnTutorialPressed()
-    {
-        Beep.Play();
-        tutorialUI.Visible = true;
-    }
+    
     public void OnCreditsPressed()
     {
         Beep.Play();

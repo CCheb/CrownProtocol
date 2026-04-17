@@ -38,6 +38,7 @@ public partial class WeaponController : Node3D
     [Export] public WeaponRecoil WeaponRecoilRef;
     [Export] public JumpRecoil JumpRecoilRef;
 	[Export] private NoiseTexture2D RandSwayNoise;
+    [Export] private AmmoCounter ammoCounter;
 
     public PlayerContext context;
     private const int SERVER = 1;
@@ -211,6 +212,9 @@ public partial class WeaponController : Node3D
             GD.Print("Swaping Weapon!!!");
             LastWeaponIndex = CurrentWeaponIndex;
             SwapWeapon();   // Clients and server would diverge from here
+
+            if(context.player.myNetId.IsLocal)
+                ammoCounter.UpdateText(Arsenal[CurrentWeaponIndex].AmmoCount);
         }
 
         if (!context.player.myNetId.IsLocal)
@@ -280,11 +284,13 @@ public partial class WeaponController : Node3D
 
         GD.Print("Adding ammo!!");
         Arsenal[weaponIndex].AmmoCount = Arsenal[weaponIndex].AmmoCapacity;
+        ammoCounter.AmmoSpent(Arsenal[weaponIndex].AmmoCount);
     }
 
     public void UpdateCurrentWeaponAmmo()
     {
         Arsenal[CurrentWeaponIndex].AmmoCount--;
+        ammoCounter.AmmoSpent(Arsenal[CurrentWeaponIndex].AmmoCount);
     }
 
     public int CheckCurrentWeaponAmmo()

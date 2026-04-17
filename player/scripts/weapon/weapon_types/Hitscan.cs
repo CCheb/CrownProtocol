@@ -106,12 +106,6 @@ public partial class Hitscan : WeaponBase
                 else
                     enemy.Hit(weaponController.GetCurrentWeaponsDamage());
             }
-
-            else
-            {
-                //var gameManager = GetTree().CurrentScene as GameManager;
-                //gameManager.SpawnDecal(WeaponDecal, (Vector3)collisionResult["normal"], (Vector3)collisionResult["position"]);
-            }
         }
     }
 

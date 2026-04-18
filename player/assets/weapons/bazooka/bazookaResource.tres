@@ -21,7 +21,7 @@ script = ExtResource("1_goc56")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_2rays"]
+[sub_resource type="Resource" id="Resource_fckh4"]
 script = ExtResource("1_1v3r2")
 
 [resource]
@@ -30,6 +30,7 @@ WeaponName = "BAZOOKA"
 WeaponType = 1
 PrimaryWeaponAction = 1
 SecondaryWeaponAction = 5
+Status = 1
 ViewportPosition = Vector3(0.167, -0.218, -0.787)
 WeaponScene = ExtResource("2_ip05j")
 FireRate = 220.0

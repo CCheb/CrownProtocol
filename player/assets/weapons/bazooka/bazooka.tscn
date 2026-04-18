@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c4u5cll6nrihp" path="res://player/assets/weapons/bazooka/BazookaV1-1_BazookaHandle.png" id="5_13jic"]
 [ext_resource type="Texture2D" uid="uid://d0hu3bok8yy3l" path="res://player/assets/weapons/bazooka/BazookaV1-1_BazookaFrame2.png" id="6_ga45a"]
 [ext_resource type="Script" uid="uid://bg6y0vnkr447a" path="res://player/scripts/weapon/MuzzleFlash.cs" id="7_l62pp"]
-[ext_resource type="AudioStream" uid="uid://coyltnlbgph11" path="res://player/assets/audio/ak-47-89833.mp3" id="8_f8gaw"]
+[ext_resource type="AudioStream" uid="uid://diy5vqd6856l5" path="res://player/assets/audio/weapon sounds/Bazooka_shot.wav" id="9_f8gaw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rsd4l"]
 resource_name = "Material"
@@ -414,7 +414,7 @@ draw_pass_1 = SubResource("QuadMesh_6ibbx")
 [node name="ShellEjection" type="Marker3D" parent="." unique_id=720252937]
 
 [node name="GunSound" type="AudioStreamPlayer3D" parent="." unique_id=926089210]
-stream = ExtResource("8_f8gaw")
+stream = ExtResource("9_f8gaw")
 
 [node name="CameraReloadProxy" type="Node3D" parent="." unique_id=636652631]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16694236, 0.21761599, 0.78707606)

@@ -20,7 +20,7 @@ script = ExtResource("1_nmhbs")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_namps"]
+[sub_resource type="Resource" id="Resource_fckh4"]
 script = ExtResource("1_f0qgx")
 
 [resource]
@@ -28,6 +28,7 @@ script = ExtResource("2_0pvwa")
 WeaponName = "BURST"
 PrimaryWeaponAction = 2
 SecondaryWeaponAction = 5
+Status = 1
 ViewportPosition = Vector3(0.1, -0.13, -0.5)
 ViewportScale = Vector3(0.8, 0.8, 0.8)
 WeaponScene = ExtResource("2_fckh4")

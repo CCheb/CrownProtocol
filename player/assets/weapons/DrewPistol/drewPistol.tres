@@ -32,6 +32,7 @@ SecondaryWeaponAction = 5
 Status = 1
 ViewportPosition = Vector3(0.2, -0.1, -0.4)
 WeaponScene = ExtResource("2_jxtl0")
+CameraRecoilAmount = Vector3(0.05, 0.05, 0)
 WeaponRecoilAmount = Vector3(0.01, 0.01, 0.2)
 FireRate = 380.0
 AmmoCount = 250

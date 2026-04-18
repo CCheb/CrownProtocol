@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://yyanmarr6ewv" path="res://player/assets/weapons/shotgun/ShotgunV1_Shotgun_Stock.png" id="8_hm7sq"]
 [ext_resource type="Texture2D" uid="uid://dq064j7o7fmbo" path="res://player/assets/weapons/shotgun/ShotgunV1_Shotgun_Drum.png" id="9_1dexr"]
 [ext_resource type="Script" uid="uid://bg6y0vnkr447a" path="res://player/scripts/weapon/MuzzleFlash.cs" id="10_tprac"]
-[ext_resource type="AudioStream" uid="uid://xfrgvf74k2or" path="res://player/assets/audio/shotgun-firing-4-6746.mp3" id="11_adqch"]
+[ext_resource type="AudioStream" uid="uid://by3058eyge5i8" path="res://player/assets/audio/weapon sounds/Shotgun_shot.wav" id="12_yx0ss"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8oj7t"]
 resource_name = "Material.007"
@@ -676,7 +676,7 @@ transform = Transform3D(0.7607233, 0, 0.64907634, 0, 1, 0, -0.64907634, 0, 0.760
 
 [node name="GunSound" type="AudioStreamPlayer3D" parent="." unique_id=227380517]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0024175718, -0.13947529)
-stream = ExtResource("11_adqch")
+stream = ExtResource("12_yx0ss")
 
 [node name="CameraReloadProxy" type="Node3D" parent="." unique_id=467706931]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, 0.205, 0.65)

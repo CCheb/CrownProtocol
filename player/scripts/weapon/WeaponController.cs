@@ -336,5 +336,12 @@ public partial class WeaponController : Node3D
 
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    public void RefreshAllAmmo()
+    {
+        for(int i = 0; i < Arsenal.Count(); i++)
+            Arsenal[i].AmmoCount = Arsenal[i].AmmoCapacity;
+    }
+
    
 }

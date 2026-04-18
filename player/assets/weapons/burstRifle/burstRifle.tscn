@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bx5dyy3ftqlvb" path="res://player/assets/weapons/burstRifle/BurstRifleV1_BR_Rail.png" id="8_miuue"]
 [ext_resource type="Texture2D" uid="uid://bhqhi6oua2hkc" path="res://player/assets/weapons/burstRifle/BurstRifleV1_BR_Stock.png" id="9_8qbvd"]
 [ext_resource type="Script" uid="uid://bg6y0vnkr447a" path="res://player/scripts/weapon/MuzzleFlash.cs" id="10_uxg4v"]
-[ext_resource type="AudioStream" uid="uid://coyltnlbgph11" path="res://player/assets/audio/ak-47-89833.mp3" id="12_kbjuj"]
+[ext_resource type="AudioStream" uid="uid://d8tqaciwk501" path="res://player/assets/audio/weapon sounds/BR_shot.wav" id="12_8ktil"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2tnh5"]
 resource_name = "Material.007"
@@ -597,7 +597,7 @@ draw_pass_1 = SubResource("QuadMesh_8qbvd")
 transform = Transform3D(0.8306056, 0, 0.5568611, 0, 1, 0, -0.5568611, 0, 0.8306056, 0.036543563, 0.032808736, 0.24029645)
 
 [node name="GunSound" type="AudioStreamPlayer3D" parent="." unique_id=222451296]
-stream = ExtResource("12_kbjuj")
+stream = ExtResource("12_8ktil")
 
 [node name="CameraReloadProxy" type="Node3D" parent="." unique_id=2086656555]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.13, 0.5)

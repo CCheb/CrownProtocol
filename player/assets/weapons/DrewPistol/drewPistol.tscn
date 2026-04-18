@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c316fl2drmat3" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Barrel.png" id="5_2atdd"]
 [ext_resource type="Texture2D" uid="uid://c08vkj16xsix0" path="res://player/assets/weapons/DrewPistol/Hg_v1_Hg_Mag.png" id="6_swftw"]
 [ext_resource type="Script" uid="uid://bg6y0vnkr447a" path="res://player/scripts/weapon/MuzzleFlash.cs" id="7_5k74n"]
-[ext_resource type="AudioStream" uid="uid://brf5mcjrkks7v" path="res://player/assets/audio/single-pistol-gunshot-3-101923.mp3" id="8_kpksr"]
+[ext_resource type="AudioStream" uid="uid://bqrp3od816kww" path="res://player/assets/audio/weapon sounds/Handgun_shot.wav" id="10_l35yr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hnfw2"]
 resource_name = "Material.003"
@@ -544,7 +544,7 @@ transform = Transform3D(0.562805, -0.82658964, 0, 0.82658964, 0.562805, 0, 0, 0,
 
 [node name="GunSound" type="AudioStreamPlayer3D" parent="." unique_id=547245048]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0024175718, -0.13947529)
-stream = ExtResource("8_kpksr")
+stream = ExtResource("10_l35yr")
 
 [node name="CameraReloadProxy" type="Node3D" parent="." unique_id=125113514]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.1, 0.4)

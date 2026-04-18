@@ -110,6 +110,24 @@ public partial class GameLobby : Control
 
 		}
 	}
+	[Rpc(MultiplayerApi.RpcMode.Authority,CallLocal = true,TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void BroadcastLevelPathForStart(String path)
+	{
+		// resend level path before starting
+		switch (path)
+		{
+			case "res://Scenes/spaceLevel.tscn":
+				GenericCore.Instance.levelPath = new string($"res://Scenes/spaceLevel.tscn");
+				break;
+			case "res://Scenes/desertLevel.tscn":
+				GenericCore.Instance.levelPath = new string($"res://Scenes/desertLevel.tscn");
+				break;
+			case "res://Scenes/factoryLevel.tscn":
+				GenericCore.Instance.levelPath = new string($"res://Scenes/factoryLevel.tscn");
+				break;
+
+		}
+	}
 	
 	private void OnPlayerJoined(Node node)
 	{
@@ -170,7 +188,7 @@ public partial class GameLobby : Control
 
     		countDown--;
     	}
-	
+		Rpc(MethodName.BroadcastLevelPathForStart, GenericCore.Instance.levelPath);
     	gameStarted = true;
 
     	GD.Print("Game Started!");

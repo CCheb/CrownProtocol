@@ -204,20 +204,20 @@ position = Vector2(472, 576)
 metadata/_edit_group_ = true
 
 [node name="SpaceStation" type="Sprite2D" parent="LevelImages" unique_id=880569010 groups=["LevelImages"]]
-position = Vector2(-78, -52.000008)
-scale = Vector2(0.421875, 0.5234375)
+position = Vector2(-74.99998, -53.5)
+scale = Vector2(0.96043164, 1.092213)
 texture = ExtResource("6_wd71e")
 
 [node name="Desert" type="Sprite2D" parent="LevelImages" unique_id=810212931 groups=["LevelImages"]]
 visible = false
-position = Vector2(-79.99999, -52.000053)
-scale = Vector2(0.73913044, 0.84944534)
+position = Vector2(-76.99997, -53.99997)
+scale = Vector2(0.61451244, 0.66502464)
 texture = ExtResource("7_k16h5")
 
 [node name="Factory" type="Sprite2D" parent="LevelImages" unique_id=255017491 groups=["LevelImages"]]
 visible = false
-position = Vector2(-80.00002, -52.37501)
-scale = Vector2(0.4533333, 0.79518515)
+position = Vector2(-77.499985, -54.00001)
+scale = Vector2(1.0907258, 1.187638)
 texture = ExtResource("8_lp84u")
 
 [node name="LevelSelect" type="Label" parent="." unique_id=1747579572]

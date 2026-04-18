@@ -64,11 +64,25 @@ public partial class GameManager : Node3D
 		        continue;
 
 		    var spawn = playerSpawns[i % playerSpawns.Count];
-
+			connectedPlayers++;
 		    netCore.NetCreateObject(0, spawn.GlobalPosition, spawn.Quaternion, peerId);
 		}
 	}
 
+	public void ServerSpawnPlayers1()
+	{
+		int count = 0;
+		foreach(var peer in GenericCore.Instance.connectedPeers)
+		{
+			if(peer.Key != 1)
+			{
+				netCore.NetCreateObject(0, playerSpawns[count].GlobalPosition, playerSpawns[count].Quaternion, peer.Key);
+				// Fill up connectedPlayers here as we it encounters new players. 
+				connectedPlayers++;
+				count++;
+			}
+		}
+	}
 	
 
 	public void ServerSpawnItems()
@@ -151,6 +165,7 @@ public partial class GameManager : Node3D
 			// Clean up here if any
 			GenericCore.Instance.netObjects.Clear();
 			GenericCore.Instance.playersLoaded = 0;
+			GenericCore.Instance.isFirstClientToJoin = false;
 
 
 			// Now return back to the GameLobby

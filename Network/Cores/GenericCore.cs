@@ -298,6 +298,7 @@ public partial class GenericCore : Node
 
             IsGenericCoreConnected = false;
             IsServer = false;
+            isFirstClientToJoin = false;
 
             GD.Print("Returning back to server browser\n");
             GetTree().ChangeSceneToFile("res://UI/Scenes/start_screen.tscn"); // Could emit a signal here to have the game manager switch for me

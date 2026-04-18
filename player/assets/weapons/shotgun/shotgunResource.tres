@@ -20,7 +20,7 @@ script = ExtResource("1_namps")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_namps"]
+[sub_resource type="Resource" id="Resource_4e82x"]
 script = ExtResource("1_roxeo")
 
 [resource]
@@ -31,7 +31,7 @@ SecondaryWeaponAction = 5
 Status = 1
 ViewportPosition = Vector3(0.24, -0.205, -0.65)
 WeaponScene = ExtResource("1_qmihn")
-damage = 8.0
+damage = 12.0
 FireRate = 100.0
 AmmoCount = 25
 AmmoCapacity = 25

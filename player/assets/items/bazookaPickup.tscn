@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dngf8mo3hqal" path="res://player/assets/weapons/bazooka/BazookaV1-1_Bazooka_Drum001.png" id="5_h81k6"]
 [ext_resource type="Texture2D" uid="uid://c4u5cll6nrihp" path="res://player/assets/weapons/bazooka/BazookaV1-1_BazookaHandle.png" id="6_w0xrp"]
 [ext_resource type="Texture2D" uid="uid://d0hu3bok8yy3l" path="res://player/assets/weapons/bazooka/BazookaV1-1_BazookaFrame2.png" id="7_qsur5"]
+[ext_resource type="AudioStream" uid="uid://mdfhvnmooa55" path="res://player/assets/audio/1911-reload-6248.mp3" id="8_8nl05"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_agv2f"]
 properties/0/path = NodePath("Area3D:monitoring")
@@ -26,7 +27,7 @@ properties/4/spawn = true
 properties/4/replication_mode = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hc1l0"]
-size = Vector3(0.2, 0.6, 1.1)
+size = Vector3(0.5, 1, 2.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rsd4l"]
 resource_name = "Material"
@@ -238,8 +239,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vb4qb")
 
-[node name="Node3D" type="Node3D" unique_id=1624555050]
+[node name="Node3D" type="Node3D" unique_id=1624555050 node_paths=PackedStringArray("area", "audio")]
 script = ExtResource("1_agv2f")
+desiredPickup = 3
+area = NodePath("Area3D")
+audio = NodePath("AudioStreamPlayer3D")
+itemHeightFromGround = 1.0
+pickupTimeout = 15.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=399218139]
 replication_config = SubResource("SceneReplicationConfig_agv2f")
@@ -251,7 +257,7 @@ collision_mask = 4
 shape = SubResource("BoxShape3D_hc1l0")
 
 [node name="BazookaV1-1" type="Node3D" parent="Area3D/CollisionShape3D" unique_id=718303051]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2742068, -0.45781395)
+transform = Transform3D(2.1, 0, 0, 0, 2.1, 0, 0, 0, 2.1, 0, -0.6792686, -0.9320344)
 
 [node name="Frame1" type="MeshInstance3D" parent="Area3D/CollisionShape3D/BazookaV1-1" unique_id=1027980632]
 transform = Transform3D(0.05896626, 0, 0, 0, 0.05896626, 0, 0, 0, 0.05896626, -0.0017073149, 0.31015682, 0.3458537)
@@ -274,5 +280,6 @@ transform = Transform3D(0.06575179, 0, 0, 0, 0.06575179, 0, 0, 0, 0.06575179, 0,
 mesh = SubResource("ArrayMesh_05qdt")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=165212552]
+stream = ExtResource("8_8nl05")
 
 [connection signal="body_entered" from="Area3D" to="." method="OnBodyEntered"]

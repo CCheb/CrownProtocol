@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dk5cqy0nifbrk"
+path="res://.godot/imported/Atomic Overload.wav-9ba25c8e4de0a5af4e0bf27dcae3b020.sample"
+
+[deps]
+
+source_file="res://player/assets/audio/Atomic Overload.wav"
+dest_files=["res://.godot/imported/Atomic Overload.wav-9ba25c8e4de0a5af4e0bf27dcae3b020.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

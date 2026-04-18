@@ -128,7 +128,9 @@ public partial class Hitscan : WeaponBase
         weaponController.CameraControllerRef.RequestCameraRecoil();
         weaponController.WeaponRecoilRef.RequestWeaponRecoil();
         MuzzleFlashRef.RequestMuzzleFlash(WeaponData.FireRate);
+
     }
+    
 
     private void UpdateAmmo()
     {

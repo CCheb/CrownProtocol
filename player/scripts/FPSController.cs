@@ -77,6 +77,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	[Export] private Label[] killsLabels;
 	[Export] private Label[] deathsLabels;
 	[Export] private AnimationPlayer hitFlashUI;
+	[Export] public int roundsWon = 0;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -91,6 +92,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 			isInPauseMenu = true;
 		}
 		*/
+		
 	}
 
     public override void _EnterTree()
@@ -416,6 +418,9 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				if (enemy is FPSController player && player.myNetId.OwnerId == senderId)
 				{
 					player.kills++;
+					player.deathConfirmed = true;
+					player.StartRespawnSequence();
+					player.roundsWon++;
 					player.score += 5;
 
 					killerNewScore = player.score;
@@ -470,7 +475,12 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				}
 			}
 		}
+			
+
 	}
+
+	
+
 
 	public void HitByEnemy(float damageRecieved, long receiverId)
 	{
@@ -517,6 +527,15 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	{
 		await ToSignal(GetTree().CreateTimer(5), "timeout");
 
+
+		if(roundsWon == 3)
+		{
+			GD.Print("Player won here! Broadcast everyone to quit lobby");
+			RpcId(0, MethodName.BroadcastQuit);
+		}
+
+
+
 		var gameManager = GetTree().CurrentScene as GameManager;
 		Node3D randomSpawn = gameManager.RequestRandomPlayerSpawn();
 
@@ -524,6 +543,12 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		health = 100.0f;
 
 		GlobalTransform = randomSpawn.GlobalTransform;
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void BroadcastQuit()
+	{
+		GenericCore.Instance.DisconnectFromGame();
 	}
 
 	// Timer

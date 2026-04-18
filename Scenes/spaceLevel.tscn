@@ -47,12 +47,6 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3.23
 [node name="Spawn2" type="Marker3D" parent="." unique_id=692415232 groups=["PlayerSpawn"]]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -3.0171642, 4.333185, -70.02368)
 
-[node name="Spawn3" type="Marker3D" parent="." unique_id=1859796772 groups=["PlayerSpawn"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3578815, 4.6294527, 69.838425)
-
-[node name="Spawn4" type="Marker3D" parent="." unique_id=223481695 groups=["PlayerSpawn"]]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.3375845, 4.704783, -68.97625)
-
 [node name="NetworkObjects" type="Node3D" parent="." unique_id=454358867]
 
 [node name="SpaceMap" parent="." unique_id=602099042 instance=ExtResource("4_81xng")]
@@ -62,16 +56,16 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.33
 [node name="SmgSpawns" type="Node3D" parent="ItemSpawns" unique_id=1346587428]
 
 [node name="PickupItemMarker" parent="ItemSpawns/SmgSpawns" unique_id=836819965 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.184, -2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 50)
 
 [node name="PickupItemMarker2" parent="ItemSpawns/SmgSpawns" unique_id=455424680 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63.894115, -2, 52.208096)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -50)
 
 [node name="PickupItemMarker3" parent="ItemSpawns/SmgSpawns" unique_id=869038111 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.343323, -2, 52.208096)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, -2, 20)
 
 [node name="PickupItemMarker4" parent="ItemSpawns/SmgSpawns" unique_id=3219047 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.343323, -2, -58.731174)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.81194, -2, -20)
 
 [node name="BurstRifleSpawns" type="Node3D" parent="ItemSpawns" unique_id=1647985926]
 

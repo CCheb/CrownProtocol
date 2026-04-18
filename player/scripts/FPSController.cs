@@ -258,7 +258,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	{
 		base._PhysicsProcess(delta);
 
-		if(myNetId.IsLocal && !isInPauseMenu && !deathConfirmed)
+		if(myNetId.IsLocal && !isInPauseMenu)
 		{	
 			GenerateAndSendMovementInput();
 			ResetRotationDeltas();
@@ -271,9 +271,17 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 	private void GenerateAndSendMovementInput()
 	{
+			
 		// Simply grab the input and pass it forward for calculation
 		Vector2 move = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
     	bool jump = Input.IsActionJustPressed("jump");
+
+		if(deathConfirmed)
+		{
+			move = Vector2.Zero;
+			jump = false;
+		}
+		
 		RpcId(SERVER, MethodName.SendInput, move, jump, input.yawDelta, input.pitchDelta);
 	}
 
@@ -419,7 +427,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 				{
 					player.kills++;
 					player.deathConfirmed = true;
-					player.StartRespawnSequence();
+					player.StartRespawnSequence(1);
 					player.roundsWon++;
 					player.score += 5;
 
@@ -437,7 +445,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 			victimNewDeaths = deaths;
 			deathConfirmed = true;
 
-			StartRespawnSequence();
+			StartRespawnSequence(0);
 		}
 		else
 		{
@@ -496,7 +504,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 			deaths++;
 			deathConfirmed = true;	
 
-			StartRespawnSequence();
+			StartRespawnSequence(0);
 		}
 		else
 		{
@@ -523,8 +531,10 @@ public partial class FPSController : CharacterBody3D, IEnemy
 		}
 	}
 
-	private async void StartRespawnSequence()
+	private async void StartRespawnSequence(int location)
 	{
+		context.weaponController.RpcId(0, "RefreshAllAmmo");
+
 		await ToSignal(GetTree().CreateTimer(5), "timeout");
 
 
@@ -537,7 +547,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 
 
 		var gameManager = GetTree().CurrentScene as GameManager;
-		Node3D randomSpawn = gameManager.RequestRandomPlayerSpawn();
+		Node3D randomSpawn = gameManager.RequestRandomPlayerSpawn(location);
 
 		deathConfirmed = false;
 		health = 100.0f;
@@ -550,6 +560,7 @@ public partial class FPSController : CharacterBody3D, IEnemy
 	{
 		GenericCore.Instance.DisconnectFromGame();
 	}
+
 
 	// Timer
 	private async void Capture()

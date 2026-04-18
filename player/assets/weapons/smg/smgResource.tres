@@ -20,13 +20,14 @@ script = ExtResource("1_2rays")
 AnimationName = "Reload"
 metadata/_custom_type_script = "uid://c8of8infi526n"
 
-[sub_resource type="Resource" id="Resource_2rays"]
+[sub_resource type="Resource" id="Resource_fckh4"]
 script = ExtResource("1_mjjlj")
 
 [resource]
 script = ExtResource("2_iqh0y")
 WeaponName = "someting"
 SecondaryWeaponAction = 5
+Status = 1
 ViewportPosition = Vector3(0.121, -0.135, -0.42)
 WeaponScene = ExtResource("2_juue4")
 AmmoCount = 500

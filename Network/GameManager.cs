@@ -143,9 +143,9 @@ public partial class GameManager : Node3D
 		
 	}
 
-	public Node3D RequestRandomPlayerSpawn()
+	public Node3D RequestRandomPlayerSpawn(int location)
 	{
-		return playerSpawns[GD.RandRange(0, playerSpawns.Count-1)];
+		return playerSpawns[location];
 	}
 
 	private async void OnPlayerDisconnected(long id)

@@ -8,7 +8,7 @@ public partial class ArcadeBullet : CharacterBody3D, IBullet
 	[Export] private float damage = 5.0f;
 	private long ownerId = -1;
 	private long receiverId = -1;
-	private float speed = 50f;
+	[Export] public float speed = 50f;
 	private Vector3 direction;
 	// Called when the node enters the scene tree for the first time.
 	public void Initialize(Transform3D transform, long ownerId)

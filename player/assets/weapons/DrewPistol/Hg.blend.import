@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://b70tmg33ue058"
-valid=false
+path="res://.godot/imported/Hg.blend-0c4f2cc63cb51a8584caceb9e27af438.scn"
 
 [deps]
 
 source_file="res://player/assets/weapons/DrewPistol/Hg.blend"
+dest_files=["res://.godot/imported/Hg.blend-0c4f2cc63cb51a8584caceb9e27af438.scn"]
 
 [params]
 

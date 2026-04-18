@@ -64,6 +64,8 @@ shadow_mesh = SubResource("ArrayMesh_fho1x")
 collision_layer = 2
 script = ExtResource("1_7gpia")
 area = NodePath("Area3D")
+damage = 100.0
+speed = 25.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=729008033]
 replication_config = SubResource("SceneReplicationConfig_7gpia")

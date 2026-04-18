@@ -29,7 +29,7 @@ properties/4/spawn = true
 properties/4/replication_mode = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_exxeo"]
-size = Vector3(0.1, 0.4, 1)
+size = Vector3(0.3, 0.7, 1.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2tnh5"]
 resource_name = "Material.007"
@@ -360,7 +360,7 @@ desiredPickup = 1
 area = NodePath("Area3D")
 audio = NodePath("AudioStreamPlayer3D")
 itemHeightFromGround = 1.0
-pickupTimeout = 16.0
+pickupTimeout = 15.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=180098256]
 replication_config = SubResource("SceneReplicationConfig_nl6bm")
@@ -372,7 +372,7 @@ collision_mask = 4
 shape = SubResource("BoxShape3D_exxeo")
 
 [node name="BurstRifleV1" type="Node3D" parent="Area3D/CollisionShape3D" unique_id=1490177264]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17012036, 0.18142772)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -0.35966218, 0.41896945)
 
 [node name="Armature" type="Node3D" parent="Area3D/CollisionShape3D/BurstRifleV1" unique_id=1399950033]
 transform = Transform3D(0.29377598, 0, 0, 0, 0, -0.29377598, 0, 0.29377598, 0, 0, 0.203125, -0.421875)

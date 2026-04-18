@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://m2qog1d32hi4" path="res://Scenes/networkCamera.tscn" id="2_81xng"]
 [ext_resource type="PackedScene" uid="uid://cvkx4oslqntvk" path="res://Maps/space_map.tscn" id="4_81xng"]
 [ext_resource type="PackedScene" uid="uid://d3crcq2oaiwca" path="res://player/assets/items/pickupItemMarker.tscn" id="5_wqkje"]
+[ext_resource type="AudioStream" uid="uid://dk5cqy0nifbrk" path="res://player/assets/audio/Atomic Overload.wav" id="6_cap7i"]
 
 [node name="GameManager" type="Node3D" unique_id=707979491 node_paths=PackedStringArray("spectatorSpawn", "netCore", "itemSpawner", "projectileSpawner", "decalSpawner")]
 script = ExtResource("1_6phgx")
@@ -25,7 +26,7 @@ _spawnable_scenes = PackedStringArray("uid://e5kh6jpm8qar", "uid://dyk8nokmfq10c
 spawn_path = NodePath("..")
 
 [node name="ItemSpawner" type="MultiplayerSpawner" parent="." unique_id=93704130]
-_spawnable_scenes = PackedStringArray("uid://hhoe7wf5nrug", "uid://dj61f2e2txuot")
+_spawnable_scenes = PackedStringArray("uid://hhoe7wf5nrug", "uid://dj61f2e2txuot", "uid://byg8lv88h4gv8", "uid://1hdrer8xajji", "uid://burpb1is4sd2e")
 spawn_path = NodePath("../NetworkObjects")
 script = ExtResource("1_tumq0")
 
@@ -61,32 +62,55 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 50)
 [node name="PickupItemMarker2" parent="ItemSpawns/SmgSpawns" unique_id=455424680 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -50)
 
-[node name="PickupItemMarker3" parent="ItemSpawns/SmgSpawns" unique_id=869038111 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, -2, 20)
-
-[node name="PickupItemMarker4" parent="ItemSpawns/SmgSpawns" unique_id=3219047 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.81194, -2, -20)
-
 [node name="BurstRifleSpawns" type="Node3D" parent="ItemSpawns" unique_id=1647985926]
 
 [node name="PickupItemMarker" parent="ItemSpawns/BurstRifleSpawns" unique_id=9957009 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.844868, 4.1629906, -35.69615)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.503273, 3.7237387, 0.56175137)
 itemToBeSpawned = 1
 
 [node name="PickupItemMarker2" parent="ItemSpawns/BurstRifleSpawns" unique_id=117498212 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.456284, 4.1629906, 36.18286)
-itemToBeSpawned = 1
-
-[node name="PickupItemMarker3" parent="ItemSpawns/BurstRifleSpawns" unique_id=751353906 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.996056, 4.1629868, 36.227974)
-itemToBeSpawned = 1
-
-[node name="PickupItemMarker4" parent="ItemSpawns/BurstRifleSpawns" unique_id=1456839390 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.68886, 4.1629868, -36.02676)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.66798, 3.8447657, -0.0049829483)
 itemToBeSpawned = 1
 
 [node name="ShotgunSpawns" type="Node3D" parent="ItemSpawns" unique_id=1709700155]
 
+[node name="PickupItemMarker4" parent="ItemSpawns/ShotgunSpawns" unique_id=3219047 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.81194, -2, -20)
+itemToBeSpawned = 2
+
+[node name="PickupItemMarker3" parent="ItemSpawns/ShotgunSpawns" unique_id=869038111 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, -2, 20)
+itemToBeSpawned = 2
+
+[node name="PickupItemMarker5" parent="ItemSpawns/ShotgunSpawns" unique_id=752965109 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.503273, -1.9713082, 0.56175137)
+itemToBeSpawned = 2
+
+[node name="PickupItemMarker6" parent="ItemSpawns/ShotgunSpawns" unique_id=769120484 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.66798, -2.0276244, -0.0049829483)
+itemToBeSpawned = 2
+
 [node name="BazookaSpawns" type="Node3D" parent="ItemSpawns" unique_id=1518210531]
 
+[node name="PickupItemMarker6" parent="ItemSpawns/BazookaSpawns" unique_id=1796536673 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38974082, -1.8857055, 0.44294262)
+itemToBeSpawned = 3
+
 [node name="SniperSpawns" type="Node3D" parent="ItemSpawns" unique_id=1171579200]
+
+[node name="PickupItemMarker5" parent="ItemSpawns/SniperSpawns" unique_id=2128161220 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38974082, 3.118073, 0.44294262)
+itemToBeSpawned = 4
+
+[node name="PickupItemMarker6" parent="ItemSpawns/SniperSpawns" unique_id=279863458 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38974082, -2.0014768, -46.03657)
+itemToBeSpawned = 4
+
+[node name="PickupItemMarker7" parent="ItemSpawns/SniperSpawns" unique_id=1208921524 groups=["ItemSpawns"] instance=ExtResource("5_wqkje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38974082, -2.0014768, 47.742126)
+itemToBeSpawned = 4
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1821111133]
+stream = ExtResource("6_cap7i")
+volume_db = -18.0
+autoplay = true

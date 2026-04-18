@@ -40,6 +40,7 @@ public partial class WeaponController : Node3D
     [Export] public JumpRecoil JumpRecoilRef;
 	[Export] private NoiseTexture2D RandSwayNoise;
     [Export] private AmmoCounter ammoCounter;
+    [Export] public MuzzleFlash characterMuzzleFlash;
 
     public PlayerContext context;
     private const int SERVER = 1;

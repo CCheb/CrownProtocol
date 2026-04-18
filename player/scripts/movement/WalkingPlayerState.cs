@@ -8,7 +8,7 @@ public partial class WalkingPlayerState : PlayerMovementState
     [Export] public float topAnimationSpeed = 1.8f;
     [Export] public float acceleration = 0.1f;
     [Export] public float decelaration = 0.25f;
-    private float speed = 6.0f;
+    private float speed = 12.0f;
 
     [ExportGroup("Weapon Movement Profile")]
     [Export] public bool IsIdle = false;

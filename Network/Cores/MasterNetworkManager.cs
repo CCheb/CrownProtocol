@@ -18,7 +18,7 @@ public partial class MasterNetworkManager : Node
     public static MasterNetworkManager Instance;
 
     public int PortMinimum = 9050;
-    public string PublicIP = "127.0.0.1"; // VM Public IP 23.128.112.65
+    public string PublicIP = "23.128.112.65"; // VM Public IP 23.128.112.65
     public string PrivateIP = "10.200.208.184"; // VM Private IP 10.200.208.184
     private string[] ipAddresses;
     private NetworkPing np;
